@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:41:40 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/08 16:37:27 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/18 15:22:59 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 int main(int argc, char **argv)
 {
-	// TestServer server;
+	TestServer server;
 	std::string configfile = "conf/configfile.conf";
 	if (argc > 1)
 		configfile = argv[1];
