@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Parser.cpp                                         :+:      :+:    :+:   */
+/*   ParserConf.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:08:08 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/18 15:11:32 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/18 15:53:03 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Parser.hpp"
+#include "ParserConf.hpp"
 
 // Funzione per rimuovere spazi iniziali e finali da una stringa
 static std::string trim(const std::string& str)

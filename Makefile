@@ -6,7 +6,7 @@
 #    By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/10 14:45:43 by andreamargi       #+#    #+#              #
-#    Updated: 2024/01/05 12:44:43 by andreamargi      ###   ########.fr        #
+#    Updated: 2024/01/18 15:52:36 by andreamargi      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ MAKEFLAGS += --silent
 FILES = Socket/BaseSocket.cpp Socket/BindingSocket.cpp \
 		Socket/ListeningSocket.cpp Socket/ConnectingSocket.cpp \
 		Server/TestServer.cpp Server/SimpleServer.cpp \
-		main.cpp Parser/Parser.cpp \
+		main.cpp Parser/ParserConf.cpp \
 
 OBJ=$(FILES:.cpp=.o)
 

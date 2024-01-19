@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Parser.hpp                                         :+:      :+:    :+:   */
+/*   ParserConf.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 11:55:49 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/18 15:12:10 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/18 15:57:14 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,12 @@ struct LocationConfig
 struct ServerConfig
 {
 	int port;
+	std::string host;
 	std::string serverName;
 	std::map<std::string, std::string> errorPages;
 	std::map<std::string, LocationConfig> locations;
-	std::string host;
 };
 
 void parseServerconf(const std::string& configfile, ServerConfig& serverConfig);
-// void printServerConfig(const ServerConfig& serverConfig);
 
 #endif

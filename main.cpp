@@ -6,13 +6,13 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:41:40 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/18 15:22:59 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/18 16:19:47 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Networking/Networking.hpp"
 #include "Server/TestServer.hpp"
-#include "Parser/Parser.hpp"
+#include "Parser/ParserConf.hpp"
 
 int main(int argc, char **argv)
 {
@@ -27,6 +27,5 @@ int main(int argc, char **argv)
 	}
 	ServerConfig serverConfig;
 	parseServerconf(configfile, serverConfig);
-	// printServerConfig(serverConfig);
 	return (0);
 }
