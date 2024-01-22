@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2023/11/14 11:01:44 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/22 11:33:08 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 TestServer::TestServer() : Server(AF_INET, SOCK_STREAM, 0, 80, INADDR_ANY, 10)
 {
-	launch(); 
+	launch();
 }
 
 void TestServer::Accepter()
@@ -24,11 +24,13 @@ void TestServer::Accepter()
 	newsocket = accept(getSocket()->getSocket(), (struct sockaddr *)&address,
 			(socklen_t*)&addrlen);
 	read(newsocket, buffer, 30000);
+	std::cout << "Accepted" << std::endl;
 }
 
 void TestServer::Handler()
 {
 	std::cout << buffer << std::endl;
+	std::cout << "Handled" << std::endl;
 }
 
 void TestServer::Responder()
@@ -40,11 +42,38 @@ void TestServer::Responder()
 
 void TestServer::launch()
 {
+	const int MAX_EVENTS = 10; //massimo numero di eventi che possono essere gestiti
+	struct pollfd fds[MAX_EVENTS];
+	fds[0].fd = getSocket()->getSocket(); //aggiungi il socket principale
+	fds[0].events = POLLIN | POLLOUT; // Aggiungi gli eventi di lettura e scrittura
 	while (true)
 	{
-		Accepter();
-		Handler();
-		Responder();
-		std::cout << "Done" << std::endl;
+		int ready = poll(fds, MAX_EVENTS, 50); //50 millisecondi di timeout
+		if (ready == -1)
+		{
+			std::cerr << "poll failed" << std::endl;
+			break;
+		}
+		if (ready == 0) //nessun evento pronto
+			continue;
+		for(int i = 0; i < MAX_EVENTS; i++)
+		{
+			if(fds[i].revents != 0)
+			{
+				if(fds[i].revents & POLLIN)
+				{
+					std::cout << "New connection" << std::endl;
+					Accepter();
+					Handler();
+				}
+				if(fds[i].revents & POLLOUT)
+				{
+					std::cout << "Sending data" << std::endl;
+					Responder();
+					std::cout << "Done" << std::endl;
+				}
+				fds[i].revents = 0; //resetto gli eventi
+			}
+		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:33 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/05 12:47:50 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/22 10:16:30 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include "SimpleServer.hpp"
 #include <stdio.h>
+#include <poll.h>
 
 class TestServer : public Server
 {
@@ -24,6 +25,7 @@ class TestServer : public Server
 		void Accepter();
 		void Handler();
 		void Responder();
+		//pollfd fds[5];
 	public :
 		TestServer();
 		void launch();
