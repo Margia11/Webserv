@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:33 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/22 10:16:30 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/22 14:15:14 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,11 @@ class TestServer : public Server
 	private :
 		char buffer[30000];
 		int newsocket;
+		static const int MAX_EVENTS = 10;
+		struct pollfd fds[MAX_EVENTS];
 		void Accepter();
 		void Handler();
 		void Responder();
-		//pollfd fds[5];
 	public :
 		TestServer();
 		void launch();

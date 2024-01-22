@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/22 11:33:08 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/22 14:22:26 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,17 @@ void TestServer::Accepter()
 			(socklen_t*)&addrlen);
 	read(newsocket, buffer, 30000);
 	std::cout << "Accepted" << std::endl;
+	//cerco un posto libero nella lista dei file descriptor
+	//e lo preparo per la scrittura
+	for (int i = 1; i < MAX_EVENTS; i++)
+	{
+		if (fds[i].fd == -1)
+		{
+			fds[i].fd = newsocket;
+			fds[i].events = POLLOUT;
+			break;
+		}
+	}
 }
 
 void TestServer::Handler()
@@ -42,10 +53,10 @@ void TestServer::Responder()
 
 void TestServer::launch()
 {
-	const int MAX_EVENTS = 10; //massimo numero di eventi che possono essere gestiti
-	struct pollfd fds[MAX_EVENTS];
 	fds[0].fd = getSocket()->getSocket(); //aggiungi il socket principale
-	fds[0].events = POLLIN | POLLOUT; // Aggiungi gli eventi di lettura e scrittura
+	fds[0].events = POLLIN; // Aggiungi gli eventi di lettura e scrittura
+	for (int i = 1; i < MAX_EVENTS; i++)
+		fds[i].fd = -1; // Inizializza tutti gli altri elementi a -1
 	while (true)
 	{
 		int ready = poll(fds, MAX_EVENTS, 50); //50 millisecondi di timeout
@@ -71,9 +82,12 @@ void TestServer::launch()
 					std::cout << "Sending data" << std::endl;
 					Responder();
 					std::cout << "Done" << std::endl;
+					//resetto per indicare che è disponibile per la prossima connessione
+					fds[i].fd = -1;
 				}
 				fds[i].revents = 0; //resetto gli eventi
 			}
 		}
 	}
 }
+
