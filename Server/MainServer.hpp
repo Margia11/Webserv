@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   TestServer.hpp                                     :+:      :+:    :+:   */
+/*   MainServer.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:33 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/23 12:15:20 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/23 15:47:18 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define MAINSERVER_HPP
 
 #include "SimpleServer.hpp"
+#include "VirtualServer.hpp"
 #include <stdio.h>
 #include <poll.h>
 
@@ -27,8 +28,9 @@ class MainServer : public Server
 		void Accepter();
 		void Handler();
 		void Responder();
+		std::vector<VirtualServer> virtualServers;
 	public :
-		MainServer();
+		MainServer(const std::vector<ServerConfig>& serverConfigs);
 		void launch();
 };
 

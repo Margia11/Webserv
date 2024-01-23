@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:32:59 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/23 14:47:02 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/23 16:06:17 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,13 +138,12 @@ void VirtualServer::Handler()
 void VirtualServer::Responder()
 {
 	std::string content = "Hello World!";
-    std::string response =
-        "HTTP/1.1 200 OK\r\n"
-        "Content-Type: text/plain\r\n"
-        "Content-Length: " + std::to_string(content.size()) + "\r\n"
-        "\r\n" + content;
-
-    send(newsocket, response.c_str(), response.size(), 0);
+	std::string response =
+		"HTTP/1.1 200 OK\r\n"
+		"Content-Type: text/plain\r\n"
+		"Content-Length: " + std::to_string(content.size()) + "\r\n"
+		"\r\n" + content;
+	send(newsocket, response.c_str(), response.size(), 0);
 	close(newsocket);
 }
 
@@ -177,6 +176,7 @@ void VirtualServer::launch()
 				{
 					Responder();
 					std::cout << "Done" << std::endl;
+					bzero(buffer, 30000);
 					//resetto per indicare che è disponibile per la prossima connessione
 					fds[i].fd = -1;
 				}

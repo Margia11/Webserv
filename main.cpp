@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:41:40 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/23 14:30:42 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/23 15:45:57 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int main(int argc, char **argv)
 		return 1;
 	}
 	parseServerconf(configfile, serverConfigs);
-
-	VirtualServer server(serverConfigs.at(0));
+	MainServer server(serverConfigs);
+	server.launch();
 	return (0);
 }

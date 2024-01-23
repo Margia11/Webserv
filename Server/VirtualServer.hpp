@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:04:26 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/23 14:34:24 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/23 15:52:14 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ class VirtualServer : public Server
 		void Responder();
 	public :
 		VirtualServer(ServerConfig config);
-		~VirtualServer();
+		virtual ~VirtualServer();
 		const std::string& getServerName() const;
 		const std::string& getRoot() const;
 		const std::string& getIndex() const;

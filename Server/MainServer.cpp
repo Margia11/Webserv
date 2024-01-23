@@ -1,20 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   TestServer.cpp                                     :+:      :+:    :+:   */
+/*   MainServer.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/23 12:15:11 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/23 15:51:01 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "MainServer.hpp"
 
-MainServer::MainServer() : Server(AF_INET, SOCK_STREAM, 0, 80, INADDR_ANY, 10)
+MainServer::MainServer(const std::vector<ServerConfig>& serverConfigs) : Server(AF_INET, SOCK_STREAM, 0, 80, INADDR_ANY, 10)
 {
-	launch();
+	for (std::vector<ServerConfig>::const_iterator it = serverConfigs.begin(); it != serverConfigs.end(); ++it)
+	{
+		VirtualServer virtualServer(*it);
+		virtualServers.push_back(virtualServer);
+	}
 }
 
 void MainServer::Accepter()
@@ -51,39 +55,7 @@ void MainServer::Responder()
 
 void MainServer::launch()
 {
-	fds[0].fd = getSocket()->getSocket(); //aggiungi il socket principale
-	fds[0].events = POLLIN; // Aggiungi gli eventi di lettura e scrittura
-	for (int i = 1; i < MAX_EVENTS; i++)
-		fds[i].fd = -1; // Inizializza tutti gli altri elementi a -1
-	while (true)
-	{
-		int ready = poll(fds, MAX_EVENTS, 50); //50 millisecondi di timeout
-		if (ready == -1)
-		{
-			std::cerr << "poll failed" << std::endl;
-			break;
-		}
-		if (ready == 0) //nessun evento pronto
-			continue;
-		for(int i = 0; i < MAX_EVENTS; i++)
-		{
-			if(fds[i].revents != 0)
-			{
-				if(fds[i].revents & POLLIN)
-				{
-					Accepter();
-					Handler();
-				}
-				if(fds[i].revents & POLLOUT)
-				{
-					Responder();
-					std::cout << "Done" << std::endl;
-					//resetto per indicare che è disponibile per la prossima connessione
-					fds[i].fd = -1;
-				}
-				fds[i].revents = 0; //resetto gli eventi
-			}
-		}
-	}
+	for(std::vector<VirtualServer>::iterator it = virtualServers.begin(); it != virtualServers.end(); ++it)
+		it->launch();
 }
 
