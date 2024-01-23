@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:41:40 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/18 16:19:47 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/22 15:11:43 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 int main(int argc, char **argv)
 {
-	TestServer server;
+	std::vector<ServerConfig> serverConfigs;
 	std::string configfile = "conf/configfile.conf";
 	if (argc > 1)
 		configfile = argv[1];
@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 		std::cout << "No config file specified"<< std::endl;
 		return 1;
 	}
-	ServerConfig serverConfig;
-	parseServerconf(configfile, serverConfig);
+	parseServerconf(configfile, serverConfigs);
+	TestServer server;
 	return (0);
 }

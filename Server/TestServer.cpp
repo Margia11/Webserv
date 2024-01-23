@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/22 14:22:26 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/22 16:42:07 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void TestServer::Accepter()
 	newsocket = accept(getSocket()->getSocket(), (struct sockaddr *)&address,
 			(socklen_t*)&addrlen);
 	read(newsocket, buffer, 30000);
-	std::cout << "Accepted" << std::endl;
 	//cerco un posto libero nella lista dei file descriptor
 	//e lo preparo per la scrittura
 	for (int i = 1; i < MAX_EVENTS; i++)
@@ -41,7 +40,6 @@ void TestServer::Accepter()
 void TestServer::Handler()
 {
 	std::cout << buffer << std::endl;
-	std::cout << "Handled" << std::endl;
 }
 
 void TestServer::Responder()
@@ -73,13 +71,11 @@ void TestServer::launch()
 			{
 				if(fds[i].revents & POLLIN)
 				{
-					std::cout << "New connection" << std::endl;
 					Accepter();
 					Handler();
 				}
 				if(fds[i].revents & POLLOUT)
 				{
-					std::cout << "Sending data" << std::endl;
 					Responder();
 					std::cout << "Done" << std::endl;
 					//resetto per indicare che è disponibile per la prossima connessione

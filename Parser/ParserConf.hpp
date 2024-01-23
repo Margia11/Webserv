@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 11:55:49 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/18 15:57:14 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/23 11:33:09 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,36 @@
 #include <sstream>
 #include <map>
 #include <vector>
+#include <unistd.h>
 
 struct LocationConfig
 {
 	std::string locationPath;
 	std::vector<std::string> allow_methods;
 	std::string root;
-	std::string index;
+	std::string autoindex;
 };
 
 struct ServerConfig
 {
+	int maxBodySize;
 	int port;
+	std::string index;
+	std::string root;
 	std::string host;
 	std::string serverName;
 	std::map<std::string, std::string> errorPages;
 	std::map<std::string, LocationConfig> locations;
 };
 
-void parseServerconf(const std::string& configfile, ServerConfig& serverConfig);
+class InvalidServerException : public std::exception
+{
+	virtual const char* what() const throw()
+	{
+		return ("Invalid server configuration");
+	}
+};
+
+void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& serverConfigs);
 
 #endif
