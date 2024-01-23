@@ -6,18 +6,18 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:33 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/22 14:15:14 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/23 12:15:20 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TESTSERVER_HPP
-#define TESTSERVER_HPP
+#ifndef MAINSERVER_HPP
+#define MAINSERVER_HPP
 
 #include "SimpleServer.hpp"
 #include <stdio.h>
 #include <poll.h>
 
-class TestServer : public Server
+class MainServer : public Server
 {
 	private :
 		char buffer[30000];
@@ -28,7 +28,7 @@ class TestServer : public Server
 		void Handler();
 		void Responder();
 	public :
-		TestServer();
+		MainServer();
 		void launch();
 };
 

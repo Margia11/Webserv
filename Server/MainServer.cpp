@@ -6,18 +6,18 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/22 16:42:07 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/23 12:15:11 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "TestServer.hpp"
+#include "MainServer.hpp"
 
-TestServer::TestServer() : Server(AF_INET, SOCK_STREAM, 0, 80, INADDR_ANY, 10)
+MainServer::MainServer() : Server(AF_INET, SOCK_STREAM, 0, 80, INADDR_ANY, 10)
 {
 	launch();
 }
 
-void TestServer::Accepter()
+void MainServer::Accepter()
 {
 	struct sockaddr_in address = getSocket()->getAddress();
 	int addrlen = sizeof(address);
@@ -37,19 +37,19 @@ void TestServer::Accepter()
 	}
 }
 
-void TestServer::Handler()
+void MainServer::Handler()
 {
 	std::cout << buffer << std::endl;
 }
 
-void TestServer::Responder()
+void MainServer::Responder()
 {
 	const char *hello = "Hello from server";
 	write(newsocket, hello, strlen(hello));
 	close(newsocket);
 }
 
-void TestServer::launch()
+void MainServer::launch()
 {
 	fds[0].fd = getSocket()->getSocket(); //aggiungi il socket principale
 	fds[0].events = POLLIN; // Aggiungi gli eventi di lettura e scrittura

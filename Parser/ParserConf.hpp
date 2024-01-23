@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 11:55:49 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/23 11:33:09 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/23 12:57:14 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,17 @@ struct LocationConfig
 	std::vector<std::string> allow_methods;
 	std::string root;
 	std::string autoindex;
+	std::string index;
 };
 
 struct ServerConfig
 {
-	int maxBodySize;
+	int client_max_body_size;
 	int port;
 	std::string index;
 	std::string root;
 	std::string host;
-	std::string serverName;
+	std::string server_name;
 	std::map<std::string, std::string> errorPages;
 	std::map<std::string, LocationConfig> locations;
 };

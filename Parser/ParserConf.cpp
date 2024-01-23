@@ -6,44 +6,13 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:08:08 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/23 11:36:25 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/23 14:25:27 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ParserConf.hpp"
 
-//funzione che converte l'ip da stringa a byte order
-// static u_int32_t string_to_byte_order(const char *ip_addr) {
-// 	int octets[4];
-// 	size_t i = 0;
-// 	int j = 0;
-// 	int h = 0;
-// 	char tmp[3];
 
-// 	if (ip_addr == NULL)
-// 		return 0;
-
-// 	while (i < std::strlen(ip_addr) + 1)
-// 	{
-// 		if (ip_addr[i] == '.' || i == (std::strlen(ip_addr)))
-// 		{
-// 			tmp[j] = 0;
-// 			octets[h] = std::atoi(tmp);
-// 			h++;
-// 			j = 0;
-// 			i++;
-// 			continue;
-// 		}
-// 		tmp[j] = ip_addr[i];
-// 		i++;
-// 		j++;
-// 	}
-// 	for (i = 0; i < 4; i++) {
-// 		if (octets[i] < 0 || octets[i] > 255)
-// 			return 0;
-// 	}
-// 	return ((u_int32_t)octets[0] << 24) | ((u_int32_t)octets[1] << 16) | ((u_int32_t)octets[2] << 8) | ((u_int32_t)octets[3]);
-// }
 
 // Funzione per rimuovere spazi iniziali e finali da una stringa
 static std::string trim(const std::string& str)
@@ -130,11 +99,11 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 				if (blockkey == "listen")
 					issBlock >> serverConfig.port;
 				else if (blockkey == "serverName")
-					issBlock >> serverConfig.serverName;
+					issBlock >> serverConfig.server_name;
 				else if (blockkey == "host")
 					issBlock >> serverConfig.host;
 				else if (blockkey == "client_max_body_size")
-					issBlock >> serverConfig.maxBodySize;
+					issBlock >> serverConfig.client_max_body_size;
 				else if (blockkey == "root")
 					issBlock >> serverConfig.root;
 				else if (blockkey == "index")
@@ -174,6 +143,8 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 							}
 							else if (locationKey == "root")
 								issLocation >> locationConfig.root;
+							else if (locationKey == "index")
+								issLocation >> locationConfig.index;
 							else
 								std::cerr << "Unknown key: " << locationKey << std::endl;
 							if (line == "}")

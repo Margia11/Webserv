@@ -6,13 +6,14 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:41:40 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/22 15:11:43 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/23 14:30:42 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Networking/Networking.hpp"
-#include "Server/TestServer.hpp"
+#include "Server/MainServer.hpp"
 #include "Parser/ParserConf.hpp"
+#include "Server/VirtualServer.hpp"
 
 int main(int argc, char **argv)
 {
@@ -26,6 +27,7 @@ int main(int argc, char **argv)
 		return 1;
 	}
 	parseServerconf(configfile, serverConfigs);
-	TestServer server;
+
+	VirtualServer server(serverConfigs.at(0));
 	return (0);
 }
