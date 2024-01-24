@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:32:59 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/23 16:06:17 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/24 12:35:55 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ VirtualServer::VirtualServer(ServerConfig config) : Server(AF_INET, SOCK_STREAM,
 	this->index = config.index;
 	this->errorPages = config.errorPages;
 	this->client_max_body_size = config.client_max_body_size;
-
+	this->buffer = (char *) malloc (32000);
 	for (std::map<std::string, LocationConfig>::const_iterator it = config.locations.begin(); it != config.locations.end(); it++)
 	{
 		LocationInfo locationInfo;
@@ -62,6 +62,7 @@ VirtualServer::VirtualServer(ServerConfig config) : Server(AF_INET, SOCK_STREAM,
 		locationInfo.allow_methods = it->second.allow_methods;
 		this->locations[it->first] = locationInfo;
 	}
+	this->parser = new ParserRequest();
 	std::cout << "Socket "<< getSocket() << " created" << std::endl;
 	launch();
 }
@@ -116,7 +117,8 @@ void VirtualServer::Accepter()
 	int addrlen = sizeof(address);
 	newsocket = accept(getSocket()->getSocket(), (struct sockaddr *)&address,
 			(socklen_t*)&addrlen);
-	read(newsocket, buffer, 30000);
+	//read(newsocket, buffer, 30000);
+	this->parser->readRequest(newsocket, &buffer);
 	//cerco un posto libero nella lista dei file descriptor
 	//e lo preparo per la scrittura
 	for (int i = 1; i < MAX_EVENTS; i++)
@@ -132,7 +134,6 @@ void VirtualServer::Accepter()
 
 void VirtualServer::Handler()
 {
-	std::cout << buffer << std::endl;
 }
 
 void VirtualServer::Responder()
@@ -149,6 +150,7 @@ void VirtualServer::Responder()
 
 void VirtualServer::launch()
 {
+	cout << "Culo" << endl;
 	fds[0].fd = getSocket()->getSocket(); //aggiungi il socket principale
 	fds[0].events = POLLIN; // Aggiungi gli eventi di lettura e scrittura
 	for (int i = 1; i < MAX_EVENTS; i++)
@@ -169,8 +171,12 @@ void VirtualServer::launch()
 			{
 				if(fds[i].revents & POLLIN)
 				{
+					cout << "Accepting..." << endl;
 					Accepter();
+					cout << "Accepted" << endl;
+					cout << "Handling..." << endl;
 					Handler();
+					cout << "Handled" << endl;
 				}
 				if(fds[i].revents & POLLOUT)
 				{

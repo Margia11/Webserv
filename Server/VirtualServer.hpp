@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:04:26 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/23 15:52:14 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/24 12:31:38 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include "SimpleServer.hpp"
 #include "../Parser/ParserConf.hpp"
+#include "../Parser/ParserRequest.hpp"
 #include <poll.h>
 #include <string>
 #include <vector>
@@ -39,7 +40,8 @@ class VirtualServer : public Server
 		std::map<std::string, LocationInfo> locations;
 		std::string client_max_body_size;
 		//std::vector<std::string> allow_methods;
-		char buffer[30000];
+		ParserRequest *parser;
+		char *buffer;
 		int newsocket;
 		static const int MAX_EVENTS = 10;
 		struct pollfd fds[MAX_EVENTS];

@@ -1,14 +1,6 @@
 #include "ParserRequest.hpp"
 
-#include <string>
-#include "unistd.h"
-#include <iostream>
-#include <fstream>
-#include <map>
-#include <sstream>
-#include <map>
-
-static bool	checkRequestLine(string line, HTTPParser *parse)
+bool ParserRequest::checkRequestLine(string line)
 {
 	size_t	first_space = line.find(' ');
 	if (first_space == string::npos || first_space == 0 || first_space == line.size())
@@ -24,13 +16,13 @@ static bool	checkRequestLine(string line, HTTPParser *parse)
 	string reqPath;
 	string reqProtocol;
 	issRequest >> reqMethod >> reqPath >> reqProtocol;
-	parse->method = reqMethod;
-	parse->path = reqPath;
-	parse->protocol = reqProtocol;
+	this->method = reqMethod;
+	this->path = reqPath;
+	this->protocol = reqProtocol;
 	return true;
 }
 
-static void	getHeaders(string line, HTTPParser* parse)
+void	ParserRequest::getHeaders(string line)
 {
 	istringstream issHeader(line);
 	std::string headerName;
@@ -41,69 +33,119 @@ static void	getHeaders(string line, HTTPParser* parse)
 	{
 		headerValue += " " + buf;
 	}
-	parse->headers.insert(std::make_pair(headerName, headerValue));
-	cout << "$" << headerName << "$" << endl;
-	cout << "$" << headerValue << "$"  << endl;
+	this->headers.insert(std::make_pair(headerName, headerValue));
 }
 
-static void getRequestLine(string line, HTTPParser* parse)
+void ParserRequest::getRequestLine(string line)
 {
 	if (line.empty())
 		return ;
-	if (!checkRequestLine(line, parse))
+	if (!checkRequestLine(line))
 		return ;
-	cout << "$" << parse->method << "$" << endl;
-	cout << "$" << parse->path << "$"  << endl;
-	cout << "$" << parse->protocol << "$" << endl;
 }
 
-#include <iostream>
-#include <iomanip>
-
-void stampaCaratteriNonStampabili(const std::string& str) {
-    for (char c : str) {
-        if (isprint(c)) {
-            std::cout << c;
-        } else {
-            std::cout << "\\x" << std::setw(2) << std::setfill('0') << std::hex << (int)(unsigned char)c;
-        }
-    }
-    std::cout << std::endl;
-}
-
-int	main(void)
+void stampaCaratteriNonStampabili(std::string str)
 {
-	ifstream	file;
-	HTTPParser	parse;
-
-	file.open("request.http", std::ios::in);
-	while (file)
+	const char *str2 = str.c_str();
+	int i = 0;
+	while (str2[i])
 	{
-		string line;
-		bool	isRequestLine = true;
-		bool	isHeader = false;
-		bool	isBody = false;
-		while (getline(file, line))
+		char c = str2[i];
+		if (isprint(c))
+			std::cout << c;
+		else
+			std::cout << "\\x" << std::setw(2) << std::setfill('0') << std::hex << (int)(unsigned char)c;
+		i++;
+	}
+	std::cout << std::endl;
+}
+
+void ParserRequest::readRequest(int newsocket, char **buffer)
+{
+	int byte_read;
+	byte_read = read(newsocket, *buffer, 32000);
+	if (byte_read < 0)
+	{
+		perror("read");
+		exit(1);
+	}
+	else if (byte_read == 0)
+	{
+		cout << "Client closed connection" << endl;
+		return ;
+	}
+	else
+	{
+		std::string str(*buffer, byte_read);
+		size_t reqLinePos = str.find("\r\n");
+		std::string reqLine = str.substr(0, reqLinePos);
+		getRequestLine(reqLine);
+		size_t headerPos = str.find("\r\n", reqLinePos + 2);
+		std::string headers = str.substr(reqLinePos + 2, headerPos - reqLinePos - 2);
+		while(!headers.empty())
 		{
-			if (isRequestLine)
-				getRequestLine(line, &parse);
-			if (line.compare("\r") == 0)
+			size_t oldHeaderPos = headerPos;
+			getHeaders(headers);
+			headerPos = str.find("\r\n", oldHeaderPos + 2);
+			headers = str.substr(oldHeaderPos + 2, headerPos - oldHeaderPos - 2);
+		}
+		map<string, string>::iterator it = this->headers.find("Content-Length");
+		int len = 0;
+		if (it != this->headers.end())
+		{
+			len = atoi(it->second.c_str());
+			cout << "Content-Length: " << len << endl;
+		}
+		else
+			cout << "Content-Length: " << 0 << endl;
+		int readFromBody = 32000 - headerPos;
+		this->body = str.substr(headerPos + 2, str.size());
+		while (readFromBody < len)
+		{
+			byte_read = read(newsocket, *buffer, 32000);
+			if (byte_read < 0)
 			{
-				isHeader = false;
-				isBody = true;
+				perror("read");
+				exit(1);
 			}
-			if (isHeader)
-				getHeaders(line, &parse);
-			else if (isBody && line.compare("\r") != 0)
-				parse.body += line;
-			if (isRequestLine)
+			else if (byte_read == 0)
 			{
-				isRequestLine = false;
-				isHeader = true;
+				cout << "Client closed connection" << endl;
+				return ;
+			}
+			else
+			{
+				this->body += std::string(*buffer, byte_read);
+				readFromBody += byte_read;
+				cout << "readFromBody: " << readFromBody << endl;
 			}
 		}
-		if (!file.eof())
-			return (1);
-		file.close();
 	}
+}
+
+void ParserRequest::printparse()
+{
+	cout << "Method: " << this->method << endl;
+	cout << "Path: " << this->path << endl;
+	cout << "Protocol: " << this->protocol << endl;
+	cout << "Headers: " << endl;
+	for (map<string, string>::iterator it = this->headers.begin(); it != this->headers.end(); it++)
+	{
+		cout << it->first << ": " << it->second << endl;
+	}
+	cout << "Body: " << this->body << endl;
+}
+ParserRequest::ParserRequest()
+{
+	cout << "ParserRequest constructor" << endl;
+	this->method = "";
+	this->path = "";
+	this->protocol = "";
+	this->headers = map<string, string>();
+	this->body = "";
+}
+
+ParserRequest::~ParserRequest()
+{
+	cout << "ParserRequest destructor" << endl;
 }
