@@ -137,7 +137,6 @@ void ParserRequest::printparse()
 }
 ParserRequest::ParserRequest()
 {
-	cout << "ParserRequest constructor" << endl;
 	this->method = "";
 	this->path = "";
 	this->protocol = "";
@@ -147,5 +146,4 @@ ParserRequest::ParserRequest()
 
 ParserRequest::~ParserRequest()
 {
-	cout << "ParserRequest destructor" << endl;
 }

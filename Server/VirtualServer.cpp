@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:32:59 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/24 12:35:55 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/25 11:45:50 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static u_int32_t string_to_byte_order(const char *ip_addr) {
 	}
 	return ((u_int32_t)octets[0] << 24) | ((u_int32_t)octets[1] << 16) | ((u_int32_t)octets[2] << 8) | ((u_int32_t)octets[3]);
 }
+
 
 VirtualServer::VirtualServer(ServerConfig config) : Server(AF_INET, SOCK_STREAM, 0, config.port, string_to_byte_order(config.host.c_str()), 10)
 {
@@ -111,6 +112,7 @@ std::string const &VirtualServer::getHost() const
 	return (this->host);
 }
 
+
 void VirtualServer::Accepter()
 {
 	struct sockaddr_in address = getSocket()->getAddress();
@@ -138,19 +140,21 @@ void VirtualServer::Handler()
 
 void VirtualServer::Responder()
 {
-	std::string content = "Hello World!";
-	std::string response =
-		"HTTP/1.1 200 OK\r\n"
-		"Content-Type: text/plain\r\n"
-		"Content-Length: " + std::to_string(content.size()) + "\r\n"
-		"\r\n" + content;
-	send(newsocket, response.c_str(), response.size(), 0);
+	GetResponse response;
+	std::string answer;
+
+	if (parser->method == "GET")
+		answer = response.answer(parser);
+	else if (parser->method == "POST")
+		std::cout << "POST" << std::endl;
+	else if (parser->method == "DELETE")
+		std::cout << "DELETE" << std::endl;
+	send(newsocket, answer.c_str(), answer.size(), 0);
 	close(newsocket);
 }
 
 void VirtualServer::launch()
 {
-	cout << "Culo" << endl;
 	fds[0].fd = getSocket()->getSocket(); //aggiungi il socket principale
 	fds[0].events = POLLIN; // Aggiungi gli eventi di lettura e scrittura
 	for (int i = 1; i < MAX_EVENTS; i++)

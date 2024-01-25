@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:04:26 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/24 12:31:38 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/25 11:20:28 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "SimpleServer.hpp"
 #include "../Parser/ParserConf.hpp"
 #include "../Parser/ParserRequest.hpp"
+#include "../Server/GetResponse.hpp"
 #include <poll.h>
 #include <string>
 #include <vector>
