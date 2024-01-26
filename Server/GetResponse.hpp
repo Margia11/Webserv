@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:41:59 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/25 11:45:34 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/25 14:18:49 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 
 class GetResponse : public Response
 {
-	private:
-
 	public:
 		GetResponse();
 		~GetResponse();

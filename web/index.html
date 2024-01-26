@@ -1,38 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagina HTML Semplice</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebServer</title>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      text-align: center;
+    }
 
-        h1 {
-            color: #333;
-        }
+    h1 {
+      color: #333;
+      text-decoration: underline;
+      font-size: 48px;
+      line-height: 1.2;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
 
-        p {
-            color: #666;
-        }
-    </style>
+    p {
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      background-color: #ddd;
+      margin: 0;
+      padding: 20px;
+      border-radius: 5px;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      margin-top: 20px;
+    }
+
+    .rocket {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 200px;
+      height: 200px;
+      background-image: url("https://images.unsplash.com/photo-1542739395-36089470024a?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8fGVuZ2xpbm8lMjBmaWxsJTIwaG9zdCUyMGFzdGljc2l6ZSUyMG1lbWJlcnRhdGlvbnM&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80");
+      background-repeat: no-repeat;
+      background-size: cover;
+      animation: move 3s linear infinite;
+    }
+
+    @keyframes move {
+      from {
+        transform: translate(0, 0);
+      }
+      to {
+        transform: translate(100%, 100%);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
 </head>
 <body>
 
-    <h1>Benvenuto nella Pagina HTML Semplice</h1>
+  <h1>Benvenuto nel nostro WebServer</h1>
 
-    <p>Questa è una pagina HTML di esempio.</p>
+  <p>Si la pagina fa schifo.</p>
 
-    <ul>
-        <li>Elemento della lista 1</li>
-        <li>Elemento della lista 2</li>
-        <li>Elemento della lista 3</li>
-    </ul>
+  <ul>
+    <li>amargiac</li>
+    <li>gcucino</li>
+  </ul>
 
-    <p>Puoi personalizzare questa pagina aggiungendo ulteriori elementi HTML e stili CSS.</p>
+  <img src="https://robohash.org/rocket?size=400x400" alt="Rocket Image" class="rocket" style="border-radius: 50%;">
 
 </body>
 </html>

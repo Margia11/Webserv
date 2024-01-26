@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:42:54 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/25 11:06:44 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/25 14:18:51 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 
 class PostResponse : public Response
 {
-	private:
 	public:
 		PostResponse();
 		~PostResponse();
+		std::string answer(ParserRequest *parser);
 };
 
 

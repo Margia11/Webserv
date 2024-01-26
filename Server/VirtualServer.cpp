@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:32:59 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/25 11:45:50 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/25 14:56:48 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ std::string const &VirtualServer::getHost() const
 	return (this->host);
 }
 
-
 void VirtualServer::Accepter()
 {
 	struct sockaddr_in address = getSocket()->getAddress();
@@ -141,12 +140,18 @@ void VirtualServer::Handler()
 void VirtualServer::Responder()
 {
 	GetResponse response;
+	PostResponse postResponse;
 	std::string answer;
 
+	std::cout << "Received request:\n";
+    std::cout << "Method: " << parser->method << "\n";
+    std::cout << "Path: " << parser->path << "\n";
+    std::cout << "Content-Type: " << parser->headers["Content-Type"] << "\n";
+    std::cout << "Body:\n" << parser->body << "\n";
 	if (parser->method == "GET")
 		answer = response.answer(parser);
 	else if (parser->method == "POST")
-		std::cout << "POST" << std::endl;
+		answer = postResponse.answer(parser);
 	else if (parser->method == "DELETE")
 		std::cout << "DELETE" << std::endl;
 	send(newsocket, answer.c_str(), answer.size(), 0);
