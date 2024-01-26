@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:32:59 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/25 14:56:48 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/26 12:39:27 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,21 @@ void VirtualServer::Handler()
 {
 }
 
+// void VirtualServer::deleteRequest(ParserRequest *parser)
+// {
+// 	std::string path = parser->path;
+// 	if (path.empty() || path == "/")
+// 	{
+// 		send(newsocket, "HTTP/1.1 403 Forbidden\r\n\r\n", 26, 0);
+// 		return;
+// 	}
+// 	path = this->root + path;
+// 	if (remove(path.c_str()) != 0)
+// 		send(newsocket, "HTTP/1.1 403 Forbidden\r\n\r\n", 26, 0);
+// 	else
+// 		send(newsocket, "HTTP/1.1 200 OK\r\n\r\n", 19, 0);
+// }
+
 void VirtualServer::Responder()
 {
 	GetResponse response;
@@ -154,6 +169,8 @@ void VirtualServer::Responder()
 		answer = postResponse.answer(parser);
 	else if (parser->method == "DELETE")
 		std::cout << "DELETE" << std::endl;
+	else
+		send(newsocket, "HTTP/1.1 405 Method Not Allowed\r\n\r\n", 36, 0);
 	send(newsocket, answer.c_str(), answer.size(), 0);
 	close(newsocket);
 }

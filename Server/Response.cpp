@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 14:06:34 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/25 11:42:31 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/26 11:55:39 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,6 @@ Response::Response()
 	protocol = "HTTP";
 	version = "1.1";
 	body = "Hello World!";
-	httpErrors[100] = "Continue";
-	httpErrors[200] = "OK";
-	httpErrors[400] = "Bad Request";
-	httpErrors[403] = "Forbidden";
-	httpErrors[404] = "Not Found";
-	httpErrors[500] = "Internal Server Error";
-	httpErrors[503] = "Service Unavailable";
 }
 
 Response::~Response()
@@ -113,3 +106,5 @@ void Response::setStatusCode(const std::string& path, std::map<std::string, std:
 	else
 		statusCode = 200;
 }
+
+

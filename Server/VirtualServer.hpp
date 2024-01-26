@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:04:26 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/25 14:30:51 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/26 12:24:48 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ class VirtualServer : public Server
 		const std::string& getHost() const;
 		int getPort() const;
 		void launch();
+		void deleteRequest(ParserRequest *parser);
 };
 
 

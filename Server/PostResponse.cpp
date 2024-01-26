@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:42:50 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/26 09:55:00 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/26 10:33:57 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ std::string PostResponse::answer(ParserRequest *parser)
 	{
 		std::string postData = parser->body;
 		std::string path = parser->path;
-		std::string response = "HTTP/1.1 200 OK\r\n";
 		if (path == "/")
 			path = "/index.html";
-		std::string fullPath = "." + path;
-		std::ifstream file(fullPath.c_str());
-		response = "HTTP/1.1 200 OK\r\n";
-		response += "Content-Length: 0\r\n";
+		std::ifstream file(path.c_str());
+		std::string response = "HTTP/1.1 200 OK\r\n";
+		response += "Content-Type: text/html\r\n";
+		response += "Content-Length: " + std::to_string(postData.size()) + "\r\n";
 		response += "\r\n";
+		response += postData;
 		return response;
 	}
 	else
