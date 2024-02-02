@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/23 15:51:01 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/02 10:03:35 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ MainServer::MainServer(const std::vector<ServerConfig>& serverConfigs) : Server(
 	for (std::vector<ServerConfig>::const_iterator it = serverConfigs.begin(); it != serverConfigs.end(); ++it)
 	{
 		VirtualServer virtualServer(*it);
-		virtualServers.push_back(virtualServer);
+		virtualServers.insert(std::pair<int, VirtualServer>(it->port, virtualServer));
 	}
 }
 
@@ -55,7 +55,7 @@ void MainServer::Responder()
 
 void MainServer::launch()
 {
-	for(std::vector<VirtualServer>::iterator it = virtualServers.begin(); it != virtualServers.end(); ++it)
-		it->launch();
+	for(std::map<int, VirtualServer>::iterator it = virtualServers.begin(); it != virtualServers.end(); ++it)
+		it->second.launch();
 }
 
