@@ -63,7 +63,8 @@ int IsValidServer(const ServerConfig& serverConfig, const LocationConfig& Locati
 void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& serverConfigs)
 {
 	// Controllo che il file sia stato aperto correttamente
-	std::ifstream file(configfile);
+	std::ifstream file;
+	file.open(configfile.c_str());
 	if (!file.is_open())
 	{
 		std::cerr << "Unable to open file" << std::endl;
@@ -108,10 +109,10 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 					issBlock >> serverConfig.index;
 				else if (blockkey == "error_page")
 				{
-					int errorCode;
+					std::string errorCode;
 					std::string errorPath;
 					issBlock >> errorCode >> errorPath;
-					serverConfig.errorPages.insert(std::make_pair(std::to_string(errorCode), errorPath));
+					serverConfig.errorPages.insert(std::make_pair(errorCode, errorPath));
 				}
 				else if (blockkey == "location")
 				{

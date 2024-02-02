@@ -11,7 +11,9 @@
 /* ************************************************************************** */
 
 #include "GetResponse.hpp"
+#include <cstring>
 #include <cstdlib>
+#include <sstream>
 
 GetResponse::GetResponse() : Response()
 {
@@ -49,7 +51,9 @@ std::string GetResponse::answer(ParserRequest *parser)
 			std::cout << "Unable to open file";
 		response = "HTTP/1.1 200 OK\r\n";
 		response += "Content-Type: text/html\r\n";
-		std::string len = std::to_string(body.size());
+		std::stringstream ss;
+		ss << body.size();
+		std::string len = ss.str();
 		response += "Content-Length: " + len + "\r\n";
 		response += "\r\n";
 		response += body;

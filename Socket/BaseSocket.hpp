@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <cstdlib>
 
 //BaseSocket si occupa di creare e configurare il socket che è visto come un
 //file descriptor che viene usato per stabilire la connessione

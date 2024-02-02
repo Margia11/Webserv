@@ -60,10 +60,12 @@ void stampaCaratteriNonStampabili(std::string str)
 	std::cout << std::endl;
 }
 
-void ParserRequest::readRequest(int newsocket, char **buffer)
+void ParserRequest::readRequest(int newsocket)
 {
+	char *buffer = new char[32000];
 	int byte_read;
-	byte_read = read(newsocket, *buffer, 32000);
+	byte_read = read(newsocket, buffer, 32000);
+	std::cout << "buffer: " << buffer << std::endl;
 	if (byte_read < 0)
 	{
 		perror("read");
@@ -76,7 +78,7 @@ void ParserRequest::readRequest(int newsocket, char **buffer)
 	}
 	else
 	{
-		std::string str(*buffer, byte_read);
+		std::string str(buffer, byte_read);
 		size_t reqLinePos = str.find("\r\n");
 		std::string reqLine = str.substr(0, reqLinePos);
 		getRequestLine(reqLine);
@@ -102,7 +104,7 @@ void ParserRequest::readRequest(int newsocket, char **buffer)
 		this->body = str.substr(headerPos + 2, str.size());
 		while (readFromBody < len)
 		{
-			byte_read = read(newsocket, *buffer, 32000);
+			byte_read = read(newsocket, buffer, 32000);
 			if (byte_read < 0)
 			{
 				perror("read");
@@ -115,7 +117,7 @@ void ParserRequest::readRequest(int newsocket, char **buffer)
 			}
 			else
 			{
-				this->body += std::string(*buffer, byte_read);
+				this->body += std::string(buffer, byte_read);
 				readFromBody += byte_read;
 				cout << "readFromBody: " << readFromBody << endl;
 			}

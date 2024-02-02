@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "PostResponse.hpp"
+#include <sstream>
 
 PostResponse::PostResponse()
 {
@@ -32,7 +33,10 @@ std::string PostResponse::answer(ParserRequest *parser)
 		std::ifstream file(path.c_str());
 		std::string response = "HTTP/1.1 200 OK\r\n";
 		response += "Content-Type: text/html\r\n";
-		response += "Content-Length: " + std::to_string(postData.size()) + "\r\n";
+		std::stringstream ss;
+		ss << postData.size();
+		std::string len = ss.str();
+		response += "Content-Length: " + len + "\r\n";
 		response += "\r\n";
 		response += postData;
 		return response;

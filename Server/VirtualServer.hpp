@@ -20,6 +20,7 @@
 #include "../Server/PostResponse.hpp"
 #include <poll.h>
 #include <string>
+#include <string.h>
 #include <vector>
 
 struct LocationInfo

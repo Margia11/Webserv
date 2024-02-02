@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:32:59 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/01 12:45:46 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/26 12:39:27 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ static u_int32_t string_to_byte_order(const char *ip_addr) {
 	if (ip_addr == NULL)
 		return 0;
 
-	while (i < std::strlen(ip_addr) + 1)
+	while (i < strlen(ip_addr) + 1)
 	{
-		if (ip_addr[i] == '.' || i == (std::strlen(ip_addr)))
+		if (ip_addr[i] == '.' || i == (strlen(ip_addr)))
 		{
 			tmp[j] = 0;
 			octets[h] = std::atoi(tmp);
@@ -49,6 +49,8 @@ static u_int32_t string_to_byte_order(const char *ip_addr) {
 VirtualServer::VirtualServer(ServerConfig config) : Server(AF_INET, SOCK_STREAM, 0, config.port, string_to_byte_order(config.host.c_str()), 10)
 {
 	this->server_name = config.server_name;
+	this->port = config.port;
+	this->host = config.host;
 	this->root = config.root;
 	this->index = config.index;
 	this->errorPages = config.errorPages;
@@ -65,7 +67,7 @@ VirtualServer::VirtualServer(ServerConfig config) : Server(AF_INET, SOCK_STREAM,
 	}
 	this->parser = new ParserRequest();
 	std::cout << "Socket "<< getSocket() << " created" << std::endl;
-	launch();
+	//launch();
 }
 
 VirtualServer::~VirtualServer()
@@ -119,7 +121,7 @@ void VirtualServer::Accepter()
 	newsocket = accept(getSocket()->getSocket(), (struct sockaddr *)&address,
 			(socklen_t*)&addrlen);
 	//read(newsocket, buffer, 30000);
-	this->parser->readRequest(newsocket, &buffer);
+	this->parser->readRequest(newsocket);
 	//cerco un posto libero nella lista dei file descriptor
 	//e lo preparo per la scrittura
 	for (int i = 1; i < MAX_EVENTS; i++)

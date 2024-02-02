@@ -14,6 +14,8 @@
 # define PARSERREQUEST_HPP
 
 #include <string>
+#include <cstring>
+#include <cstdlib>
 #include "unistd.h"
 #include <iostream>
 #include <fstream>
@@ -33,7 +35,7 @@ class ParserRequest
 		map<string, string> headers;
 		string body;
 		void printparse();
-		void readRequest(int newsocket, char **buffer);
+		void readRequest(int newsocket);
 		void getRequestLine(string line);
 		bool checkRequestLine(string line);
 		void getHeaders(string line);

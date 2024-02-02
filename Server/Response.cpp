@@ -97,7 +97,8 @@ std::string Response::getExtension(const std::string &path)
 void Response::setStatusCode(const std::string& path, std::map<std::string, std::string> &mimTypes)
 {
 	std::string str = mimTypes[getExtension(path)];
-	std::ifstream file(path);
+	std::ifstream file;
+	file.open(path.c_str());
 
 	if(!file.is_open() || !isValidFile(path.c_str()))
 		statusCode = 404;

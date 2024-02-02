@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:33 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/02 09:57:01 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/01/23 15:47:18 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,24 @@
 #include "SimpleServer.hpp"
 #include "VirtualServer.hpp"
 #include <stdio.h>
+#include <string.h>
 #include <poll.h>
 
-class MainServer : public Server
+typedef std::map<int, ParserRequest>	clientHttpParserMap_t;
+
+class MainServer
 {
 	private :
-		char buffer[30000];
-		int newsocket;
-		static const int MAX_EVENTS = 10;
-		struct pollfd fds[MAX_EVENTS];
-		void Accepter();
-		void Handler();
-		void Responder();
-		std::map<int, VirtualServer> virtualServers;
+		std::vector<pollfd>	_fds;
+		std::map<int,VirtualServer> virtualServers;
+		clientHttpParserMap_t _clientHttpParserMap;
+		char *buffer;
 	public :
 		MainServer(const std::vector<ServerConfig>& serverConfigs);
 		void launch();
+		void _handleConnections(int fd);
+		void _handleRequest(int fd);
+		void printServer();
 };
 
 #endif
