@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:33 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/23 15:47:18 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/02 16:02:06 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ class MainServer
 		std::vector<pollfd>	_fds;
 		std::map<int,VirtualServer> virtualServers;
 		clientHttpParserMap_t _clientHttpParserMap;
-		char *buffer;
 	public :
 		MainServer(const std::vector<ServerConfig>& serverConfigs);
 		void launch();
