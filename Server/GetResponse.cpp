@@ -38,7 +38,7 @@ std::string GetResponse::answer(ParserRequest *parser)
 	else if (parser->path == "/")
 	{
 		std::string body("");
-		ifstream file("./web/index.html");
+		ifstream file("./web/form.html");
 		std::string line;
 		if (file.is_open())
 		{

@@ -65,7 +65,7 @@ void ParserRequest::readRequest(int newsocket)
 	char *buffer = new char[32000];
 	int byte_read;
 	byte_read = read(newsocket, buffer, 32000);
-	std::cout << "buffer: " << buffer << std::endl;
+	std::cout << buffer << std::endl;
 	if (byte_read < 0)
 	{
 		perror("read");
@@ -96,10 +96,8 @@ void ParserRequest::readRequest(int newsocket)
 		if (it != this->headers.end())
 		{
 			len = atoi(it->second.c_str());
-			cout << "Content-Length: " << len << endl;
+			//cout << "Content-Length: " << len << endl;
 		}
-		else
-			cout << "Content-Length: " << 0 << endl;
 		int readFromBody = 32000 - headerPos;
 		this->body = str.substr(headerPos + 2, str.size());
 		bzero(buffer, 32000);
@@ -120,7 +118,7 @@ void ParserRequest::readRequest(int newsocket)
 			{
 				this->body += std::string(buffer, byte_read);
 				readFromBody += byte_read;
-				cout << "readFromBody: " << readFromBody << endl;
+				//cout << "readFromBody: " << readFromBody << endl;
 				bzero(buffer, 32000);
 			}
 		}
