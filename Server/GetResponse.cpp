@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:42:02 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/25 15:35:30 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/03 10:25:06 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ std::string GetResponse::answer(ParserRequest *parser)
 			file.close();
 		}
 		else
-			std::cout << "Unable to open file";
+			std::cout << " to open file";
 		response = "HTTP/1.1 200 OK\r\n";
 		response += "Content-Type: text/html\r\n";
 		std::stringstream ss;

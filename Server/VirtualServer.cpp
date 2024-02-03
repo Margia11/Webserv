@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:32:59 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/26 12:39:27 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/03 10:16:05 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,10 +161,10 @@ void VirtualServer::Responder()
 	std::string answer;
 
 	std::cout << "Received request:\n";
-    std::cout << "Method: " << parser->method << "\n";
-    std::cout << "Path: " << parser->path << "\n";
-    std::cout << "Content-Type: " << parser->headers["Content-Type"] << "\n";
-    std::cout << "Body:\n" << parser->body << "\n";
+	std::cout << "Method: " << parser->method << "\n";
+	std::cout << "Path: " << parser->path << "\n";
+	std::cout << "Content-Type: " << parser->headers["Content-Type"] << "\n";
+	std::cout << "Body:\n" << parser->body << "\n";
 	if (parser->method == "GET")
 		answer = response.answer(parser);
 	else if (parser->method == "POST")

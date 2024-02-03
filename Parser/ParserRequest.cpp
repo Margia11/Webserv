@@ -102,6 +102,7 @@ void ParserRequest::readRequest(int newsocket)
 			cout << "Content-Length: " << 0 << endl;
 		int readFromBody = 32000 - headerPos;
 		this->body = str.substr(headerPos + 2, str.size());
+		bzero(buffer, 32000);
 		while (readFromBody < len)
 		{
 			byte_read = read(newsocket, buffer, 32000);
@@ -120,6 +121,7 @@ void ParserRequest::readRequest(int newsocket)
 				this->body += std::string(buffer, byte_read);
 				readFromBody += byte_read;
 				cout << "readFromBody: " << readFromBody << endl;
+				bzero(buffer, 32000);
 			}
 		}
 	}

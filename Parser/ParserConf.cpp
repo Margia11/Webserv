@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:08:08 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/02 09:53:13 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/03 10:25:45 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 	if (!file.is_open())
 	{
 		std::cerr << "Unable to open file" << std::endl;
-		return;
+		exit(1);
 	}
 	// Leggo il file riga per riga e divido la riga in due parti, la prima parte è la chiave,
 	// la seconda il valore usando come separatore il carattere ' '
