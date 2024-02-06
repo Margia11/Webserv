@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/02 16:16:50 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/06 12:19:59 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ MainServer::MainServer(const std::vector<ServerConfig>& serverConfigs)
 		_fds.push_back(serverPollFd_);
 	}
 	//this->printServer();
+}
+
+MainServer::~MainServer()
+{
+	clearfds();
 }
 
 void MainServer::launch()
@@ -124,6 +129,16 @@ void MainServer::_handleConnections(int fd)
 	_fds.push_back(clientPollFd_);
 	_clientHttpParserMap[clientFd_] = ParserRequest();
 }
+
+void MainServer::clearfds()
+{
+	std::vector<pollfd>::iterator iter_ = _fds.begin();
+	std::vector<pollfd>::iterator iterEnd_ = _fds.end();
+	for(; iter_ != iterEnd_; iter_++)
+		close(iter_->fd);
+	_fds.clear();
+}
+
 
 // void MainServer::printServer()
 // {

@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:04:26 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/26 12:24:48 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/06 11:30:52 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,39 +31,25 @@ struct LocationInfo
 	std::vector<std::string> allow_methods;
 };
 
-class VirtualServer : public Server
+class VirtualServer
 {
 	private :
 		std::string server_name;
-		int port;
-		std::string host;
 		std::string root;
 		std::string index;
 		std::map<std::string, std::string> errorPages;
 		std::map<std::string, LocationInfo> locations;
 		std::string client_max_body_size;
 		//std::vector<std::string> allow_methods;
-		ParserRequest *parser;
-		char *buffer;
-		int newsocket;
-		static const int MAX_EVENTS = 10;
-		struct pollfd fds[MAX_EVENTS];
-		void Accepter();
-		void Handler();
-		void Responder();
 	public :
-		VirtualServer(ServerConfig config);
-		virtual ~VirtualServer();
+		VirtualServer(const ServerConfig& config);
+		~VirtualServer();
 		const std::string& getServerName() const;
 		const std::string& getRoot() const;
 		const std::string& getIndex() const;
 		const std::map<std::string, std::string>& getErrorPages() const;
 		const std::map<std::string, LocationInfo>& getLocations() const;
 		const std::string& getClientMaxBodySize() const;
-		const std::string& getHost() const;
-		int getPort() const;
-		void launch();
-		void deleteRequest(ParserRequest *parser);
 };
 
 
