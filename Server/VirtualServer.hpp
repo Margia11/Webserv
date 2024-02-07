@@ -6,14 +6,13 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:04:26 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/06 11:30:52 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/07 10:54:52 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VIRTUALSERVER_HPP
 #define VIRTUALSERVER_HPP
 
-#include "SimpleServer.hpp"
 #include "../Parser/ParserConf.hpp"
 #include "../Parser/ParserRequest.hpp"
 #include "../Server/GetResponse.hpp"

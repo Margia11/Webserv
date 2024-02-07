@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:33 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/06 12:19:41 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/07 10:58:44 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #define MAINSERVER_HPP
 
 #include "SimpleServer.hpp"
-#include "VirtualServer.hpp"
+// #include "VirtualServer.hpp"
 #include "../Parser/ParserRequest.hpp"
 #include <stdio.h>
 #include <string.h>
@@ -26,11 +26,11 @@ class MainServer
 {
 	private :
 		std::vector<pollfd>	_fds;
-		std::map<int,VirtualServer> virtualServers;
+		std::map<int, Server> SimpleServers;
 		clientHttpParserMap_t _clientHttpParserMap;
 		ParserRequest _parserRequest;
 	public :
-		MainServer(const std::vector<ServerConfig>& serverConfigs);
+		MainServer(const std::string& config);
 		~MainServer();
 		void launch();
 		void _handleConnections(int fd);

@@ -6,24 +6,29 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/06 12:19:59 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/07 10:47:50 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "MainServer.hpp"
 
-MainServer::MainServer(const std::vector<ServerConfig>& serverConfigs)
+MainServer::MainServer(const std::string& config) : _parserRequest()
 {
-	for (std::vector<ServerConfig>::const_iterator it = serverConfigs.begin(); it != serverConfigs.end(); ++it)
+	std::vector<ServerConfig> serverConfigs;
+	parseServerconf(config, serverConfigs);
+	for (std::vector<ServerConfig>::iterator it = serverConfigs.begin(); it != serverConfigs.end(); ++it)
 	{
-		VirtualServer virtualServer(*it);
-		virtualServers.insert(std::pair<int, VirtualServer>(it->port, virtualServer));
-		struct pollfd serverPollFd_ = {};
-		serverPollFd_.fd = virtualServer.getSocket()->getSocket();
-		serverPollFd_.events = POLLIN;
-		_fds.push_back(serverPollFd_);
+		if (SimpleServers.find(it->port) != SimpleServers.end())
+			SimpleServers[it->port].addVirtualServer(*it);
+		else
+			SimpleServers[it->port] = Server(*it);
 	}
-	//this->printServer();
+	for (std::map<int, Server>::iterator it = SimpleServers.begin(); it != SimpleServers.end(); ++it)
+	{
+		//	_setupVirtualServer(it->second);
+		cout << "Server on port " << it->first << " created" << endl;
+	}
+	//_setMimeTypes();
 }
 
 MainServer::~MainServer()
@@ -47,7 +52,7 @@ void MainServer::launch()
 		{
 			if ((_fds[i].revents & POLLIN) || (_fds[i].revents & POLLOUT))
 			{
-				if (i < virtualServers.size())
+				if (i < SimpleServers.size())
 					_handleConnections(_fds[i].fd);
 				else
 				{

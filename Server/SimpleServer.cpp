@@ -6,11 +6,16 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:16:02 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/06 11:28:44 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/07 10:59:33 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "SimpleServer.hpp"
+
+Server::Server()
+{
+
+}
 
 //costruisce un server con host e porta forniti da configfile e aggiunge un virtualserver
 Server::Server(ServerConfig config)
