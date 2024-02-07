@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:16:02 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/07 10:59:33 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/07 11:25:21 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,17 @@ Server::Server(ServerConfig config)
 	this->addVirtualServer(config);
 }
 
-//aggiunge un virtualserver(con tutte le info) al vettore di server
-void Server::addVirtualServer(ServerConfig &config)
-{
-	servers.push_back(VirtualServer(config));
-}
 
 Server::Server(int domain, int service, int protocol, int port, u_long interface, int bklg)
 {
 	socket = new ListeningSocket(domain, service, protocol, port, interface, bklg);
 	std::cout << "Server created" << std::endl;
+}
+
+//aggiunge un virtualserver(con tutte le info) al vettore di server
+void Server::addVirtualServer(ServerConfig &config)
+{
+	servers.push_back(VirtualServer(config));
 }
 
 Server::~Server()
@@ -43,6 +44,11 @@ Server::~Server()
 ListeningSocket *Server::getSocket()
 {
 	return (socket);
+}
+
+void Server::setSocket(ListeningSocket *socket)
+{
+	this->socket = socket;
 }
 
 int Server::getServerFd() const

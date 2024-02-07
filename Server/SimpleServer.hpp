@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:16:11 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/07 10:56:49 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/07 11:25:12 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ class Server
 		int	getServerFd() const;
 		std::pair<std::string, int>getHostPort() const;
 		int	getPort() const;
+		void setSocket(ListeningSocket *socket);
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/07 10:47:50 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/07 11:39:42 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,14 @@ MainServer::MainServer(const std::string& config) : _parserRequest()
 	}
 	for (std::map<int, Server>::iterator it = SimpleServers.begin(); it != SimpleServers.end(); ++it)
 	{
-		//	_setupVirtualServer(it->second);
+		u_long interface = string_to_byte_order(it->second.getHostPort().first.c_str());
+		ListeningSocket *tmpsocket = new ListeningSocket(AF_INET, SOCK_STREAM, 0, it->first, interface, 10);
+		it->second.setSocket(tmpsocket);
 		cout << "Server on port " << it->first << " created" << endl;
+		struct pollfd serverPollFd_ = {};
+		serverPollFd_.fd = tmpsocket->getSocket();
+		serverPollFd_.events = POLLIN;
+		_fds.push_back(serverPollFd_);
 	}
 	//_setMimeTypes();
 }
