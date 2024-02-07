@@ -33,6 +33,7 @@ void	ParserRequest::getHeaders(string line)
 	{
 		headerValue += " " + buf;
 	}
+	headerName = headerName.substr(0, headerName.size() - 1);
 	this->headers.insert(std::make_pair(headerName, headerValue));
 }
 
@@ -152,7 +153,7 @@ ParserRequest::~ParserRequest()
 
 std::string ParserRequest::getHost()
 {
-	map<string, string>::iterator it = this->headers.find("Host:");
+	map<string, string>::iterator it = this->headers.find("Host");
 	if (it != this->headers.end())
 		return it->second;
 	return "";

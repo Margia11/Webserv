@@ -23,10 +23,9 @@ GetResponse::~GetResponse()
 {
 }
 
-std::string GetResponse::answer(ParserRequest *parser)
+std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 {
 	std::string response;
-
 	if(isValidFile(parser->path.c_str()))
 	{
 		response = "HTTP/1.1 200 OK\r\n";
@@ -38,7 +37,14 @@ std::string GetResponse::answer(ParserRequest *parser)
 	else if (parser->path == "/")
 	{
 		std::string body("");
-		ifstream file("./web/form.html");
+		std::cout << "---------------------PROVA---------------------" << std::endl;
+		stampaCaratteriNonStampabili(vs->getRoot());
+		std::cout << "---------------------PROVA---------------------" << std::endl;
+		std::string root = vs->getRoot().substr(0, vs->getRoot().size() - 1);
+		std::string index = vs->getIndex().substr(0, vs->getIndex().size() - 1);
+		std::string path = root + "/"+ index;
+		std::cout << "path: " << path << std::endl;
+		ifstream file(path.c_str());
 		std::string line;
 		if (file.is_open())
 		{

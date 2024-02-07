@@ -71,3 +71,11 @@ VirtualServer Server::getFirstVS()
 	return this->servers[0];
 }
 
+void Server::printServer()
+{
+	std::cout << "======= Server =======" << std::endl;
+	std::cout << "Host: " << HostPort.first << std::endl;
+	std::cout << "Port: " << HostPort.second << std::endl;
+	std::cout << "Virtual Servers: " << servers.size() << std::endl;
+	std::cout << "======================" << std::endl;
+}

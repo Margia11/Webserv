@@ -14,13 +14,14 @@
 #define POSTRESPONSE_HPP
 
 #include "Response.hpp"
+#include "VirtualServer.hpp"
 
 class PostResponse : public Response
 {
 	public:
 		PostResponse();
 		~PostResponse();
-		std::string answer(ParserRequest *parser);
+		std::string answer(ParserRequest *parser, VirtualServer *vs);
 };
 
 

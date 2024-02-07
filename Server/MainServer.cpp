@@ -84,16 +84,18 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 {
 	_clientHttpParserMap[it->fd].readRequest(it->fd);
 	std::string tmp = _clientHttpParserMap[it->fd].getHost();
-	cout << toHostPort(tmp).first << toHostPort(tmp).second << endl;
+	//cout << toHostPort(tmp).first << toHostPort(tmp).second << endl;
+	
 	Server server = SimpleServers[toHostPort(tmp).second];
 	VirtualServer vs = server.getFirstVS();
 	GetResponse response;
 	PostResponse postResponse;
 	std::string answer;
+	std::cout << "Answering request" << std::endl;
 	if (_clientHttpParserMap[it->fd].method == "GET")
-		answer = response.answer(&(_clientHttpParserMap[it->fd]));
+		answer = response.answer(&(_clientHttpParserMap[it->fd]), &vs);
 	else if (_clientHttpParserMap[it->fd].method == "POST")
-		answer = postResponse.answer(&(_clientHttpParserMap[it->fd]));
+		answer = postResponse.answer(&(_clientHttpParserMap[it->fd]), &vs);
 	else if (_clientHttpParserMap[it->fd].method == "DELETE")
 		std::cout << "DELETE" << std::endl;
 	else

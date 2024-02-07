@@ -18,6 +18,7 @@
 #include <map>
 #include <sys/stat.h>
 #include "../Parser/ParserRequest.hpp"
+#include "VirtualServer.hpp"
 #include <sstream>
 #include <fstream>
 
@@ -52,7 +53,7 @@ class Response
 		void setHttpErrors(std::map<int, std::string> httpErrors);
 		bool isValidFile(const char* path);
 		std::string getExtension(const std::string &path);
-		virtual std::string answer(ParserRequest *parser) = 0;
+		virtual std::string answer(ParserRequest *parser, VirtualServer *vs) = 0;
 };
 
 

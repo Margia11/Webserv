@@ -15,8 +15,6 @@
 
 #include "../Parser/ParserConf.hpp"
 #include "../Parser/ParserRequest.hpp"
-#include "../Server/GetResponse.hpp"
-#include "../Server/PostResponse.hpp"
 #include <poll.h>
 #include <string>
 #include <string.h>
@@ -49,6 +47,7 @@ class VirtualServer
 		const std::map<std::string, std::string>& getErrorPages() const;
 		const std::map<std::string, LocationInfo>& getLocations() const;
 		const std::string& getClientMaxBodySize() const;
+		void printVServer();
 };
 
 

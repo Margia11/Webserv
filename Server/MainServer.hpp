@@ -15,6 +15,8 @@
 
 #include "SimpleServer.hpp"
 // #include "VirtualServer.hpp"
+#include "GetResponse.hpp"
+#include "PostResponse.hpp"
 #include "../Parser/ParserRequest.hpp"
 #include "utils.hpp"
 #include <stdio.h>

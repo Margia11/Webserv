@@ -14,13 +14,14 @@
 #define GETRESPONSE_HPP
 
 #include "Response.hpp"
+#include "VirtualServer.hpp"
 
 class GetResponse : public Response
 {
 	public:
 		GetResponse();
 		~GetResponse();
-		std::string answer(ParserRequest *parser);
+		std::string answer(ParserRequest *parser, VirtualServer *vs);
 };
 
 

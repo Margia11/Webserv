@@ -64,3 +64,8 @@ std::map <std::string, LocationInfo> const &VirtualServer::getLocations() const
 {
 	return (this->locations);
 }
+
+void VirtualServer::printVServer()
+{
+	std::cout << "Server ok" << std::endl;
+}
