@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:16:02 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/07 11:25:21 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/07 13:00:57 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,8 @@ int Server::getPort() const
 	return HostPort.second;
 }
 
+VirtualServer Server::getFirstVS()
+{
+	return this->servers[0];
+}
 

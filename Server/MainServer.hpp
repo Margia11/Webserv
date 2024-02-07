@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:33 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/07 11:35:47 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/07 12:07:06 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ class MainServer
 		~MainServer();
 		void launch();
 		void _handleConnections(int fd);
-		void _handleRequest(int fd);
+		void _handleRequest(std::vector<pollfd>::iterator it);
 		void printServer();
 		void clearfds();
 

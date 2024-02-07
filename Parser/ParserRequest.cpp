@@ -149,3 +149,11 @@ ParserRequest::ParserRequest()
 ParserRequest::~ParserRequest()
 {
 }
+
+std::string ParserRequest::getHost()
+{
+	map<string, string>::iterator it = this->headers.find("Host:");
+	if (it != this->headers.end())
+		return it->second;
+	return "";
+}

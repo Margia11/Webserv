@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/07 11:39:42 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/07 13:02:37 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void MainServer::launch()
 					_handleConnections(_fds[i].fd);
 				else
 				{
-					_handleRequest(_fds[i].fd);
+					_handleRequest(_fds.begin() + i);
 					if (_fds[i].fd == -1) {
 						_fds.erase(_fds.begin() + i);
 						i--;
@@ -80,27 +80,25 @@ static void _error(const std::string &msg, int err)
 	exit(1);
 }
 
-void MainServer::_handleRequest(int fd)
+void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 {
-	std::map<int, ParserRequest>::iterator parser = _clientHttpParserMap.find(fd);
-	if (parser == _clientHttpParserMap.end())
-	{
-		std::cerr << "Parser not found" << std::endl;
-		return;
-	}
-	parser->second.readRequest(fd);
+	_clientHttpParserMap[it->fd].readRequest(it->fd);
+	std::string tmp = _clientHttpParserMap[it->fd].getHost();
+	cout << toHostPort(tmp).first << toHostPort(tmp).second << endl;
+	Server server = SimpleServers[toHostPort(tmp).second];
+	VirtualServer vs = server.getFirstVS();
 	GetResponse response;
 	PostResponse postResponse;
 	std::string answer;
-	if (parser->second.method == "GET")
-		answer = response.answer(&(parser->second));
-	else if (parser->second.method == "POST")
-		answer = postResponse.answer(&(parser->second));
-	else if (parser->second.method == "DELETE")
+	if (_clientHttpParserMap[it->fd].method == "GET")
+		answer = response.answer(&(_clientHttpParserMap[it->fd]));
+	else if (_clientHttpParserMap[it->fd].method == "POST")
+		answer = postResponse.answer(&(_clientHttpParserMap[it->fd]));
+	else if (_clientHttpParserMap[it->fd].method == "DELETE")
 		std::cout << "DELETE" << std::endl;
 	else
-		send(fd, "HTTP/1.1 405 Method Not Allowed\r\n\r\n", 36, 0);
-	send(fd, answer.c_str(), answer.size(), 0);
+		send(it->fd, "HTTP/1.1 405 Method Not Allowed\r\n\r\n", 36, 0);
+	send(it->fd, answer.c_str(), answer.size(), 0);
 }
 
 void MainServer::_handleConnections(int fd)

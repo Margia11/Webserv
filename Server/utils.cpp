@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 10:52:03 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/07 10:52:32 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/07 12:53:53 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,17 @@ u_int32_t string_to_byte_order(const char *ip_addr) {
 			return 0;
 	}
 	return ((u_int32_t)octets[0] << 24) | ((u_int32_t)octets[1] << 16) | ((u_int32_t)octets[2] << 8) | ((u_int32_t)octets[3]);
+}
+
+//funzione che da host(stringa) ritorna il pair <host, port(int)>
+std::pair<std::string, int>	toHostPort(std::string raw)
+{
+	size_t it = raw.find(":");
+	std::string host = raw.substr(0, it);
+	std::string str_port = raw.substr(it + 1, raw.size());
+	std::stringstream ss(str_port);
+	int port;
+	ss >> port;
+	std::pair<std::string, int> ret = make_pair(host, port);
+	return ret;
 }
