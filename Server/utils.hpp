@@ -17,9 +17,12 @@
 #include <string>
 #include <stdlib.h>
 #include <sstream>
+#include "fstream"
+
 #include <cstring>
 
 u_int32_t string_to_byte_order(const char *ip_addr);
 std::pair<std::string, int>	toHostPort(std::string raw);
+std::string getWholeFile(const std::string &path);
 
 #endif

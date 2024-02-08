@@ -57,3 +57,20 @@ std::pair<std::string, int>	toHostPort(std::string raw)
 	std::pair<std::string, int> ret = make_pair(host, port);
 	return ret;
 }
+
+std::string getWholeFile(const std::string &path)
+{
+	std::string body("");
+	std::ifstream file(path.c_str());
+	std::string line;
+	if (file.is_open())
+	{
+		std::string line;
+		while (getline(file, line))
+			body += line;
+		file.close();
+	}
+	else
+		std::cout << "Unable to open file";
+	return body;
+}

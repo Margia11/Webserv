@@ -24,7 +24,7 @@ PostResponse::~PostResponse()
 std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 {
 	std::cout << "Received POST request:\n";
-	std::cout << "root: " << vs->getRoot() << ", index: " << vs->getIndex() << std::endl;
+	std::cout << "root: " << vs->getRoot() << std::endl;
 	std::string postData = parser->body;
 	std::string path = parser->path;
 	if (path == "/")

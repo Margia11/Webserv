@@ -29,6 +29,41 @@ VirtualServer::VirtualServer(const ServerConfig& config)
 		locationInfo.allow_methods = it->second.allow_methods;
 		this->locations[it->first] = locationInfo;
 	}
+	_setMimeTypes();
+}
+
+std::map<std::string, std::string> const &VirtualServer::getMimeTypes() const
+{
+	return (_mimeTypes);
+}
+
+void VirtualServer::_setMimeTypes()
+{
+	_mimeTypes[".bmp"] = "image/bmp";
+	_mimeTypes[".css"] = "text/css";
+	_mimeTypes[".epub"] = "application/epub+zip";
+	_mimeTypes[".gif"] = "image/gif";
+	_mimeTypes[".htm"] = "text/html";
+	_mimeTypes[".html"] = "text/html";
+    _mimeTypes[".ico"] = "image/vnd.microsoft.icon";
+	_mimeTypes[".jpeg"] = "image/jpeg";
+	_mimeTypes[".jpg"] = "image/jpeg";
+	_mimeTypes[".js"] = "text/javascript";
+	_mimeTypes[".json"] = "application/json";
+	_mimeTypes[".mp3"] = "audio/mpeg";
+	_mimeTypes[".mp4"] = "video/mp4";
+	_mimeTypes[".mpeg"] = "video/mpeg";
+	_mimeTypes[".png"] = "image/png";
+	_mimeTypes[".pdf"] = "application/pdf";
+	_mimeTypes[".php"] = "application/x-httpd-php";
+	_mimeTypes[".svg"] = "image/svg+xml";
+	_mimeTypes[".txt"] = "text/plain";
+	_mimeTypes[".weba"] = "audio/webm";
+	_mimeTypes[".webm"] = "video/webm";
+    _mimeTypes[".webp"] = "image/webp";
+    _mimeTypes[".mov"] = "video/quicktime";
+    _mimeTypes[".xml"] = "application/xml";
+	_mimeTypes[".php"] = "application/x-httpd-php";
 }
 
 VirtualServer::~VirtualServer()
@@ -40,7 +75,7 @@ std::string const &VirtualServer::getClientMaxBodySize() const
 	return (this->client_max_body_size);
 }
 
-std::string const &VirtualServer::getServerName() const
+std::vector<std::string> const &VirtualServer::getServerName() const
 {
 	return (this->server_name);
 }
@@ -50,7 +85,7 @@ std::string const &VirtualServer::getRoot() const
 	return (this->root);
 }
 
-std::string const &VirtualServer::getIndex() const
+std::vector<std::string> const &VirtualServer::getIndex() const
 {
 	return (this->index);
 }

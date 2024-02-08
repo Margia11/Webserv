@@ -29,17 +29,17 @@ struct LocationConfig
 	std::vector<std::string> allow_methods;
 	std::string root;
 	std::string autoindex;
-	std::string index;
+	std::vector<std::string> index;
 };
 
 struct ServerConfig
 {
 	int client_max_body_size;
 	int port;
-	std::string index;
+	std::vector<std::string> index;
 	std::string root;
 	std::string host;
-	std::string server_name;
+	std::vector<std::string> server_name;
 	std::map<std::string, std::string> errorPages;
 	std::map<std::string, LocationConfig> locations;
 };

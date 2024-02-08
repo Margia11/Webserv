@@ -95,18 +95,25 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 				std::cerr << "Unknown key: " << blockkey << std::endl;
 			else
 			{
+				std::string tmp;
 				if (blockkey == "listen")
 					issBlock >> serverConfig.port;
-				else if (blockkey == "serverName")
-					issBlock >> serverConfig.server_name;
 				else if (blockkey == "host")
 					issBlock >> serverConfig.host;
 				else if (blockkey == "client_max_body_size")
 					issBlock >> serverConfig.client_max_body_size;
 				else if (blockkey == "root")
 					issBlock >> serverConfig.root;
+				else if (blockkey == "serverName")
+				{
+					while (issBlock >> tmp)
+						serverConfig.server_name.push_back(tmp);
+				}
 				else if (blockkey == "index")
-					issBlock >> serverConfig.index;
+				{
+					while (issBlock >> tmp)
+						serverConfig.index.push_back(tmp);
+				}
 				else if (blockkey == "error_page")
 				{
 					std::string errorCode;
@@ -143,7 +150,11 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 							else if (locationKey == "root")
 								issLocation >> locationConfig.root;
 							else if (locationKey == "index")
-								issLocation >> locationConfig.index;
+							{
+								std::string index;
+								while (issLocation >> index)
+									locationConfig.index.push_back(index);
+							}
 							else
 								std::cerr << "Unknown key: " << locationKey << std::endl;
 							if (line == "}")

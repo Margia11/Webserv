@@ -34,7 +34,6 @@ MainServer::MainServer(const std::string& config) : _parserRequest()
 		serverPollFd_.events = POLLIN;
 		_fds.push_back(serverPollFd_);
 	}
-	//_setMimeTypes();
 }
 
 MainServer::~MainServer()

@@ -18,6 +18,19 @@ Response::Response()
 	protocol = "HTTP";
 	version = "1.1";
 	body = "Hello World!";
+
+	httpStatus[200] = "OK";
+    httpStatus[301] = "Moved Permanently";
+    httpStatus[400] = "Bad Request";
+    httpStatus[401] = "Unauthorized";
+    httpStatus[403] = "Forbidden";
+    httpStatus[404] = "Not Found";
+    httpStatus[405] = "Method Not Allowed";
+    httpStatus[413] = "Request Entity Too Large";
+    httpStatus[415] = "Unsupported Media Type";
+    httpStatus[500] = "Internal Server Error";
+    httpStatus[501] = "Not Implemented";
+    httpStatus[503] = "Service Unavailable";
 }
 
 Response::~Response()
@@ -49,9 +62,9 @@ std::map<std::string, std::string> Response::getHeaders()
 	return headers;
 }
 
-std::map<int, std::string> Response::getHttpErrors()
+std::map<int, std::string> Response::getHttpStatus()
 {
-	return httpErrors;
+	return httpStatus;
 }
 
 void Response::setStatusCode(int statusCode)
@@ -72,6 +85,70 @@ void Response::setVersion(std::string version)
 void Response::setBody(std::string body)
 {
 	this->body = body;
+}
+
+void Response::setDate()
+{
+	time_t now = time(0);
+	char buff[20];
+	strftime(buff, 20, "%a, %d %b %Y %H:%M:%S GMT", gmtime(&now));
+	headers["Date"] = buff;
+}
+
+void Response::setLastModified(const std::string &path)
+{
+	struct stat fileStat;
+	stat(path.c_str(), &fileStat);
+	char buff[20];
+	strftime(buff, 20, "%a, %d %b %Y %H:%M:%S GMT", gmtime(&fileStat.st_mtime));
+	headers["Last-Modified"] = buff;
+}
+
+void Response::setContentType(const std::string &path, const std::map<std::string, std::string> &mimTypes)
+{
+	std::string str = mimTypes.find(getExtension(path))->second;
+	if(str.empty())
+		headers["Content-Type"] = "text/html";
+	else
+		headers["Content-Type"] = str;
+}
+
+void Response::setContentLength(int body_size)
+{
+	std::stringstream ss;
+	ss << body_size;
+	headers["Content-Length"] = ss.str();
+}
+
+void Response::setServer(std::string server)
+{
+	this->server = server;
+	headers["Server"] = server;
+}
+
+void Response::setAcceptRanges(std::string acceptRanges)
+{
+	headers["Accept-Ranges"] = acceptRanges;
+}
+
+void Response::setConnection(std::string connection)
+{
+	headers["Connection"] = connection;
+}
+
+void Response::setHeaders(const ParserRequest &request, const std::map<string, string> &mimTypes, const string &path)
+{
+	if (statusCode == 200 || statusCode == 301)
+        setLastModified(path);
+
+    setProtocol(request.getProtocol());
+    setContentType(path, mimTypes);
+	setBody(getWholeFile(path));
+    setContentLength(body.size());
+    setDate();
+    setServer("webserv 1.0");
+    setAcceptRanges("bytes");
+    setConnection("Keep-Alive");
 }
 
 //controllo se il path è valido e se è un file regolare
@@ -108,4 +185,13 @@ void Response::setStatusCode(const std::string& path, std::map<std::string, std:
 		statusCode = 200;
 }
 
-
+std::string Response::toString(void)
+{
+	std::stringstream ss;
+	ss << this->protocol << " " << this->statusCode << " " << httpStatus[statusCode] << "\r\n";
+	for (std::map<std::string, std::string>::iterator it = headers.begin(); it != headers.end(); ++it)
+		ss << it->first << ": " << it->second << "\r\n";
+	ss << "\r\n";
+	ss << body;
+	return ss.str();
+}

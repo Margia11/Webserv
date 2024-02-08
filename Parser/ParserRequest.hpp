@@ -36,6 +36,7 @@ class ParserRequest
 		string body;
 		void printparse();
 		void readRequest(int newsocket);
+		std::string getProtocol() const;
 		void getRequestLine(string line);
 		bool checkRequestLine(string line);
 		void getHeaders(string line);

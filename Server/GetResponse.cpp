@@ -26,22 +26,62 @@ GetResponse::~GetResponse()
 std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 {
 	std::string response;
-	if(isValidFile(parser->path.c_str()))
+	std::string root = vs->getRoot().substr(0, vs->getRoot().size() - 1);
+	if (isValidFile((root + "/" + parser->path).c_str()))
 	{
-		response = "HTTP/1.1 200 OK\r\n";
-		response += "Content-Type: text/html\r\n";
-		response += "Content-Length: 12\r\n";
-		response += "\r\n";
-		response += "Hello World!";
+		setStatusCode(200);
+		setHeaders(*parser, vs->getMimeTypes(), root + "/" + parser->path);
+		response = toString();
 	}
-	else if (parser->path == "/")
+	else if (parser->path == "/" && isValidFile((root + "/" + vs->getIndex().front()).c_str()))
+	{
+		setStatusCode(200);
+		setHeaders(*parser, vs->getMimeTypes(), root + "/" + vs->getIndex().front());
+		response = toString();
+	}
+	else
+	{
+		setStatusCode(404);
+		setHeaders(*parser, vs->getMimeTypes(), root + "/" + parser->path);
+		response = toString();
+	}
+	return response;
+}
+
+/*
+std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
+{
+	std::string root = vs->getRoot().substr(0, vs->getRoot().size() - 1);
+	std::string index = vs->getIndex().front();
+	std::string response;
+	//check parser path = "/" && root + "/" + index -> else error
+	//else if parser path != "/" -> parser path
+	if(isValidFile((root + "/" + parser->path).c_str()))
 	{
 		std::string body("");
-		std::cout << "---------------------PROVA---------------------" << std::endl;
-		stampaCaratteriNonStampabili(vs->getRoot());
-		std::cout << "---------------------PROVA---------------------" << std::endl;
-		std::string root = vs->getRoot().substr(0, vs->getRoot().size() - 1);
-		std::string index = vs->getIndex().substr(0, vs->getIndex().size() - 1);
+		ifstream file((root + "/" + parser->path).c_str());
+		std::string line;
+		if (file.is_open())
+		{
+			std::string line;
+			while (getline(file, line))
+				body += line;
+			file.close();
+		}
+		else
+			std::cout << " to open file";
+		response = "HTTP/1.1 200 OK\r\n";
+		response += "Content-Type: text/html\r\n";
+		std::stringstream ss;
+		ss << body.size();
+		std::string len = ss.str();
+		response += "Content-Length: " + len + "\r\n";
+		response += "\r\n";
+		response += body;
+	}
+	else if (parser->path == "/" && isValidFile((root + "/" + index).c_str()))
+	{
+		std::string body("");
 		std::string path = root + "/"+ index;
 		std::cout << "path: " << path << std::endl;
 		ifstream file(path.c_str());
@@ -66,12 +106,31 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 	}
 	else
 	{
+		std::string body("");
+		std::string error_page = vs->getErrorPages().find("404")->second;
+		error_page = error_page.substr(0, error_page.size() - 1);
+		std::cout << "error: " << error_page << std::endl;
+		ifstream file(error_page.c_str());
+		std::string line;
+		if (file.is_open())
+		{
+			std::string line;
+			while (getline(file, line))
+				body += line;
+			file.close();
+		}
+		else
+			std::cout << " to open file";
 		response = "HTTP/1.1 404 Not Found\r\n";
 		response += "Content-Type: text/html\r\n";
-		response += "Content-Length: 0\r\n";
+		response += "Content-Type: text/html\r\n";
+		std::stringstream ss;
+		ss << body.size();
+		std::string len = ss.str();
+		response += "Content-Length: " + len + "\r\n";
 		response += "\r\n";
+		response += body;
 	}
 	return response;
 }
-
-
+*/
