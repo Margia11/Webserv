@@ -58,7 +58,7 @@ class Response
 		void setConnection(std::string connection);
 		void setContentType(const std::string &path, const std::map<std::string, std::string> &mimTypes);
 		void setHeaders(const ParserRequest &request, const std::map<string, string> &mimTypes, const string &path);
-		void setHttpErrors(std::map<int, std::string> httpErrors);
+		void printHttpStatus();
 		bool isValidFile(const char* path);
 		std::string getExtension(const std::string &path);
 		virtual std::string answer(ParserRequest *parser, VirtualServer *vs) = 0;

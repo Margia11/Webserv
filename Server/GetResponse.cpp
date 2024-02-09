@@ -27,22 +27,26 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 {
 	std::string response;
 	std::string root = vs->getRoot().substr(0, vs->getRoot().size() - 1);
-	if (isValidFile((root + "/" + parser->path).c_str()))
+	std::string index = vs->getIndex().front().substr(0, vs->getIndex().front().size() - 1);
+	int x = isValidFile((root + "/" + index).c_str());
+	if (parser->path == "/" && x)
+	{
+		setStatusCode(200);
+		setHeaders(*parser, vs->getMimeTypes(), root + "/" + index);
+		response = toString();
+	}
+	else if (isValidFile((root + "/" + parser->path).c_str()))
 	{
 		setStatusCode(200);
 		setHeaders(*parser, vs->getMimeTypes(), root + "/" + parser->path);
-		response = toString();
-	}
-	else if (parser->path == "/" && isValidFile((root + "/" + vs->getIndex().front()).c_str()))
-	{
-		setStatusCode(200);
-		setHeaders(*parser, vs->getMimeTypes(), root + "/" + vs->getIndex().front());
 		response = toString();
 	}
 	else
 	{
+		std::string err = vs->getErrorPages().find("404")->second;
+		err = err.substr(0, err.size() - 1);
 		setStatusCode(404);
-		setHeaders(*parser, vs->getMimeTypes(), root + "/" + parser->path);
+		setHeaders(*parser, vs->getMimeTypes(), err);
 		response = toString();
 	}
 	return response;

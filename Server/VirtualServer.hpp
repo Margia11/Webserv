@@ -42,6 +42,7 @@ class VirtualServer
 	public :
 		VirtualServer(const ServerConfig& config);
 		~VirtualServer();
+		void printMimeType();
 		const std::vector<std::string>& getServerName() const;
 		const std::string& getRoot() const;
 		const std::vector<std::string>& getIndex() const;

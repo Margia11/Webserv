@@ -32,6 +32,14 @@ VirtualServer::VirtualServer(const ServerConfig& config)
 	_setMimeTypes();
 }
 
+void VirtualServer::printMimeType()
+{
+	for (std::map<std::string, std::string>::iterator it = _mimeTypes.begin(); it != _mimeTypes.end(); it++)
+	{
+		std::cout << it->first << " " << it->second << std::endl;
+	}
+}
+
 std::map<std::string, std::string> const &VirtualServer::getMimeTypes() const
 {
 	return (_mimeTypes);

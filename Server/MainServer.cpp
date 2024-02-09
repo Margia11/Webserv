@@ -88,6 +88,9 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 	Server server = SimpleServers[toHostPort(tmp).second];
 	VirtualServer vs = server.getFirstVS();
 	GetResponse response;
+	std::string answer;
+	answer = response.answer(&(_clientHttpParserMap[it->fd]), &vs);
+	/* GetResponse response;
 	PostResponse postResponse;
 	std::string answer;
 	std::cout << "Answering request" << std::endl;
@@ -98,7 +101,7 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 	else if (_clientHttpParserMap[it->fd].method == "DELETE")
 		std::cout << "DELETE" << std::endl;
 	else
-		send(it->fd, "HTTP/1.1 405 Method Not Allowed\r\n\r\n", 36, 0);
+		send(it->fd, "HTTP/1.1 405 Method Not Allowed\r\n\r\n", 36, 0); */
 	send(it->fd, answer.c_str(), answer.size(), 0);
 }
 

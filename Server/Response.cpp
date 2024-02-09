@@ -14,11 +14,6 @@
 
 Response::Response()
 {
-	statusCode = 200;
-	protocol = "HTTP";
-	version = "1.1";
-	body = "Hello World!";
-
 	httpStatus[200] = "OK";
     httpStatus[301] = "Moved Permanently";
     httpStatus[400] = "Bad Request";
@@ -104,13 +99,20 @@ void Response::setLastModified(const std::string &path)
 	headers["Last-Modified"] = buff;
 }
 
+void Response::printHttpStatus()
+{
+	for (std::map<int, std::string>::iterator it = httpStatus.begin(); it != httpStatus.end(); ++it)
+		std::cout << it->first << " => " << it->second << std::endl;
+}
+
 void Response::setContentType(const std::string &path, const std::map<std::string, std::string> &mimTypes)
 {
-	std::string str = mimTypes.find(getExtension(path))->second;
-	if(str.empty())
-		headers["Content-Type"] = "text/html";
+	std::string ext = getExtension(path);
+	std::map<std::string, std::string>::const_iterator it = mimTypes.find(ext);
+	if (it != mimTypes.end())
+		headers["Content-Type"] = it->second;
 	else
-		headers["Content-Type"] = str;
+		headers["Content-Type"] = "text/html";
 }
 
 void Response::setContentLength(int body_size)
@@ -138,9 +140,9 @@ void Response::setConnection(std::string connection)
 
 void Response::setHeaders(const ParserRequest &request, const std::map<string, string> &mimTypes, const string &path)
 {
+	
 	if (statusCode == 200 || statusCode == 301)
         setLastModified(path);
-
     setProtocol(request.getProtocol());
     setContentType(path, mimTypes);
 	setBody(getWholeFile(path));
@@ -167,7 +169,7 @@ bool Response::isValidFile(const char* path)
 std::string Response::getExtension(const std::string &path)
 {
 	if(path.find_last_of(".") != std::string::npos)
-		return path.substr(path.find_last_of(".") + 1);
+		return path.substr(path.find_last_of("."));
 	return "";
 }
 
