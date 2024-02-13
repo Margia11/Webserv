@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:08:08 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/03 10:25:45 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/13 11:12:20 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,25 @@ static bool skipCommentedOrEmptyLines(std::string& line)
 		return true;
 	return false;
 }
+
+static bool checkandcutsemicolon(std::string& line)
+{
+	size_t pos = line.find_last_not_of(" \t\n\r\f\v");
+	if (pos != std::string::npos)
+	{
+		if (line[pos] == '{' || line[pos] == '}')
+			return true;
+		if (line[pos] == ';')
+		{
+			line = line.substr(0, pos);
+			//std::cout << "Info without semicolon: " << line << std::endl;
+			return true;
+		}
+	}
+	std::cerr << "Error: missing semicolon" << std::endl;
+	return false;
+}
+
 
 
 bool isValidKey(const std::string& key)
@@ -77,7 +96,9 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 	{
 	if (!skipCommentedOrEmptyLines(line))
 		continue;
-	//std::cout << "Read line: " << line << std::endl;
+	if (!checkandcutsemicolon(line))
+		exit(1);
+	std::cout << "Read line: " << line << std::endl;
 	std::istringstream iss(line);
 	std::string key;
 	iss >> key;
@@ -88,6 +109,8 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 		{
 			if (!skipCommentedOrEmptyLines(line))
 				break;
+			if (!checkandcutsemicolon(line))
+				exit(1);
 			std::istringstream issBlock(line);
 			std::string blockkey;
 			issBlock >> blockkey;
