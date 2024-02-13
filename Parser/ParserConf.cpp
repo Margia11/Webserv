@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:08:08 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/13 11:12:20 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/13 11:21:08 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 		continue;
 	if (!checkandcutsemicolon(line))
 		exit(1);
-	std::cout << "Read line: " << line << std::endl;
+	//std::cout << "Read line: " << line << std::endl;
 	std::istringstream iss(line);
 	std::string key;
 	iss >> key;
@@ -188,7 +188,10 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 					}
 				}
 			}
-			serverConfigs.push_back(serverConfig);
+			if(IsValidServer(serverConfig, serverConfig.locations.begin()->second))
+				serverConfigs.push_back(serverConfig);
+			else
+				std::cerr << "Invalid server configuration" << std::endl;
 		}
 	}
 	file.close();
