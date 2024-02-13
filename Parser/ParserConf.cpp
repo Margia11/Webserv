@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:08:08 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/13 11:21:08 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/13 13:17:18 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,6 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 		{
 			if (!skipCommentedOrEmptyLines(line))
 				break;
-			if (!checkandcutsemicolon(line))
-				exit(1);
 			std::istringstream issBlock(line);
 			std::string blockkey;
 			issBlock >> blockkey;
@@ -118,6 +116,8 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 				std::cerr << "Unknown key: " << blockkey << std::endl;
 			else
 			{
+				if(!checkandcutsemicolon(line))
+					exit(1);
 				std::string tmp;
 				if (blockkey == "listen")
 					issBlock >> serverConfig.port;
@@ -148,10 +148,14 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 				{
 					if (!skipCommentedOrEmptyLines(line))
 						break;
+					if(!checkandcutsemicolon(line))
+						continue;
 					LocationConfig locationConfig;
 					issBlock >> locationConfig.locationPath;
 					while (std::getline(file, line) && line != "}")
 					{
+						if(!checkandcutsemicolon(line))
+							continue;
 						std::cout << "line: " << line << std::endl;
 						if (!skipCommentedOrEmptyLines(line))
 							continue;
@@ -162,6 +166,8 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 							std::cerr << "Unknown key in location block: " << locationKey << std::endl;
 						else
 						{
+							if(!checkandcutsemicolon(line))
+								continue;
 							if(locationKey == "autoindex")
 								issLocation >> locationConfig.autoindex;
 							else if (locationKey == "allow_methods")

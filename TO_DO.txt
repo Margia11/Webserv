@@ -14,5 +14,4 @@ allow methods
 upload-path
 
 
-se non c'è la porta nel configfile si apre comunque
 
