@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:08:08 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/13 13:17:18 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/14 10:17:14 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,10 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 		{
 			if (!skipCommentedOrEmptyLines(line))
 				break;
+			if(!checkandcutsemicolon(line))
+				exit(1);
+			else
+				std::cout << line << std::endl;
 			std::istringstream issBlock(line);
 			std::string blockkey;
 			issBlock >> blockkey;
@@ -116,8 +120,6 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 				std::cerr << "Unknown key: " << blockkey << std::endl;
 			else
 			{
-				if(!checkandcutsemicolon(line))
-					exit(1);
 				std::string tmp;
 				if (blockkey == "listen")
 					issBlock >> serverConfig.port;
@@ -197,7 +199,10 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 			if(IsValidServer(serverConfig, serverConfig.locations.begin()->second))
 				serverConfigs.push_back(serverConfig);
 			else
+			{
 				std::cerr << "Invalid server configuration" << std::endl;
+				exit(1);
+			}
 		}
 	}
 	file.close();

@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:42:02 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/03 10:25:06 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/14 10:19:37 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ GetResponse::~GetResponse()
 std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 {
 	std::string response;
-	std::string root = vs->getRoot().substr(0, vs->getRoot().size() - 1);
-	std::string index = vs->getIndex().front().substr(0, vs->getIndex().front().size() - 1);
+	std::string root = vs->getRoot();
+	std::string index = vs->getIndex().front();
 	int x = isValidFile((root + "/" + index).c_str());
 	if (parser->path == "/" && x)
 	{
@@ -44,7 +44,6 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 	else
 	{
 		std::string err = vs->getErrorPages().find("404")->second;
-		err = err.substr(0, err.size() - 1);
 		setStatusCode(404);
 		setHeaders(*parser, vs->getMimeTypes(), err);
 		response = toString();

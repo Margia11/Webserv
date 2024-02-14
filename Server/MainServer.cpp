@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/07 13:02:37 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/14 10:06:36 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,13 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 	_clientHttpParserMap[it->fd].readRequest(it->fd);
 	std::string tmp = _clientHttpParserMap[it->fd].getHost();
 	//cout << toHostPort(tmp).first << toHostPort(tmp).second << endl;
-	
+
 	Server server = SimpleServers[toHostPort(tmp).second];
 	VirtualServer vs = server.getFirstVS();
+	// GetResponse response;
+	// std::string answer;
+	//answer = response.answer(&(_clientHttpParserMap[it->fd]), &vs);
 	GetResponse response;
-	std::string answer;
-	answer = response.answer(&(_clientHttpParserMap[it->fd]), &vs);
-	/* GetResponse response;
 	PostResponse postResponse;
 	std::string answer;
 	std::cout << "Answering request" << std::endl;
@@ -101,7 +101,7 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 	else if (_clientHttpParserMap[it->fd].method == "DELETE")
 		std::cout << "DELETE" << std::endl;
 	else
-		send(it->fd, "HTTP/1.1 405 Method Not Allowed\r\n\r\n", 36, 0); */
+		send(it->fd, "HTTP/1.1 405 Method Not Allowed\r\n\r\n", 36, 0);
 	send(it->fd, answer.c_str(), answer.size(), 0);
 }
 

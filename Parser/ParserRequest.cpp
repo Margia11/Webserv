@@ -71,7 +71,7 @@ void ParserRequest::readRequest(int newsocket)
 	char *buffer = new char[32000];
 	int byte_read;
 	byte_read = read(newsocket, buffer, 32000);
-	//std::cout << buffer << std::endl;
+	std::cout << buffer << std::endl;
 	if (byte_read < 0)
 	{
 		perror("read");
