@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/14 10:06:36 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/15 16:58:10 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ MainServer::MainServer(const std::string& config) : _parserRequest()
 {
 	std::vector<ServerConfig> serverConfigs;
 	parseServerconf(config, serverConfigs);
+	printServerConfigs(serverConfigs);
 	for (std::vector<ServerConfig>::iterator it = serverConfigs.begin(); it != serverConfigs.end(); ++it)
 	{
 		if (SimpleServers.find(it->port) != SimpleServers.end())

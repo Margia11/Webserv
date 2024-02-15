@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:08:08 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/14 10:17:14 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/15 17:04:02 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static bool checkandcutsemicolon(std::string& line)
 
 bool isValidKey(const std::string& key)
 {
-	const char *validKeysArray[] = {"listen", "serverName", "error_page", "location", "allow_methods", "root", "index", "host" , "autoindex", "client_max_body_size"};
+	const char *validKeysArray[] = {"listen", "serverName", "error_page", "location", "allow_methods", "root", "index", "host" , "autoindex", "client_max_body_size", "client_body_temp_path"};
 	const int numvalidKeys = sizeof(validKeysArray) / sizeof(validKeysArray[0]);
 	for(unsigned long i = 0; i < numvalidKeys; ++i)
 		if(key == validKeysArray[i])
@@ -210,3 +210,26 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 	file.close();
 }
 
+void printServerConfigs(const std::vector<ServerConfig>& serverConfigs)
+{
+	for (std::vector<ServerConfig>::const_iterator it = serverConfigs.begin(); it != serverConfigs.end(); it++)
+	{
+		std::cout << "Server: " << std::endl;
+		std::cout << "Port: " << it->port << std::endl;
+		std::cout << "Host: " << it->host << std::endl;
+		std::cout << "Root: " << it->root << std::endl;
+		std::cout << "UploadPath: " << it->uploadPath << std::endl;
+		std::cout << "Client_max_body_size: " << it->client_max_body_size << std::endl;
+		std::cout << "ServerName: ";
+		for (std::vector<std::string>::const_iterator it2 = it->server_name.begin(); it2 != it->server_name.end(); it2++)
+			std::cout << *it2 << " ";
+		std::cout << std::endl;
+		std::cout << "Index: ";
+		for (std::vector<std::string>::const_iterator it2 = it->index.begin(); it2 != it->index.end(); it2++)
+			std::cout << *it2 << " ";
+		std::cout << std::endl;
+		std::cout << "ErrorPages: " << std::endl;
+		for (std::map<std::string, std::string>::const_iterator it2 = it->errorPages.begin(); it2 != it->errorPages.end(); it2++)
+			std::cout << it2->first << " " << it2->second << std::endl;
+	}
+}

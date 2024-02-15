@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 10:52:03 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/07 12:53:53 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/15 17:41:00 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,13 @@ std::string getWholeFile(const std::string &path)
 	else
 		std::cout << "Unable to open file";
 	return body;
+}
+
+std::string numberToString(int n)
+{
+	std::string s;
+	std::stringstream out;
+	out << n;
+	s = out.str();
+	return s;
 }

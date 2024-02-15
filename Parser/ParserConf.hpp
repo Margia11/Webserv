@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 11:55:49 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/23 12:57:14 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/15 16:56:56 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ struct ServerConfig
 	std::map<std::string, LocationConfig> locations;
 };
 
+
+
 class InvalidServerException : public std::exception
 {
 	virtual const char* what() const throw()
@@ -54,5 +56,6 @@ class InvalidServerException : public std::exception
 };
 
 void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& serverConfigs);
+void printServerConfigs(const std::vector<ServerConfig>& serverConfigs);
 
 #endif

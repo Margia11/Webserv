@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 14:06:34 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/26 11:55:39 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/15 17:31:05 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ void Response::setConnection(std::string connection)
 
 void Response::setHeaders(const ParserRequest &request, const std::map<string, string> &mimTypes, const string &path)
 {
-	
+
 	if (statusCode == 200 || statusCode == 301)
         setLastModified(path);
     setProtocol(request.getProtocol());
@@ -158,12 +158,22 @@ bool Response::isValidDir(const char* path)
 	struct stat path_stat;
 	if(stat(path, &path_stat) == 0) //controlla se il path esiste
 	{
+		//std::cout << "path exists" << std::endl;
 		if(S_ISDIR(path_stat.st_mode)) //controlla se è una directory
 			return true;
 	}
 	return false;
 }
 
+bool Response::createDir(const char* path)
+{
+	int risultato = std::system(("mkdir " + std::string(path)).c_str());
+	if (risultato == 0)
+		std::cout << "Dir created" << std::endl;
+	else
+		return 1;
+	return 0;
+}
 
 //controllo se il path è valido e se è un file regolare
 bool Response::isValidFile(const char* path)
