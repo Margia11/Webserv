@@ -34,6 +34,7 @@ class VirtualServer
 		std::vector<std::string> server_name;
 		std::string root;
 		std::vector<std::string> index;
+		std::string uploadPath;
 		std::map<std::string, std::string> errorPages;
 		std::map<std::string, LocationInfo> locations;
 		std::map<std::string, std::string> _mimeTypes;
@@ -43,6 +44,7 @@ class VirtualServer
 		VirtualServer(const ServerConfig& config);
 		~VirtualServer();
 		void printMimeType();
+		const std::string& getUploadPath() const;
 		const std::vector<std::string>& getServerName() const;
 		const std::string& getRoot() const;
 		const std::vector<std::string>& getIndex() const;

@@ -37,6 +37,7 @@ struct ServerConfig
 	int client_max_body_size;
 	int port;
 	std::vector<std::string> index;
+	std::string uploadPath;
 	std::string root;
 	std::string host;
 	std::vector<std::string> server_name;

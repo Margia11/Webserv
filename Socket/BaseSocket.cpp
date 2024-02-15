@@ -20,6 +20,12 @@ Socket::Socket(int domain, int service, int protocol, int port, u_long interface
 	address.sin_addr.s_addr = htonl(interface); //indirizzo ip(htonl converte un intero da formato host a formato network(32 bit)))
 	//creazione socket e connessione
 	sock = socket(domain, service, protocol); //creazione socket
+	int yes = 1;
+	if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1)
+	{
+    	perror("setsockopt");
+    	exit(1);
+	}
 	test_connection(sock);
 }
 

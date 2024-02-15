@@ -24,19 +24,31 @@ PostResponse::~PostResponse()
 std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 {
 	std::cout << "Received POST request:\n";
-	std::cout << "root: " << vs->getRoot() << std::endl;
-	std::string postData = parser->body;
-	std::string path = parser->path;
-	if (path == "/")
-		path = "/index.html";
-	std::ifstream file(path.c_str());
+	std::string uplodPath = vs->getUploadPath();
+
+	if (isValidDir(uplodPath.c_str()))
+	{
+		std::string path = uplodPath + "tmp.txt";
+		std::ofstream file(path.c_str(), std::ios::out | std::ios::binary);
+		if (file.is_open())
+		{
+			file << parser->body;
+			file.close();
+		}
+		else
+		{
+			std::cerr << "Error: cannot open file" << std::endl;
+			std::string response = "HTTP/1.1 500 Internal Server Error\r\n";
+			return response;
+		}
+	}
+	else
+	{
+		std::cerr << "Error: invalid upload path" << std::endl;
+		std::string response = "HTTP/1.1 500 Internal Server Error\r\n";
+		return response;
+	}
+
 	std::string response = "HTTP/1.1 200 OK\r\n";
-	response += "Content-Type: text/html\r\n";
-	std::stringstream ss;
-	ss << postData.size();
-	std::string len = ss.str();
-	response += "Content-Length: " + len + "\r\n";
-	response += "\r\n";
-	response += postData;
 	return response;
 }

@@ -153,6 +153,18 @@ void Response::setHeaders(const ParserRequest &request, const std::map<string, s
     setConnection("Keep-Alive");
 }
 
+bool Response::isValidDir(const char* path)
+{
+	struct stat path_stat;
+	if(stat(path, &path_stat) == 0) //controlla se il path esiste
+	{
+		if(S_ISDIR(path_stat.st_mode)) //controlla se è una directory
+			return true;
+	}
+	return false;
+}
+
+
 //controllo se il path è valido e se è un file regolare
 bool Response::isValidFile(const char* path)
 {

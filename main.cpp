@@ -14,6 +14,7 @@
 #include "Server/MainServer.hpp"
 #include "Parser/ParserConf.hpp"
 #include "Server/VirtualServer.hpp"
+#include <signal.h>
 
 int main(int argc, char **argv)
 {

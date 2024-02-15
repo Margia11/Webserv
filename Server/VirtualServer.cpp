@@ -18,6 +18,7 @@ VirtualServer::VirtualServer(const ServerConfig& config)
 	this->server_name = config.server_name;
 	this->root = config.root;
 	this->index = config.index;
+	this->uploadPath = config.uploadPath;
 	this->errorPages = config.errorPages;
 	this->client_max_body_size = config.client_max_body_size;
 	for (std::map<std::string, LocationConfig>::const_iterator it = config.locations.begin(); it != config.locations.end(); it++)
@@ -76,6 +77,11 @@ void VirtualServer::_setMimeTypes()
 
 VirtualServer::~VirtualServer()
 {
+}
+
+std::string const &VirtualServer::getUploadPath() const
+{
+	return (this->uploadPath);
 }
 
 std::string const &VirtualServer::getClientMaxBodySize() const

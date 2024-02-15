@@ -125,6 +125,8 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 					issBlock >> serverConfig.port;
 				else if (blockkey == "host")
 					issBlock >> serverConfig.host;
+				else if (blockkey == "client_body_temp_path")
+					issBlock >> serverConfig.uploadPath;
 				else if (blockkey == "client_max_body_size")
 					issBlock >> serverConfig.client_max_body_size;
 				else if (blockkey == "root")

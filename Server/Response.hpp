@@ -60,6 +60,7 @@ class Response
 		void setHeaders(const ParserRequest &request, const std::map<string, string> &mimTypes, const string &path);
 		void printHttpStatus();
 		bool isValidFile(const char* path);
+		bool isValidDir(const char* path);
 		std::string getExtension(const std::string &path);
 		virtual std::string answer(ParserRequest *parser, VirtualServer *vs) = 0;
 		std::string toString(void);

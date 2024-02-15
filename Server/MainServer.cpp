@@ -38,6 +38,9 @@ MainServer::MainServer(const std::string& config) : _parserRequest()
 
 MainServer::~MainServer()
 {
+	std::cout << "Closing server" << std::endl;
+	for (std::map<int, Server>::iterator it = SimpleServers.begin(); it != SimpleServers.end(); ++it)
+		close(it->second.getSocket()->getSocket());
 	clearfds();
 }
 
@@ -103,6 +106,7 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 	else
 		send(it->fd, "HTTP/1.1 405 Method Not Allowed\r\n\r\n", 36, 0);
 	send(it->fd, answer.c_str(), answer.size(), 0);
+	answer.clear();
 }
 
 void MainServer::_handleConnections(int fd)
