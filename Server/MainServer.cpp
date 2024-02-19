@@ -83,9 +83,34 @@ static void _error(const std::string &msg, int err)
 	exit(1);
 }
 
+std::string MainServer::readFromFd(int fd)
+{
+	char buffer[32000];
+	bzero(buffer, 32000);
+	int byte_read = read(fd, buffer, 32000);
+	if (byte_read < 0)
+	{
+		perror("read");
+		exit(1);
+	}
+	else if (byte_read == 0)
+	{
+		std::cout << "Client closed connection" << std::endl;
+		close(fd);
+		return "";
+	}
+	return std::string(buffer, byte_read);
+}
+
 void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 {
-	_clientHttpParserMap[it->fd].readRequest(it->fd);
+	//std::cout << "Handling request" << std::endl;
+	std::string buffer = readFromFd(it->fd);
+	if (buffer.empty())
+		return;
+	std::cout << "Received request:\n";
+	std::cout << buffer << std::endl;
+	_clientHttpParserMap[it->fd].readRequest(buffer);
 	std::string tmp = _clientHttpParserMap[it->fd].getHost();
 	//cout << toHostPort(tmp).first << toHostPort(tmp).second << endl;
 
@@ -94,19 +119,24 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 	// GetResponse response;
 	// std::string answer;
 	//answer = response.answer(&(_clientHttpParserMap[it->fd]), &vs);
-	GetResponse response;
+	GetResponse getResponse;
 	PostResponse postResponse;
 	std::string answer;
 	std::cout << "Answering request" << std::endl;
 	if (_clientHttpParserMap[it->fd].method == "GET")
-		answer = response.answer(&(_clientHttpParserMap[it->fd]), &vs);
+		answer = getResponse.answer(&(_clientHttpParserMap[it->fd]), &vs);
 	else if (_clientHttpParserMap[it->fd].method == "POST")
 		answer = postResponse.answer(&(_clientHttpParserMap[it->fd]), &vs);
 	else if (_clientHttpParserMap[it->fd].method == "DELETE")
 		std::cout << "DELETE" << std::endl;
 	else
+	{
 		send(it->fd, "HTTP/1.1 405 Method Not Allowed\r\n\r\n", 36, 0);
+		return;
+	}
 	send(it->fd, answer.c_str(), answer.size(), 0);
+	std::cout << "Response:" << std::endl;
+	std::cout << answer << std::endl;
 	answer.clear();
 }
 

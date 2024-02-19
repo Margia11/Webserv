@@ -141,13 +141,13 @@ void Response::setConnection(std::string connection)
 void Response::setHeaders(const ParserRequest &request, const std::map<string, string> &mimTypes, const string &path)
 {
 
-	if (statusCode == 200 || statusCode == 301)
-        setLastModified(path);
+	/* if (statusCode == 200 || statusCode == 301)
+        setLastModified(path); */
     setProtocol(request.getProtocol());
     setContentType(path, mimTypes);
 	setBody(getWholeFile(path));
     setContentLength(body.size());
-    setDate();
+    //setDate();
     setServer("webserv 1.0");
     setAcceptRanges("bytes");
     setConnection("Keep-Alive");
@@ -215,6 +215,9 @@ std::string Response::toString(void)
 	ss << this->protocol << " " << this->statusCode << " " << httpStatus[statusCode] << "\r\n";
 	for (std::map<std::string, std::string>::iterator it = headers.begin(); it != headers.end(); ++it)
 		ss << it->first << ": " << it->second << "\r\n";
+	ss << "Access-Control-Allow-Origin: http://127.0.0.1:8002" << "\r\n";
+	ss << "Access-Control-Allow-Methods: POST" << "\r\n";
+	ss << "Access-Control-Allow-Headers: Content-Type" << "\r\n";
 	ss << "\r\n";
 	ss << body;
 	return ss.str();

@@ -39,6 +39,7 @@ class MainServer
 		void _handleConnections(int fd);
 		void _handleRequest(std::vector<pollfd>::iterator it);
 		void printServer();
+		std::string readFromFd(int fd);
 		void clearfds();
 
 };

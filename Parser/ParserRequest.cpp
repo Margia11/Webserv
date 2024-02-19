@@ -66,69 +66,30 @@ void stampaCaratteriNonStampabili(std::string str)
 	std::cout << std::endl;
 }
 
-void ParserRequest::readRequest(int newsocket)
+bool ParserRequest::readRequest(std::string input)
 {
-	char *buffer = new char[32000];
-	int byte_read;
-	byte_read = read(newsocket, buffer, 32000);
-	//std::cout << buffer << std::endl;
-	if (byte_read < 0)
+	size_t reqLinePos = input.find("\r\n");
+	if (reqLinePos == string::npos)
+		return false;
+	std::string reqLine = input.substr(0, reqLinePos);
+	getRequestLine(reqLine);
+	size_t headerPos = input.find("\r\n", reqLinePos + 2);
+	if (headerPos == string::npos)
+		return false;
+	std::string headers = input.substr(reqLinePos + 2, headerPos - reqLinePos - 2);
+	while(!headers.empty())
 	{
-		perror("read");
-		exit(1);
+		size_t oldHeaderPos = headerPos;
+		getHeaders(headers);
+		headerPos = input.find("\r\n", oldHeaderPos + 2);
+		headers = input.substr(oldHeaderPos + 2, headerPos - oldHeaderPos - 2);
 	}
-	else if (byte_read == 0)
-	{
-		cout << "Client closed connection" << endl;
-		return ;
-	}
-	else
-	{
-		std::string str(buffer, byte_read);
-		size_t reqLinePos = str.find("\r\n");
-		std::string reqLine = str.substr(0, reqLinePos);
-		getRequestLine(reqLine);
-		size_t headerPos = str.find("\r\n", reqLinePos + 2);
-		std::string headers = str.substr(reqLinePos + 2, headerPos - reqLinePos - 2);
-		while(!headers.empty())
-		{
-			size_t oldHeaderPos = headerPos;
-			getHeaders(headers);
-			headerPos = str.find("\r\n", oldHeaderPos + 2);
-			headers = str.substr(oldHeaderPos + 2, headerPos - oldHeaderPos - 2);
-		}
-		map<string, string>::iterator it = this->headers.find("Content-Length");
-		int len = 0;
-		if (it != this->headers.end())
-		{
-			len = atoi(it->second.c_str());
-			//cout << "Content-Length: " << len << endl;
-		}
-		int readFromBody = 32000 - headerPos;
-		this->body = str.substr(headerPos + 2, str.size());
-		bzero(buffer, 32000);
-		while (readFromBody < len)
-		{
-			byte_read = read(newsocket, buffer, 32000);
-			if (byte_read < 0)
-			{
-				perror("read");
-				exit(1);
-			}
-			else if (byte_read == 0)
-			{
-				cout << "Client closed connection" << endl;
-				return ;
-			}
-			else
-			{
-				this->body += std::string(buffer, byte_read);
-				readFromBody += byte_read;
-				//cout << "readFromBody: " << readFromBody << endl;
-				bzero(buffer, 32000);
-			}
-		}
-	}
+/* 	map<string, string>::iterator it = this->headers.find("Content-Length");
+	int len = 0;
+	if (it != this->headers.end())
+		len = atoi(it->second.c_str()); */
+	this->body = input.substr(headerPos + 2, input.size());
+	return true;
 }
 
 void ParserRequest::printparse()

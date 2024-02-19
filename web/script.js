@@ -12,7 +12,7 @@ function inviaModulo() {
     fetch(url, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             nome: nome,
@@ -26,7 +26,6 @@ function inviaModulo() {
         return response.json();
     })
     .then(data => {
-        // Puoi fare qualcosa con la risposta del server, se necessario
         console.log("Dati inviati con successo al server.", data);
         document.getElementById('mioForm').reset();
     })
