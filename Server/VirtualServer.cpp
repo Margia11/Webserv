@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:32:59 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/07 10:52:00 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/19 17:13:02 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,4 +127,13 @@ std::map <std::string, LocationInfo> const &VirtualServer::getLocations() const
 void VirtualServer::printVServer()
 {
 	std::cout << "Server ok" << std::endl;
+}
+
+void VirtualServer::printLocations()
+{
+    for (std::map<std::string, LocationInfo>::iterator it = locations.begin(); it != locations.end(); it++)
+    {
+        std::cout << it->first << std::endl;
+        std::cout << it->second.root << std::endl;
+    }
 }

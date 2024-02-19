@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:04:26 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/07 10:54:52 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/19 17:13:12 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ struct LocationInfo
 	std::string root;
 	std::vector<std::string> index;
 	std::string autoindex;
+	std::vector<std::string> cgi_path;
 	std::vector<std::string> allow_methods;
 };
 
@@ -54,6 +55,7 @@ class VirtualServer
 		const std::map<std::string, std::string>& getMimeTypes() const;
 		void _setMimeTypes();
 		void printVServer();
+		void printLocations();
 };
 
 

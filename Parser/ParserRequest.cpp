@@ -1,5 +1,18 @@
 #include "ParserRequest.hpp"
 
+std::string ParserRequest::getUri() const
+{
+	return this->path;
+}
+
+std::string ParserRequest::getQuery() const
+{
+	size_t found = this->path.find("?");
+	if (found != std::string::npos)
+		return this->path.substr(found + 1);
+	return "";
+}
+
 bool ParserRequest::checkRequestLine(string line)
 {
 	size_t	first_space = line.find(' ');
