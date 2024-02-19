@@ -11,13 +11,23 @@
 /* ************************************************************************** */
 
 #include "VirtualServer.hpp"
+#include "utils.hpp"
 
 //fa il setup di ogni server con le info del configfile
 VirtualServer::VirtualServer(const ServerConfig& config)
 {
 	this->server_name = config.server_name;
 	this->root = config.root;
-	this->index = config.index;
+	std::vector<std::string> tmp = config.index;
+	std::vector<std::string>::iterator it = tmp.begin();
+	while (it != tmp.end())
+	{
+		if (isValidFile((this->root + "/" + *it).c_str()))
+			this->index.push_back(*it);
+		it++;
+	}
+	if (this->index.empty())
+		this->index.push_back("index.html");
 	this->uploadPath = config.uploadPath;
 	this->errorPages = config.errorPages;
 	this->client_max_body_size = config.client_max_body_size;

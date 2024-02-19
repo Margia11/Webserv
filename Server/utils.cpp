@@ -45,6 +45,18 @@ u_int32_t string_to_byte_order(const char *ip_addr) {
 	return ((u_int32_t)octets[0] << 24) | ((u_int32_t)octets[1] << 16) | ((u_int32_t)octets[2] << 8) | ((u_int32_t)octets[3]);
 }
 
+//controllo se il path è valido e se è un file regolare
+bool isValidFile(const char* path)
+{
+	struct stat path_stat;
+	if(stat(path, &path_stat) == 0) //controlla se il path esiste
+	{
+		if(S_ISREG(path_stat.st_mode)) //controlla se è un file regolare (non una directory)
+			return true;
+	}
+	return false;
+}
+
 //funzione che da host(stringa) ritorna il pair <host, port(int)>
 std::pair<std::string, int>	toHostPort(std::string raw)
 {

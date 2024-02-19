@@ -175,18 +175,6 @@ bool Response::createDir(const char* path)
 	return 0;
 }
 
-//controllo se il path è valido e se è un file regolare
-bool Response::isValidFile(const char* path)
-{
-	struct stat path_stat;
-	if(stat(path, &path_stat) == 0) //controlla se il path esiste
-	{
-		if(S_ISREG(path_stat.st_mode)) //controlla se è un file regolare (non una directory)
-			return true;
-	}
-	return false;
-}
-
 //estrae l'estensione del file
 std::string Response::getExtension(const std::string &path)
 {

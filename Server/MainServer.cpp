@@ -104,7 +104,6 @@ std::string MainServer::readFromFd(int fd)
 
 void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 {
-	//std::cout << "Handling request" << std::endl;
 	std::string buffer = readFromFd(it->fd);
 	if (buffer.empty())
 		return;
@@ -112,13 +111,10 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 	std::cout << buffer << std::endl;
 	_clientHttpParserMap[it->fd].readRequest(buffer);
 	std::string tmp = _clientHttpParserMap[it->fd].getHost();
-	//cout << toHostPort(tmp).first << toHostPort(tmp).second << endl;
-
 	Server server = SimpleServers[toHostPort(tmp).second];
+	//std::cout << "simple servers: " << this->SimpleServers.size() << std::endl;
+	//std::cout << "virtual servers for this simple server: " << server.getVirtualServers().size() << std::endl;
 	VirtualServer vs = server.getFirstVS();
-	// GetResponse response;
-	// std::string answer;
-	//answer = response.answer(&(_clientHttpParserMap[it->fd]), &vs);
 	GetResponse getResponse;
 	PostResponse postResponse;
 	std::string answer;

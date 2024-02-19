@@ -40,6 +40,7 @@ class Server
 		int	getPort() const;
 		void setSocket(ListeningSocket *socket);
 		VirtualServer	getFirstVS();
+		std::vector<VirtualServer> getVirtualServers();
 		void printServer();
 };
 

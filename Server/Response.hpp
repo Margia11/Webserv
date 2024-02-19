@@ -16,7 +16,6 @@
 #include <string>
 #include <iostream>
 #include <map>
-#include <sys/stat.h>
 #include "../Parser/ParserRequest.hpp"
 #include "VirtualServer.hpp"
 #include "utils.hpp"
@@ -59,7 +58,6 @@ class Response
 		void setContentType(const std::string &path, const std::map<std::string, std::string> &mimTypes);
 		void setHeaders(const ParserRequest &request, const std::map<string, string> &mimTypes, const string &path);
 		void printHttpStatus();
-		bool isValidFile(const char* path);
 		bool isValidDir(const char* path);
 		bool createDir(const char* path);
 		std::string getExtension(const std::string &path);

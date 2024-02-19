@@ -14,5 +14,6 @@ servername
 allow methods
 upload-path
 
-
+assegnare id per ogni client (debug)
+gestire pagine di errore multiple (500 501 502 503 50x.html)
 

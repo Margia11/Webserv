@@ -24,6 +24,10 @@ Server::Server(ServerConfig config)
 	this->addVirtualServer(config);
 }
 
+std::vector<VirtualServer> Server::getVirtualServers()
+{
+	return servers;
+}
 
 Server::Server(int domain, int service, int protocol, int port, u_long interface, int bklg)
 {
@@ -34,7 +38,8 @@ Server::Server(int domain, int service, int protocol, int port, u_long interface
 //aggiunge un virtualserver(con tutte le info) al vettore di server
 void Server::addVirtualServer(ServerConfig &config)
 {
-	servers.push_back(VirtualServer(config));
+	VirtualServer newVS(config);
+	servers.push_back(newVS);
 }
 
 Server::~Server()
