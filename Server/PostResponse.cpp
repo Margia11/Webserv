@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:42:50 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/15 17:46:18 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/19 10:31:14 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,23 @@ std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 				std::vector<std::string> parts = vector_split(body, "--" + boundary);
 				for (size_t i = 0; i < parts.size(); i++)
 				{
+					std::string filename;
+					std::string fileContent;
 					if (parts[i].find("filename") != std::string::npos)
 					{
-						std::string filename = parts[i].substr(parts[i].find("filename=") + 10);
+						filename = parts[i].substr(parts[i].find("filename=") + 10);
 						filename = filename.substr(0, filename.find("\""));
 						std::string fileContent = parts[i].substr(parts[i].find("\r\n\r\n") + 4);
-						std::string filePath = uplodPath + "/" + filename;
-						std::ofstream file(filePath.c_str());
-						file << fileContent;
-						file.close();
 					}
+					else
+					{
+						filename = "post_data.txt";
+						fileContent = "culo";
+					}
+					std::string filePath = uplodPath + "/" + filename;
+					std::ofstream file(filePath.c_str());
+					file << fileContent;
+					file.close();
 				}
 			}
 			else if (contentType.find("application/x-www-form-urlencoded") != std::string::npos)
@@ -97,7 +104,7 @@ std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 						file << ",";
 				}
 				file.close();
-			} 
+			}
 		}
 		setHeaders(*parser, vs->getMimeTypes(), "./web/html/success_upload.html");
 		response = toString();
