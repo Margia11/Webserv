@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:08:08 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/19 10:46:21 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/20 11:55:44 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static bool checkandcutsemicolon(std::string& line)
 
 bool isValidKey(const std::string& key)
 {
-	const char *validKeysArray[] = {"listen", "serverName", "error_page", "location", "allow_methods", "root", "index", "host" , "autoindex", "client_max_body_size", "client_body_temp_path"};
+	const char *validKeysArray[] = {"listen", "serverName", "error_page", "location", "allow_methods", "root", "index", "host" , "autoindex", "client_max_body_size", "client_body_temp_path", "CGI_path"};
 	const int numvalidKeys = sizeof(validKeysArray) / sizeof(validKeysArray[0]);
 	for(unsigned long i = 0; i < numvalidKeys; ++i)
 		if(key == validKeysArray[i])
@@ -72,7 +72,7 @@ int IsValidServer(const ServerConfig& serverConfig, const LocationConfig& Locati
 		return (0);
 	if (serverConfig.host.empty())
 		return (0);
-	if (LocationConfig.root.empty() || serverConfig.index.empty())
+	if (LocationConfig.locationPath.empty() || serverConfig.index.empty())
 		return (0);
 	// if(chdir(LocationConfig.root.c_str()) == -1)
 	// 	return (0);
@@ -98,7 +98,6 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 		continue;
 	if (!checkandcutsemicolon(line))
 		exit(1);
-	//std::cout << "Read line: " << line << std::endl;
 	std::istringstream iss(line);
 	std::string key;
 	iss >> key;
@@ -108,11 +107,9 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 		while (std::getline(file, line) && line != "}")
 		{
 			if (!skipCommentedOrEmptyLines(line))
-				break;
+				continue;
 			if(!checkandcutsemicolon(line))
 				exit(1);
-			else
-				std::cout << line << std::endl;
 			std::istringstream issBlock(line);
 			std::string blockkey;
 			issBlock >> blockkey;
@@ -156,11 +153,10 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 						continue;
 					LocationConfig locationConfig;
 					issBlock >> locationConfig.locationPath;
-					while (std::getline(file, line) && line != "}")
+					while (std::getline(file, line) && trim(line) != "}")
 					{
 						if(!checkandcutsemicolon(line))
 							continue;
-						std::cout << "line: " << line << std::endl;
 						if (!skipCommentedOrEmptyLines(line))
 							continue;
 						std::istringstream issLocation(line);
@@ -170,8 +166,6 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 							std::cerr << "Unknown key in location block: " << locationKey << std::endl;
 						else
 						{
-							if(!checkandcutsemicolon(line))
-								continue;
 							if(locationKey == "autoindex")
 								issLocation >> locationConfig.autoindex;
 							else if (locationKey == "allow_methods")
@@ -182,6 +176,8 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 							}
 							else if (locationKey == "root")
 								issLocation >> locationConfig.root;
+							else if (locationKey == "CGI_path")
+								issLocation >> locationConfig.CGI_path;
 							else if (locationKey == "index")
 							{
 								std::string index;

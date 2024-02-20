@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:32:59 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/19 17:13:02 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/20 12:33:17 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ VirtualServer::VirtualServer(const ServerConfig& config)
 	{
 		LocationInfo locationInfo;
 		locationInfo.root = it->second.root;
+		locationInfo.path = it->second.locationPath;
 		locationInfo.index = it->second.index;
 		locationInfo.autoindex = it->second.autoindex;
 		locationInfo.allow_methods = it->second.allow_methods;
@@ -89,6 +90,11 @@ VirtualServer::~VirtualServer()
 {
 }
 
+/* LocationInfo* VirtualServer::matchLocation(std::map<std::string, LocationInfo> locations, std::string uri)
+{
+	return &(locations[uri]);
+} */
+
 std::string const &VirtualServer::getUploadPath() const
 {
 	return (this->uploadPath);
@@ -124,16 +130,24 @@ std::map <std::string, LocationInfo> const &VirtualServer::getLocations() const
 	return (this->locations);
 }
 
+std::vector <std::string> const &VirtualServer::getAllowMethods() const
+{
+	return (this->allow_methods);
+}
+
 void VirtualServer::printVServer()
 {
 	std::cout << "Server ok" << std::endl;
 }
 
-void VirtualServer::printLocations()
+void VirtualServer::printLocations(VirtualServer *vs)
 {
-    for (std::map<std::string, LocationInfo>::iterator it = locations.begin(); it != locations.end(); it++)
+    std::cout << "locations: " << std::endl;
+    const std::map<std::string, LocationInfo> &locations = vs->getLocations();
+    for (std::map<std::string, LocationInfo>::const_iterator it = locations.begin(); it != locations.end(); ++it)
     {
         std::cout << it->first << std::endl;
         std::cout << it->second.root << std::endl;
     }
 }
+

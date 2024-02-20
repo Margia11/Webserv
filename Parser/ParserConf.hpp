@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 11:55:49 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/15 16:56:56 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/20 11:43:03 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ struct LocationConfig
 	std::string root;
 	std::string autoindex;
 	std::vector<std::string> index;
+	std::string CGI_path;
 };
 
 struct ServerConfig

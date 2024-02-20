@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:42:50 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/19 17:13:31 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/20 12:48:46 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,39 @@ std::vector<std::string> vector_split(std::string str, std::string delimiter)
 
 std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 {
-	std::cout << "Received POST request:\n";
-	std::string uplodPath = vs->getUploadPath();
-	std::cout << uplodPath << std::endl;
 	std::string response;
-	if (!isValidDir(uplodPath.c_str()))
+	std::string uploadPath = vs->getUploadPath();
+	string clientMaxBodySize = vs->getClientMaxBodySize();
+	std::vector<std::string> allowedMethods = vs->getAllowMethods();
+	std::map<std::string, std::string> errorPages = vs->getErrorPages();
+	string root = vs->getRoot();
+	string uri = parser->getUri();
+	if (uri.empty())
+		uri = "/";
+	std::vector<std::string> index = vs->getIndex();
+	std::map<std::string, LocationInfo> locations = vs->getLocations();
+	std::map<std::string, LocationInfo>::iterator l = locations.find(uri);
+
+	if (l != locations.end())
 	{
-		if(!createDir(uplodPath.c_str()))
+		//uploadPath = l->second.uploadPath;
+		allowedMethods = l->second.allow_methods;
+		//errorPages = l->second.errorPages;
+		root = l->second.root;
+		//clientMaxBodySize = l->second.clientMaxBodySize;
+    }
+	if (!allowedMethods.empty() && find(allowedMethods.begin(), allowedMethods.end(), "POST") == allowedMethods.end())
+		setStatusCode(405);
+	// else if (request.getBody().size() > convertToBytes(clientMaxBodySize))
+	//	setStatusCode(413);
+	else if (l != locations.end() && !(l->second.cgi_path.empty()))
+	{
+		CGI cgi(parser, &(l->second));
+		response = cgi.CGI_Executer();
+	}
+	if (!isValidDir(uploadPath.c_str()))
+	{
+		if(!createDir(uploadPath.c_str()))
 			setStatusCode(500);
 	}
 	else
@@ -81,7 +107,7 @@ std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 						filename = "post_data.txt";
 						fileContent = "culo";
 					}
-					std::string filePath = uplodPath + "/" + filename;
+					std::string filePath = uploadPath + "/" + filename;
 					std::ofstream file(filePath.c_str());
 					file << fileContent;
 					file.close();
@@ -91,7 +117,7 @@ std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 			{
 				std::string body = parser->body;
 				std::vector<std::string> pairs = vector_split(body, "&");
-				std::string filePath = uplodPath + "/" + "post_data";
+				std::string filePath = uploadPath + "/" + "post_data";
 				std::ofstream file(filePath.c_str());
 				for (size_t i = 0; i < pairs.size(); i++)
 				{

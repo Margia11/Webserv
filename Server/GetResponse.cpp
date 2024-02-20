@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:42:02 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/19 17:18:40 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/20 10:57:45 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ GetResponse::~GetResponse()
 
 std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 {
-	std::cout << "locations: ";
-	vs->printLocations();
+	vs->printLocations(vs);
 	std::string response;
 	std::string root = vs->getRoot();
 	std::string index = vs->getIndex().front();
