@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:42:02 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/21 11:26:09 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/21 14:30:23 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,7 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 	string uri = parser->getUri();
 	if (uri.empty())
 		uri = "/";
-	std::cout << "uri: " << uri << std::endl;
 	std::string file_requested = getFile(uri);
-	std::cout << "CGI_requested: " << file_requested << std::endl;
 	if (!file_requested.empty())
 	{
 		uri = uri.substr(0, uri.find_last_of("/") + 1);
@@ -51,12 +49,10 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 			DIR *d = opendir((root + l->second.cgi_path).c_str());
 			if (d)
 			{
-				std::cout << "Dir opened: " << root + l->second.cgi_path << std::endl;
 				dirent *tmp = readdir(d);
 				while (tmp != nullptr)
 				{
 					std::string elem = tmp->d_name;
-					std::cout << "elem: " << elem << std::endl;
 					if (file_requested.compare(elem) == 0)
 						use_CGI = true;
 					tmp = readdir(d);
@@ -65,7 +61,6 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 			}
 			else
 			{
-				std::cout << "CGI path not found" << std::endl;
 				setStatusCode(404);
 				std::string err = vs->getErrorPages().find(numberToString(getStatusCode()))->second;
 				setHeaders(*parser, vs->getMimeTypes(), err);
@@ -83,9 +78,7 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 		setStatusCode(405);
 	else if (l != locations.end() && use_CGI)
 	{
-		std::cout << "Handling with CGI" << std::endl;
 		CGI cgi(parser, &(l->second), file_requested);
-		std::cout << "CGI object created" << std::endl;
 		setStatusCode(200);
 		std::string buffer = cgi.CGI_Executer();
 		setHeaders_CGI(*parser, buffer);

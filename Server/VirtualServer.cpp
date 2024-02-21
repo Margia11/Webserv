@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:32:59 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/20 16:31:05 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/21 13:45:30 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void VirtualServer::_setMimeTypes()
 	_mimeTypes[".htm"] = "text/html";
 	_mimeTypes[".html"] = "text/html";
     _mimeTypes[".ico"] = "image/vnd.microsoft.icon";
-	_mimeTypes[".jpeg"] = "image/jpeg";
+	_mimeTypes[".jpeg"] = "img/jpeg";
 	_mimeTypes[".jpg"] = "image/jpeg";
 	_mimeTypes[".js"] = "text/javascript";
 	_mimeTypes[".json"] = "application/json";

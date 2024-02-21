@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:52:21 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/21 09:56:23 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/21 15:02:11 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ class Response
 		void setProtocol(std::string protocol);
 		void setVersion(std::string version);
 		void setBody(std::string body);
-		void setContentLength(int bodyLength);
+		void setContentLength(const std::string &path);
 		void setDate();
 		void setServer(std::string server);
 		void setAcceptRanges(std::string path);
@@ -66,7 +66,7 @@ class Response
 		std::string toString(void);
 		std::string toString_CGI(void);
 		std::string getFile(std::string uri);
+		std::string	getContentType();
 };
-
 
 #endif

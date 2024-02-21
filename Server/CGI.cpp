@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:26:45 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/21 11:51:30 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/21 13:44:10 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,12 @@ std::string CGI::getCmd()
 	return (cmd_);
 }
 
-static void stampaStringhe(char** matrix)
-{
-    for (int i = 0; matrix[i] != NULL; ++i) {
-        std::cout << matrix[i] << std::endl;
-    }
-}
+// static void stampaStringhe(char** matrix)
+// {
+//     for (int i = 0; matrix[i] != NULL; ++i) {
+//         std::cout << matrix[i] << std::endl;
+//     }
+// }
 
 
 std::string CGI::CGI_Executer()
@@ -81,8 +81,8 @@ std::string CGI::CGI_Executer()
 	int fdReq[2];
 	int fdResp[2];
 
-	stampaStringhe(arg_execve);
-	stampaStringhe(env_execve);
+	// stampaStringhe(arg_execve);
+	// stampaStringhe(env_execve);
 	if (pipe(fdReq) == -1 || pipe(fdResp) == -1)
 	{
 		std::cerr << "Error in pipe" << std::endl;
@@ -101,7 +101,7 @@ std::string CGI::CGI_Executer()
 		close(fdReq[1]);
 		close(fdResp[0]);
 		if(execve(arg_execve[0], arg_execve, env_execve) == -1)
-			std::cerr << "execve fallito: " << strerror(errno) << std::endl;
+			std::cerr << "execve failed: " << strerror(errno) << std::endl;
 	}
 	else
 	{
@@ -111,10 +111,7 @@ std::string CGI::CGI_Executer()
 		close(fdReq[1]);
 		int status;
 		while(waitpid(pid, &status, 0) == 0)
-		{
-			std::cout << "waiting for child" << std::endl;
 			sleep(1);
-		}
 		if (WIFEXITED(status))
 			std::cout << "Il processo figlio ha terminato con codice di uscita: " << WEXITSTATUS(status) << std::endl;
 		else

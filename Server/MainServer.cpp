@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/15 16:58:10 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/21 14:23:31 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,11 +130,25 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 		send(it->fd, "HTTP/1.1 405 Method Not Allowed\r\n\r\n", 36, 0);
 		return;
 	}
+
+	//std::cout << "Answer size = " << answer.size() << std::endl;
 	send(it->fd, answer.c_str(), answer.size(), 0);
 	std::cout << "Response:" << std::endl;
 	std::cout << answer << std::endl;
 	answer.clear();
 }
+
+/* long int dataSent;
+do
+{
+	temp = answer.substr(0, 32000);
+	dataSent = send(sd, temp.c_str(), temp.length(), 0);
+	if (dataSent < 0) {
+		break;
+	}
+	temp.clear();
+	answer = answer.substr(dataSent);
+} while (!answer.empty()); */
 
 void MainServer::_handleConnections(int fd)
 {

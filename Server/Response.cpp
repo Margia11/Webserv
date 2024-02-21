@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 14:06:34 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/21 09:56:17 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/21 16:35:27 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,11 @@ void Response::printHttpStatus()
 		std::cout << it->first << " => " << it->second << std::endl;
 }
 
+std::string Response::getContentType()
+{
+	return headers["Content-Type"];
+}
+
 void Response::setContentType(const std::string &path, const std::map<std::string, std::string> &mimTypes)
 {
 	std::string ext = getExtension(path);
@@ -115,10 +120,19 @@ void Response::setContentType(const std::string &path, const std::map<std::strin
 		headers["Content-Type"] = "text/html";
 }
 
-void Response::setContentLength(int body_size)
+void Response::setContentLength(const std::string &path)
 {
+	int file_size;
+	if (getContentType().compare("img/jpeg") == 0)
+	{
+		std::ifstream in_file(path.c_str(), std::ios::binary);
+		in_file.seekg(0, std::ios::end);
+		file_size = in_file.tellg();
+	}
+	else
+		file_size = body.size();
 	std::stringstream ss;
-	ss << body_size;
+	ss << file_size;
 	headers["Content-Length"] = ss.str();
 }
 
@@ -150,6 +164,7 @@ void Response::setHeaders_CGI(const ParserRequest &request, const string &body)
 	setConnection("Keep-Alive");
 }
 
+
 void Response::setHeaders(const ParserRequest &request, const std::map<string, string> &mimTypes, const string &path)
 {
 
@@ -157,9 +172,10 @@ void Response::setHeaders(const ParserRequest &request, const std::map<string, s
         setLastModified(path); */
 	setProtocol(request.getProtocol());
 	setContentType(path, mimTypes);
-	setBody(getWholeFile(path));
-	setContentLength(body.size());
-	//setDate();
+	setBody(getWholeFile(path, getContentType()));
+	setContentLength(path);
+	if (getContentType().compare("img/jpeg") == 0)
+		headers["Content-Disposition"] = "inline";
 	setServer("webserv 1.0");
 	setAcceptRanges("bytes");
 	setConnection("Keep-Alive");

@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 10:52:03 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/20 15:24:08 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/21 15:38:49 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,23 @@ std::pair<std::string, int>	toHostPort(std::string raw)
 	return ret;
 }
 
-std::string getWholeFile(const std::string &path)
+std::string getWholeFile(const std::string &path, std::string contentType)
 {
 	std::string body("");
-	std::ifstream file(path.c_str());
+	std::ifstream file;
+	if (contentType.compare("img/jpeg") == 0)
+	{
+		file.open(path.c_str(), std::ios::binary);
+		std::cout << "open img" << std::endl;
+	}
+	else
+		file.open(path.c_str());
 	std::string line;
 	if (file.is_open())
 	{
-		std::string line;
-		while (getline(file, line))
-			body += line;
+		std::stringstream  buffer;
+        buffer << file.rdbuf();
+		body += buffer.str();
 		file.close();
 	}
 	else
