@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:42:54 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/20 12:44:09 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/21 10:00:10 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "Response.hpp"
 #include "VirtualServer.hpp"
 #include "CGI.hpp"
+#include <dirent.h>
 
 class PostResponse : public Response
 {

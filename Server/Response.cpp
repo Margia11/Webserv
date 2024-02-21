@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 14:06:34 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/20 16:19:15 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/21 09:56:17 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ bool Response::createDir(const char* path)
 	return 0;
 }
 
-std::string Response::getCGIScript(std::string uri)
+std::string Response::getFile(std::string uri)
 {
 	std::string ext_file = getExtension(uri);
 	if (ext_file.empty())

@@ -1,10 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import cgi
 
 # Set the content type to HTML
 # print()
-
+print("Script CGI")
 # Get the form data from the request
 form = cgi.FieldStorage()
 
@@ -24,7 +24,7 @@ body = """
 </html>
 """ % (name, email)
 
-print("Content-type: text/html\r")
+print("Content-type: text/html\r\n")
 print("Content-Length: %d\r" % len(body))
 print("\r")
 print(body)

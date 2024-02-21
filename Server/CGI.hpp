@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:22:23 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/19 16:49:05 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/21 10:23:47 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ class CGI
 		char **arg_execve;
 	public :
 		std::vector<std::string> CGI_path;
-		CGI(ParserRequest *parser, LocationInfo *location);
+		CGI(ParserRequest *parser, LocationInfo *location, std::string script);
 		~CGI();
 		std::string CGI_Executer();
 		std::string getCmd();

@@ -1,9 +1,9 @@
 CONTROLLARE SE LA DELETE FUNZIONA
 GESTIRE AUTOINDEX
 GESTIRE IL CONTROLLO DEL client_max_body_size
-SETUP DELLE ROUTE
 SISTEMARE CONFIGFILE
 SITEMARE LE ERROR PAGES
+GESTIRE DATI IN LOCATION
 
 Gestire doppi:
 	servername
@@ -14,11 +14,6 @@ assegnare id per ogni client (debug)
 gestire pagine di errore multiple (500 501 502 503 50x.html)
 
 CONTROLLO LAST MODIFIED AND DATE
-
-cosa non sta funzionando:
-cgi requested deve diventare file requested -> vado a controllare se sto in una location con l'uri
-all'interno della location mi controllo il cgi path; usando opendir e readdir controllo se uno dei file della gci è il file richiesto; se si, uso il cgi handler e ...
-altrimenti uso sempre il solito principio "standard"
 
 (?)
 quando sto in form.html e richiedo lo script per upload del form, è come se mi trovassi nella location / invece che in /form.html

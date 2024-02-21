@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:52:21 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/20 16:16:44 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/21 09:56:23 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ class Response
 		virtual std::string answer(ParserRequest *parser, VirtualServer *vs) = 0;
 		std::string toString(void);
 		std::string toString_CGI(void);
-		std::string getCGIScript(std::string uri);
+		std::string getFile(std::string uri);
 };
 
 
