@@ -2,25 +2,29 @@
 
 import cgi
 
-# Create instance of FieldStorage
+# Set the content type to HTML
+# print()
+
+# Get the form data from the request
 form = cgi.FieldStorage()
 
-# Get data from fields
+# Extract the form field values
 name = form.getvalue('name')
 email = form.getvalue('email')
 
-# Print the response headers
-print("Content-type: text/html")
-print()
+# Print out the form data
 
-# Print the response body
-print("<html>")
-print("<head>")
-print("<title>Form Data</title>")
-print("</head>")
-print("<body>")
-print("<h1>Form Data</h1>")
-print("<p>Name: " + name + "</p>")
-print("<p>Email: " + email + "</p>")
-print("</body>")
-print("</html>")
+body = """
+<html>
+<body>
+<h1>Form Data</h1>
+<p>Name: %s</p>
+<p>Email: %s</p>
+</body>
+</html>
+""" % (name, email)
+
+print("Content-type: text/html\r")
+print("Content-Length: %d\r" % len(body))
+print("\r")
+print(body)

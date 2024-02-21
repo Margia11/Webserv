@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:42:50 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/20 12:48:46 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/20 16:26:22 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,25 +48,37 @@ std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 	if (uri.empty())
 		uri = "/";
 	std::vector<std::string> index = vs->getIndex();
+	std::string CGI_requested = getCGIScript(uri);
+	std::cout << "CGI_requested: " << CGI_requested << std::endl;
+	if (!CGI_requested.empty())
+	{
+		uri = uri.substr(0, uri.find_last_of("/") + 1);
+	}
 	std::map<std::string, LocationInfo> locations = vs->getLocations();
 	std::map<std::string, LocationInfo>::iterator l = locations.find(uri);
 
+
 	if (l != locations.end())
 	{
+		std::cout << "Found Location" << std::endl;
 		//uploadPath = l->second.uploadPath;
 		allowedMethods = l->second.allow_methods;
 		//errorPages = l->second.errorPages;
 		root = l->second.root;
 		//clientMaxBodySize = l->second.clientMaxBodySize;
-    }
+	}
 	if (!allowedMethods.empty() && find(allowedMethods.begin(), allowedMethods.end(), "POST") == allowedMethods.end())
 		setStatusCode(405);
 	// else if (request.getBody().size() > convertToBytes(clientMaxBodySize))
 	//	setStatusCode(413);
 	else if (l != locations.end() && !(l->second.cgi_path.empty()))
 	{
+		std::cout << "Handling with CGI" << std::endl;
 		CGI cgi(parser, &(l->second));
-		response = cgi.CGI_Executer();
+		setStatusCode(200);
+		setHeaders_CGI(*parser, cgi.CGI_Executer());
+		response = toString_CGI();
+		return response;
 	}
 	if (!isValidDir(uploadPath.c_str()))
 	{
@@ -105,7 +117,7 @@ std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 					else
 					{
 						filename = "post_data.txt";
-						fileContent = "culo";
+						fileContent = "culo1";
 					}
 					std::string filePath = uploadPath + "/" + filename;
 					std::ofstream file(filePath.c_str());

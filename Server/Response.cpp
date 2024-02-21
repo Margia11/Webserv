@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 14:06:34 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/15 17:31:05 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/20 16:19:15 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,19 +138,31 @@ void Response::setConnection(std::string connection)
 	headers["Connection"] = connection;
 }
 
+void Response::setHeaders_CGI(const ParserRequest &request, const string &body)
+{
+	/* if (statusCode == 200 || statusCode == 301)
+        setLastModified(path); */
+	setProtocol(request.getProtocol());
+	setBody(body);
+	//setDate();
+	setServer("webserv 1.0");
+	setAcceptRanges("bytes");
+	setConnection("Keep-Alive");
+}
+
 void Response::setHeaders(const ParserRequest &request, const std::map<string, string> &mimTypes, const string &path)
 {
 
 	/* if (statusCode == 200 || statusCode == 301)
         setLastModified(path); */
-    setProtocol(request.getProtocol());
-    setContentType(path, mimTypes);
+	setProtocol(request.getProtocol());
+	setContentType(path, mimTypes);
 	setBody(getWholeFile(path));
-    setContentLength(body.size());
-    //setDate();
-    setServer("webserv 1.0");
-    setAcceptRanges("bytes");
-    setConnection("Keep-Alive");
+	setContentLength(body.size());
+	//setDate();
+	setServer("webserv 1.0");
+	setAcceptRanges("bytes");
+	setConnection("Keep-Alive");
 }
 
 bool Response::isValidDir(const char* path)
@@ -173,6 +185,14 @@ bool Response::createDir(const char* path)
 	else
 		return 1;
 	return 0;
+}
+
+std::string Response::getCGIScript(std::string uri)
+{
+	std::string ext_file = getExtension(uri);
+	if (ext_file.empty())
+		return "";
+	return uri.substr(uri.find_last_of("/") + 1, uri.size());
 }
 
 //estrae l'estensione del file
@@ -203,10 +223,17 @@ std::string Response::toString(void)
 	ss << this->protocol << " " << this->statusCode << " " << httpStatus[statusCode] << "\r\n";
 	for (std::map<std::string, std::string>::iterator it = headers.begin(); it != headers.end(); ++it)
 		ss << it->first << ": " << it->second << "\r\n";
-	ss << "Access-Control-Allow-Origin: http://127.0.0.1:8002" << "\r\n";
-	ss << "Access-Control-Allow-Methods: POST" << "\r\n";
-	ss << "Access-Control-Allow-Headers: Content-Type" << "\r\n";
 	ss << "\r\n";
+	ss << body;
+	return ss.str();
+}
+
+std::string Response::toString_CGI(void)
+{
+	std::stringstream ss;
+	ss << this->protocol << " " << this->statusCode << " " << httpStatus[statusCode] << "\r\n";
+	for (std::map<std::string, std::string>::iterator it = headers.begin(); it != headers.end(); ++it)
+		ss << it->first << ": " << it->second << "\r\n";
 	ss << body;
 	return ss.str();
 }

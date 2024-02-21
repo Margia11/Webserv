@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 10:52:03 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/15 17:41:00 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/20 15:24:08 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ std::string getWholeFile(const std::string &path)
 		file.close();
 	}
 	else
-		std::cout << "Unable to open file";
+		std::cout << "Unable to open file " << path << std::endl;
 	return body;
 }
 

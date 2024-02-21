@@ -2,6 +2,9 @@
 
 std::string ParserRequest::getUri() const
 {
+	size_t found = this->path.find("?");
+	if (found != std::string::npos)
+		return this->path.substr(0, found);
 	return this->path;
 }
 

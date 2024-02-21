@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:41:59 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/01/25 14:18:49 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/20 14:54:35 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include "Response.hpp"
 #include "VirtualServer.hpp"
+#include "CGI.hpp"
 
 class GetResponse : public Response
 {

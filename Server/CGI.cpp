@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:26:45 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/19 17:14:37 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/20 15:46:03 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ CGI::CGI(ParserRequest *parser, LocationInfo *location)
 	CGI_env["HTTP_COOKIE"] = parser->headers.find("Cookie")->second;
 
 	CGI_path.push_back("script.cgi");
+	CGI_path.push_back("get.py");
 	env_execve = new char*[CGI_env.size() + 1];
 	std::map<std::string, std::string>::iterator it = CGI_env.begin();
 	for (int i = 0; it != CGI_env.end(); it++, i++)
