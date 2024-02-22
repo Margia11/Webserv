@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/22 12:07:56 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/22 13:43:21 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void MainServer::launch()
 					_handleConnections(_fds[i].fd);
 				else
 				{
+					std::cout << "il problema è qui" << std::endl;
 					_handleRequest(_fds.begin() + i);
 					if (_fds[i].fd == -1) {
 						_fds.erase(_fds.begin() + i);
@@ -108,7 +109,7 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 	if (buffer.empty())
 		return;
 	std::cout << "Received request:\n";
-	//std::cout << buffer << std::endl;
+	std::cout << buffer << std::endl;
 	_clientHttpParserMap[it->fd].readRequest(buffer);
 	std::string tmp = _clientHttpParserMap[it->fd].getHost();
 	Server server = SimpleServers[toHostPort(tmp).second];
