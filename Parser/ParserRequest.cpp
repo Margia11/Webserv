@@ -133,9 +133,9 @@ ParserRequest::~ParserRequest()
 {
 }
 
-std::string ParserRequest::getHost()
+std::string ParserRequest::getHost() const
 {
-	map<string, string>::iterator it = this->headers.find("Host");
+	map<string, string>::const_iterator it = headers.find("Host");
 	if (it != this->headers.end())
 		return it->second;
 	return "";

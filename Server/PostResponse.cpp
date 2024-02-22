@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:42:50 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/21 11:48:56 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/22 11:39:42 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,33 +133,40 @@ std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 				std::string boundary = contentType.substr(contentType.find("boundary=") + 9);
 				std::string body = parser->body;
 				std::vector<std::string> parts = vector_split(body, "--" + boundary);
+				std::ofstream file((uploadPath + "/post_data.txt").c_str());
+				std::string fileContent;
 				for (size_t i = 0; i < parts.size(); i++)
 				{
-					std::string filename;
-					std::string fileContent;
 					if (parts[i].find("filename") != std::string::npos)
 					{
-						filename = parts[i].substr(parts[i].find("filename=") + 10);
+						std::string filename = parts[i].substr(parts[i].find("filename=") + 10);
 						filename = filename.substr(0, filename.find("\""));
-						std::string fileContent = parts[i].substr(parts[i].find("\r\n\r\n") + 4);
+						std::string uploadedFileContent = parts[i].substr(parts[i].find("\r\n\r\n") + 4);
+						std::string filePath = uploadPath + "/" + filename;
+						std::ofstream uploadedFile(filePath.c_str(), std::ios::in | std::ios::binary);
+						uploadedFile << uploadedFileContent;
+						uploadedFile.close();
+						fileContent += "file: " + filename;
 					}
-					else
+					else if (parts[i].find("name=") != std::string::npos)
 					{
-						filename = "post_data.txt";
-						fileContent = parts[i];
+
+						std::string key = parts[i].substr(parts[i].find("name=") + 6);
+						key = key.substr(0, key.find("\""));
+						std::string value = parts[i].substr(0, parts[i].find_last_of("\r\n") - 1);
+						value = value.substr(value.find_last_of("\r\n") + 1, value.size());
+						fileContent += key + ": " + value + "\r\n";
 					}
-					std::string filePath = uploadPath + "/" + filename;
-					std::ofstream file(filePath.c_str());
-					file << fileContent;
-					file.close();
 				}
+				file << fileContent;
+				file.close();
 			}
 			else if (contentType.find("application/x-www-form-urlencoded") != std::string::npos)
 			{
 				std::string body = parser->body;
 				std::vector<std::string> pairs = vector_split(body, "&");
 				std::string filePath = uploadPath + "/" + "post_data";
-				std::ofstream file(filePath.c_str());
+				std::ofstream file(filePath.c_str(), std::ios::in | std::ios::binary);
 				for (size_t i = 0; i < pairs.size(); i++)
 				{
 					std::string key = pairs[i].substr(0, pairs[i].find("="));

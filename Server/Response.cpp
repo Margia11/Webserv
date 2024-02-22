@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 14:06:34 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/21 16:35:27 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/22 11:45:43 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,21 +164,26 @@ void Response::setHeaders_CGI(const ParserRequest &request, const string &body)
 	setConnection("Keep-Alive");
 }
 
+void Response::setHost(std::string host)
+{
+	headers["Host"] = host;
+}
 
 void Response::setHeaders(const ParserRequest &request, const std::map<string, string> &mimTypes, const string &path)
 {
 
-	/* if (statusCode == 200 || statusCode == 301)
-        setLastModified(path); */
+	if (statusCode == 200 || statusCode == 301)
+        setLastModified(path);
 	setProtocol(request.getProtocol());
 	setContentType(path, mimTypes);
 	setBody(getWholeFile(path, getContentType()));
 	setContentLength(path);
-	if (getContentType().compare("img/jpeg") == 0)
-		headers["Content-Disposition"] = "inline";
-	setServer("webserv 1.0");
+	setHost(request.getHost());
+	if (getContentType() == "img/jpeg")
+		headers["Content-Type"] = "";
+		/* setServer("webserv 1.0");
 	setAcceptRanges("bytes");
-	setConnection("Keep-Alive");
+	setConnection("Keep-Alive"); */
 }
 
 bool Response::isValidDir(const char* path)

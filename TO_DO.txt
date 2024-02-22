@@ -19,8 +19,6 @@ CONTROLLO LAST MODIFIED AND DATE
 quando sto in form.html e richiedo lo script per upload del form, è come se mi trovassi nella location / invece che in /form.html
 è giusto?
 
-Capire perchè fa il download dell'immagine -> cross-origin(?)
-Fare la post delle immagini
 get immagini con CGI
 post immagini con CGI
 Controllare le immagini più grandi

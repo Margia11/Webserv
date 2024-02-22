@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:38:47 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/19 15:35:29 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/22 11:20:59 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ class ParserRequest
 		void getRequestLine(string line);
 		bool checkRequestLine(string line);
 		void getHeaders(string line);
-		std::string getHost();
+		std::string getHost() const;
 		ParserRequest();
 		~ParserRequest();
 		std::string getUri()const;
