@@ -50,7 +50,7 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 			if (d)
 			{
 				dirent *tmp = readdir(d);
-				while (tmp != nullptr)
+				while (tmp != NULL)
 				{
 					std::string elem = tmp->d_name;
 					if (file_requested.compare(elem) == 0)
@@ -74,7 +74,14 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 		//root = l->second.root;
 		//clientMaxBodySize = l->second.clientMaxBodySize;
 	}
-	if (!allowedMethods.empty() && find(allowedMethods.begin(), allowedMethods.end(), "GET") == allowedMethods.end())
+	std::vector<std::string>::iterator it = allowedMethods.begin();
+	while (it != allowedMethods.end())
+	{
+		if (*it == "GET")
+			break;
+		it++;
+	}
+	if (!allowedMethods.empty() && it == allowedMethods.end())
 		setStatusCode(405);
 	else if (l != locations.end() && use_CGI)
 	{

@@ -17,6 +17,8 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include "MainServer.hpp"
 
 class CGI
