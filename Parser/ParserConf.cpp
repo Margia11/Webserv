@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:08:08 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/20 11:55:44 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/22 14:13:52 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,15 @@ int IsValidServer(const ServerConfig& serverConfig, const LocationConfig& Locati
 	// if(chdir(LocationConfig.root.c_str()) == -1)
 	// 	return (0);
 	return (1);
+}
+
+static bool isValidMethod(const std::string& method)
+{
+	std::vector<std::string> allowedMethods;
+	allowedMethods.push_back("GET");
+	allowedMethods.push_back("POST");
+	allowedMethods.push_back("DELETE");
+	return std::find(allowedMethods.begin(), allowedMethods.end(), method) != allowedMethods.end();
 }
 
 void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& serverConfigs)
@@ -175,7 +184,19 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 							{
 								std::string method;
 								while (issLocation >> method)
-									locationConfig.allow_methods.push_back(method);
+								{
+									if (isValidMethod(method))
+										locationConfig.allow_methods.push_back(method);
+									else
+									{
+										std::cerr << "Invalid method specified in allow_methods: " << method << std::endl;
+										exit(1);
+									}
+								}
+								if (locationConfig.allow_methods.empty()) {
+									std::cerr << "Error: allow_methods cannot be empty" << std::endl;
+									exit(1);
+								}
 							}
 							else if (locationKey == "root")
 								issLocation >> locationConfig.root;
