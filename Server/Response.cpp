@@ -174,7 +174,7 @@ void Response::setHeaders(const ParserRequest &request, const std::map<string, s
 
 	if (statusCode == 200 || statusCode == 301)
 		setLastModified(path);
-		std::cout << "path: " << path << std::endl;
+	std::cout << "path: " << path << std::endl;
 	setProtocol(request.getProtocol());
 	setContentType(path, mimTypes);
 	setBody(getWholeFile(path, getContentType()));
