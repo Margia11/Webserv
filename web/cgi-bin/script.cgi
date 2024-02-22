@@ -4,7 +4,7 @@ import cgi
 
 # Set the content type to HTML
 # print()
-print("Script CGI")
+#print("Script CGI")
 # Get the form data from the request
 form = cgi.FieldStorage()
 
@@ -12,8 +12,13 @@ form = cgi.FieldStorage()
 name = form.getvalue('name')
 email = form.getvalue('email')
 
-# Print out the form data
+uploadPath = "./web/uploads"
+postDataPath = uploadPath + "/post_data.txt"
+with open(postDataPath, 'w') as f :
+    f.write(name)
+    f.write(email)
 
+# Print out the form data
 body = """
 <html>
 <body>

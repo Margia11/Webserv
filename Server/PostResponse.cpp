@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:42:50 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/22 11:39:42 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/22 15:22:31 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,12 @@ std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 	setStatusCode(405);
 	// else if (request.getBody().size() > convertToBytes(clientMaxBodySize))
 	//	setStatusCode(413);
-	else if (l != locations.end() && use_CGI)
+	if (!isValidDir(uploadPath.c_str()))
+	{
+		if(!createDir(uploadPath.c_str()))
+			setStatusCode(500);
+	}
+	if (l != locations.end() && use_CGI)
 	{
 		CGI cgi(parser, &(l->second), file_requested);
 		setStatusCode(200);
@@ -108,11 +113,6 @@ std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 		setHeaders_CGI(*parser, buffer);
 		response = toString_CGI();
 		return response;
-	}
-	if (!isValidDir(uploadPath.c_str()))
-	{
-		if(!createDir(uploadPath.c_str()))
-			setStatusCode(500);
 	}
 	else
 		setStatusCode(200);
