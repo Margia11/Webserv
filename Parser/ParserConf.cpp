@@ -140,10 +140,13 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 				}
 				else if (blockkey == "error_page")
 				{
-					std::string errorCode;
-					std::string errorPath;
-					issBlock >> errorCode >> errorPath;
-					serverConfig.errorPages.insert(std::make_pair(errorCode, errorPath));
+					std::vector<std::string> errorCodes;
+					while (issBlock >> tmp)
+						errorCodes.push_back(tmp);
+					int errorCodesNum = errorCodes.size();
+					std::string errorPath = errorCodes[errorCodesNum - 1];
+					for (int i = 0; i < errorCodesNum - 1; i++)
+						serverConfig.errorPages.insert(std::make_pair(errorCodes[i], errorPath));
 				}
 				else if (blockkey == "location")
 				{
