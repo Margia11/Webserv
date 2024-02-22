@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 14:06:34 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/22 11:45:43 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/22 12:26:17 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,8 @@ void Response::setBody(std::string body)
 void Response::setDate()
 {
 	time_t now = time(0);
-	char buff[20];
-	strftime(buff, 20, "%a, %d %b %Y %H:%M:%S GMT", gmtime(&now));
+	char buff[30];
+	strftime(buff, 30, "%a, %d %b %Y %H:%M:%S GMT", gmtime(&now));
 	headers["Date"] = buff;
 }
 
@@ -94,8 +94,8 @@ void Response::setLastModified(const std::string &path)
 {
 	struct stat fileStat;
 	stat(path.c_str(), &fileStat);
-	char buff[20];
-	strftime(buff, 20, "%a, %d %b %Y %H:%M:%S GMT", gmtime(&fileStat.st_mtime));
+	char buff[30];
+	strftime(buff, 30, "%a, %d %b %Y %H:%M:%S GMT", gmtime(&fileStat.st_mtime));
 	headers["Last-Modified"] = buff;
 }
 
@@ -158,7 +158,7 @@ void Response::setHeaders_CGI(const ParserRequest &request, const string &body)
         setLastModified(path); */
 	setProtocol(request.getProtocol());
 	setBody(body);
-	//setDate();
+	setDate();
 	setServer("webserv 1.0");
 	setAcceptRanges("bytes");
 	setConnection("Keep-Alive");
@@ -173,7 +173,8 @@ void Response::setHeaders(const ParserRequest &request, const std::map<string, s
 {
 
 	if (statusCode == 200 || statusCode == 301)
-        setLastModified(path);
+		setLastModified(path);
+		std::cout << "path: " << path << std::endl;
 	setProtocol(request.getProtocol());
 	setContentType(path, mimTypes);
 	setBody(getWholeFile(path, getContentType()));
@@ -181,9 +182,6 @@ void Response::setHeaders(const ParserRequest &request, const std::map<string, s
 	setHost(request.getHost());
 	if (getContentType() == "img/jpeg")
 		headers["Content-Type"] = "";
-		/* setServer("webserv 1.0");
-	setAcceptRanges("bytes");
-	setConnection("Keep-Alive"); */
 }
 
 bool Response::isValidDir(const char* path)
