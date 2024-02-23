@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:42:02 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/21 14:30:23 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/23 16:23:03 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,33 @@ GetResponse::~GetResponse()
 {
 }
 
+std::string GetResponse::generateAutoindex(std::string root, std::string uri)
+{
+	std::string response;
+	DIR *d = opendir((root + uri).c_str());
+	if (d)
+	{
+		dirent *tmp = readdir(d);
+		while (tmp != NULL)
+		{
+			if (tmp->d_name[0] != '.')
+			{
+				response += "<a href=\"" + uri + tmp->d_name + "\">" + tmp->d_name + "</a><br>";
+			}
+			tmp = readdir(d);
+		}
+		closedir(d);
+	}
+	return response;
+}
+
+
 std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 {
 	std::string response;
+	bool autoindex = vs->getAutoindex();
 	std::string root = vs->getRoot();
 	std::string index = vs->getIndex().front();
-	int x = isValidFile((root + "/" + index).c_str());
 	std::vector<std::string> allowedMethods = vs->getAllowMethods();
 	string uri = parser->getUri();
 	if (uri.empty())
@@ -70,10 +91,13 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 		}
 		//uploadPath = l->second.uploadPath;
 		allowedMethods = l->second.allow_methods;
+		autoindex = l->second.autoindex;
+		index = "";
 		//errorPages = l->second.errorPages;
 		//root = l->second.root;
 		//clientMaxBodySize = l->second.clientMaxBodySize;
 	}
+	int x = isValidFile((root + "/" + index).c_str());
 	std::vector<std::string>::iterator it = allowedMethods.begin();
 	while (it != allowedMethods.end())
 	{
@@ -92,6 +116,10 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 		response = toString_CGI();
 		return response;
 	}
+
+	std::cout << "dir: " << root + parser->path << "; valid: " << isValidDir((root + parser->path).c_str()) << std::endl;
+	std::cout << "autoindex: " << autoindex << std::endl;
+	std::cout << "file: " << root + index << "not valid: " << !isValidFile((root + index).c_str()) << std::endl;
 	if (parser->path == "/" && x)
 	{
 		setStatusCode(200);
@@ -103,6 +131,18 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 		setStatusCode(200);
 		setHeaders(*parser, vs->getMimeTypes(), root + parser->path);
 		response = toString();
+	}
+	else if (isValidDir((root + parser->path).c_str()) && autoindex && !isValidFile((root + index).c_str()))
+	{
+		std::string response_body = generateAutoindex(root, parser->path);
+		std::cout << response_body << std::endl;
+		setStatusCode(200);
+		std::string len = numberToString(response_body.size());
+		std::string resp = "Content-Type: text/html\r\n";
+		resp += "Content-Length: " + len + "\r\n\r\n";
+		resp += response_body;
+		setHeaders_CGI(*parser, resp);
+		response = toString_CGI();
 	}
 	else
 	{

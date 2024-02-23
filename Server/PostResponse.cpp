@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:42:50 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/22 15:22:31 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/23 14:30:11 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,3 +186,4 @@ std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 	}
 	return response;
 }
+

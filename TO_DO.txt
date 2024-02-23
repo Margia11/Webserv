@@ -1,8 +1,6 @@
 get immagini con CGI
 post immagini con CGI
 Controllare le immagini più grandi
-FARE LA DELETE
-GESTIRE AUTOINDEX
 GESTIRE IL CONTROLLO DEL client_max_body_size
 SITEMARE LE ERROR PAGES
 GESTIRE DATI IN LOCATION

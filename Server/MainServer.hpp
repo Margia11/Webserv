@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:33 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/07 12:07:06 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/23 14:50:05 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 // #include "VirtualServer.hpp"
 #include "GetResponse.hpp"
 #include "PostResponse.hpp"
+#include "DeleteResponse.hpp"
 #include "../Parser/ParserRequest.hpp"
 #include "utils.hpp"
 #include <stdio.h>

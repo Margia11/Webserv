@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:04:26 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/20 16:32:08 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/23 15:55:42 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ struct LocationInfo
 {
 	std::string root;
 	std::vector<std::string> index;
-	std::string autoindex;
+	bool autoindex;
 	std::string cgi_path;
 	std::vector<std::string> allow_methods;
 	std::string path;
@@ -37,6 +37,7 @@ class VirtualServer
 		std::string root;
 		std::vector<std::string> index;
 		std::string uploadPath;
+		bool autoindex;
 		std::map<std::string, std::string> errorPages;
 		std::map<std::string, LocationInfo> locations;
 		std::map<std::string, std::string> _mimeTypes;
@@ -55,6 +56,7 @@ class VirtualServer
 		const std::map<std::string, LocationInfo>& getLocations() const;
 		const std::string& getClientMaxBodySize() const;
 		const std::map<std::string, std::string>& getMimeTypes() const;
+		bool getAutoindex() const;
 		//LocationInfo *matchLocation(std::map<std::string, LocationInfo> locations, std::string uri);
 		void _setMimeTypes();
 		void printVServer();

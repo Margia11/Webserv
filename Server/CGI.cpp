@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:26:45 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/21 13:44:10 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/23 14:20:51 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,10 +135,8 @@ std::string CGI::CGI_Executer()
 		else
 			std::cout << "Il processo figlio non ha terminato normalmente." << std::endl;
 		char buffer[1024];
-		int red = 0;
 		bzero(buffer, 1024);
 		int n = read(fdResp[0], buffer, 1024);
-		red += n;
 		while (n > 0)
 		{
 			response_body += buffer;

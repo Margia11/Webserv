@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/22 13:43:21 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/23 14:49:00 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 	VirtualServer vs = server.getFirstVS();
 	GetResponse getResponse;
 	PostResponse postResponse;
+	DeleteResponse deleteResponse;
 	std::string answer;
 	std::cout << "Answering request" << std::endl;
 	if (_clientHttpParserMap[it->fd].method == "GET")
@@ -125,7 +126,7 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 	else if (_clientHttpParserMap[it->fd].method == "POST")
 		answer = postResponse.answer(&(_clientHttpParserMap[it->fd]), &vs);
 	else if (_clientHttpParserMap[it->fd].method == "DELETE")
-		std::cout << "DELETE" << std::endl;
+		answer = deleteResponse.answer(&(_clientHttpParserMap[it->fd]), &vs);
 	else
 	{
 		send(it->fd, "HTTP/1.1 405 Method Not Allowed\r\n\r\n", 36, 0);

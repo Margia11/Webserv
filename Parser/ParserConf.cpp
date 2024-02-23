@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:08:08 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/22 14:13:52 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/23 15:44:07 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,19 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 						else
 						{
 							if(locationKey == "autoindex")
-								issLocation >> locationConfig.autoindex;
+							{
+								std::string tmp;
+								issLocation >> tmp;
+								if (tmp == "on")
+									locationConfig.autoindex = true;
+								else if (tmp == "off")
+									locationConfig.autoindex = false;
+								else
+								{
+									std::cerr << "Invalid value for autoindex: " << tmp << std::endl;
+									exit(1);
+								}
+							}
 							else if (locationKey == "allow_methods")
 							{
 								std::string method;

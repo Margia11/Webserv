@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:32:59 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/21 13:45:30 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/23 15:45:48 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ VirtualServer::VirtualServer(const ServerConfig& config)
 			this->index.push_back(*it);
 		it++;
 	}
-	if (this->index.empty())
-		this->index.push_back("index.html");
+	this->autoindex = config.autoindex;
 	this->uploadPath = config.uploadPath;
 	this->errorPages = config.errorPages;
 	this->client_max_body_size = config.client_max_body_size;
@@ -119,6 +118,11 @@ std::string const &VirtualServer::getRoot() const
 std::vector<std::string> const &VirtualServer::getIndex() const
 {
 	return (this->index);
+}
+
+bool VirtualServer::getAutoindex() const
+{
+	return (this->autoindex);
 }
 
 std::map <std::string, std::string> const &VirtualServer::getErrorPages() const

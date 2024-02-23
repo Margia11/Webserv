@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 11:55:49 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/20 11:43:03 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/23 15:42:48 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ struct LocationConfig
 	std::string locationPath;
 	std::vector<std::string> allow_methods;
 	std::string root;
-	std::string autoindex;
+	bool autoindex;
 	std::vector<std::string> index;
 	std::string CGI_path;
 };
@@ -39,6 +39,7 @@ struct ServerConfig
 	int port;
 	std::vector<std::string> index;
 	std::string uploadPath;
+	bool autoindex;
 	std::string root;
 	std::string host;
 	std::vector<std::string> server_name;
