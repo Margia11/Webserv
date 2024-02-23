@@ -16,7 +16,7 @@ MainServer::MainServer(const std::string& config) : _parserRequest()
 {
 	std::vector<ServerConfig> serverConfigs;
 	parseServerconf(config, serverConfigs);
-	printServerConfigs(serverConfigs);
+	//printServerConfigs(serverConfigs);
 	for (std::vector<ServerConfig>::iterator it = serverConfigs.begin(); it != serverConfigs.end(); ++it)
 	{
 		if (SimpleServers.find(it->port) != SimpleServers.end())
@@ -65,7 +65,6 @@ void MainServer::launch()
 					_handleConnections(_fds[i].fd);
 				else
 				{
-					std::cout << "il problema è qui" << std::endl;
 					_handleRequest(_fds.begin() + i);
 					if (_fds[i].fd == -1) {
 						_fds.erase(_fds.begin() + i);
@@ -105,10 +104,11 @@ std::string MainServer::readFromFd(int fd)
 
 void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 {
+	std::cout << "New request issued from " << it->fd << std::endl;
 	std::string buffer = readFromFd(it->fd);
 	if (buffer.empty())
 		return;
-	std::cout << "Received request:\n";
+	//std::cout << "Received request:\n";
 	std::cout << buffer << std::endl;
 	_clientHttpParserMap[it->fd].readRequest(buffer);
 	std::string tmp = _clientHttpParserMap[it->fd].getHost();
@@ -134,8 +134,8 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 
 	//std::cout << "Answer size = " << answer.size() << std::endl;
 	send(it->fd, answer.c_str(), answer.size(), 0);
-	std::cout << "Response:" << std::endl;
-	std::cout << answer << std::endl;
+	//std::cout << "Response:" << std::endl;
+	//std::cout << answer << std::endl;
 	answer.clear();
 }
 
@@ -186,6 +186,7 @@ void MainServer::_handleConnections(int fd)
 	clientPollFd_.fd = clientFd_;
 	clientPollFd_.events = POLLIN;
 	_fds.push_back(clientPollFd_);
+	std::cout << "New connection issued from " << clientFd_ << std::endl;
 	_clientHttpParserMap[clientFd_] = ParserRequest();
 }
 

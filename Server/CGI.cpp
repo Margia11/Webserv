@@ -14,16 +14,23 @@
 
 CGI::CGI(ParserRequest *parser, LocationInfo *location, std::string script)
 {
+	std::cout << "CGI-function1" << std::endl;
 	CGI_env["SERVER_SOFTWARE"] = "webserv/1.0";
 	CGI_env["SERVER_NAME"] = toHostPort(parser->getHost()).first;
+	std::cout << "CGI-function2" << std::endl;
 	CGI_env["GATEWAY_INTERFACE"] = "CGI/1.1";
 	CGI_env["SERVER_PROTOCOL"] = "HTTP/1.1";
 	CGI_env["SERVER_PORT"] = toHostPort(parser->getHost()).second;
+	std::cout << "CGI-function3" << std::endl;
 	CGI_env["REQUEST_METHOD"] = parser->method;
 	CGI_env["REQUEST_URI"] = parser->getUri();
+	std::cout << "CGI-function4" << std::endl;
 	CGI_env["PATH_INFO"] = location->root + location->cgi_path;
+	std::cout << "CGI-function5" << std::endl;
 	CGI_env["SCRIPT_NAME"] = script;
+	std::cout << "CGI-function6" << std::endl;
 	CGI_env["QUERY_STRING"] = parser->getQuery();
+	std::cout << "CGI-function7" << std::endl;
 	CGI_env["CONTENT_LENGTH"] = parser->headers.find("Content-Length")->second;
 	CGI_env["CONTENT_TYPE"] = parser->headers.find("Content-Type")->second;
 	CGI_env["HTTP_ACCEPT"] = parser->headers.find("Accept")->second;
@@ -31,10 +38,12 @@ CGI::CGI(ParserRequest *parser, LocationInfo *location, std::string script)
 	CGI_env["HTTP_ACCEPT_ENCODING"] = parser->headers.find("Accept-Encoding")->second;
 	CGI_env["HTTP_CONNECTION"] = parser->headers.find("Connection")->second;
 	CGI_env["HTTP_HOST"] = toHostPort(parser->getHost()).first;
-	CGI_env["HTTP_USER_AGENT"] = parser->headers.find("User-Agent")->second;
-	CGI_env["HTTP_REFERER"] = parser->headers.find("Referer")->second;
-	CGI_env["HTTP_COOKIE"] = parser->headers.find("Cookie")->second;
+	std::cout << "CGI-function8" << std::endl;
+	//CGI_env["HTTP_USER_AGENT"] = parser->headers.find("User-Agent")->second;
+	//CGI_env["HTTP_REFERER"] = parser->headers.find("Referer")->second;
+	//CGI_env["HTTP_COOKIE"] = parser->headers.find("Cookie")->second;
 
+	std::cout << "CGI-function9" << std::endl;
 	env_execve = new char*[CGI_env.size() + 1];
 	std::map<std::string, std::string>::iterator it = CGI_env.begin();
 	for (int i = 0; it != CGI_env.end(); it++, i++)
@@ -42,11 +51,14 @@ CGI::CGI(ParserRequest *parser, LocationInfo *location, std::string script)
 		env_execve[i] = new char[it->first.size() + it->second.size() + 2];
 		strcpy(env_execve[i], (it->first + "=" + it->second).c_str());
 	}
+	std::cout << "CGI-function10" << std::endl;
 	env_execve[CGI_env.size()] = NULL;
 	response_body = "";
 	request_body = parser->body;
+	std::cout << "CGI-function11" << std::endl;
 	arg_execve = new char*[2];
 	arg_execve[1] = NULL;
+	std::cout << "CGI-function12" << std::endl;
 }
 
 CGI::~CGI()

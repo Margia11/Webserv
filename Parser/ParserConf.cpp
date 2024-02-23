@@ -81,11 +81,9 @@ int IsValidServer(const ServerConfig& serverConfig, const LocationConfig& Locati
 
 static bool isValidMethod(const std::string& method)
 {
-	std::vector<std::string> allowedMethods;
-	allowedMethods.push_back("GET");
-	allowedMethods.push_back("POST");
-	allowedMethods.push_back("DELETE");
-	return std::find(allowedMethods.begin(), allowedMethods.end(), method) != allowedMethods.end();
+	if (method.compare("GET") == 0 || method.compare("POST") == 0 || method.compare("DELETE")== 0 )
+		return (1);
+	return (0);
 }
 
 void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& serverConfigs)

@@ -98,10 +98,10 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 		setHeaders(*parser, vs->getMimeTypes(), root + "/" + index);
 		response = toString();
 	}
-	else if (isValidFile((root + "/" + parser->path).c_str()))
+	else if (isValidFile((root + parser->path).c_str()))
 	{
 		setStatusCode(200);
-		setHeaders(*parser, vs->getMimeTypes(), root + "/" + parser->path);
+		setHeaders(*parser, vs->getMimeTypes(), root + parser->path);
 		response = toString();
 	}
 	else
