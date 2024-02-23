@@ -8,10 +8,17 @@
 <body>
 
     <h1>Modulo di Esempio</h1>
-
-    <form action="post_files.py" method="post">
-        <input type="text" name="name" />
-        <input type="file" name="file" />
+    <p>Questo è un modulo di esempio per l'upload di testo.</p>
+    <form action="script.cgi" method="post">
+        <input type="text" name="name" id="name"/>
+        <input type="text" name="email" id="email"/>
+        <input type="submit" value="Invia">
+    </form>
+    <p>Questo è un modulo di esempio per l'upload di file.</p>
+    <form action="post_files.py" method="post" enctype="multipart/form-data">
+        <input type="text" name="name" id="name"/>
+        <!--<input type="text" name="name" id="name"/> -->
+        <input type="file" name="file" id="file"/>
         <input type="submit" value="Invia">
     </form>
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import cgi
+import os
 
 # Set the content type to HTML
 # print()
@@ -9,11 +10,10 @@ import cgi
 form = cgi.FieldStorage()
 
 # Extract the form field values
-name = form.getvalue('name')
-file = form.getvalue('file')
-fileitem = form['file']
+#file = form['file'].value
+#fileitem = form['file']
 
-uploadPath = "./web/uploads"
+""" uploadPath = "./web/uploads/"
 postDataPath = uploadPath + "/post_data.txt"
 
 if fileitem.filename:
@@ -25,22 +25,19 @@ else:
     message = "No file was uploaded"
 
 with open(postDataPath, 'w') as f :
-   f.write(name)
-   f.write("\n")
-   f.write(file)
+   f.write(file) """
 
 # Print out the form data
 body = """
 <html>
 <body>
 <h1>Form Data</h1>
-<p>Name: %s</p>
-<p>File: %s</p>
+<p>Form: %s</p>
 </body>
 </html>
-""" % (name, file)
+""" % (form)
 
-print("Content-type: text/html\r\n")
-print("Content-Length: %d\r\n" % len(body))
-print("\r\n")
+print("Content-type: text/html\r")
+print("Content-Length: %d\r" % len(body))
+print("\r")
 print(body)

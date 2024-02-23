@@ -107,17 +107,12 @@ std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 	}
 	if (l != locations.end() && use_CGI)
 	{
-		std::cout << "CGI" << std::endl;
 		CGI cgi(parser, &(l->second), file_requested);
-		std::cout << "CGI" << std::endl;
 		setStatusCode(200);
-		std::cout << "CGI" << std::endl;
 		std::string buffer = cgi.CGI_Executer();
-		std::cout << "CGI" << std::endl;
 		setHeaders_CGI(*parser, buffer);
-		std::cout << "CGI" << std::endl;
 		response = toString_CGI();
-		std::cout << "CGI" << std::endl;
+		std::cout << "response: " << response << std::endl;
 		return response;
 	}
 	else

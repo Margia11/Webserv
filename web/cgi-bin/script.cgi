@@ -16,6 +16,7 @@ uploadPath = "./web/uploads"
 postDataPath = uploadPath + "/post_data.txt"
 with open(postDataPath, 'w') as f :
     f.write(name)
+    f.write("\n")
     f.write(email)
 
 # Print out the form data
@@ -29,7 +30,7 @@ body = """
 </html>
 """ % (name, email)
 
-print("Content-type: text/html\r\n")
+print("Content-type: text/html\r")
 print("Content-Length: %d\r" % len(body))
 print("\r")
 print(body)
