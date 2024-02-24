@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/23 14:49:00 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/24 11:37:13 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ std::string MainServer::readFromFd(int fd)
 	else if (byte_read == 0)
 	{
 		std::cout << "Client closed connection" << std::endl;
-		close(fd);
+		// close(fd);
 		return "";
 	}
 	return std::string(buffer, byte_read);
@@ -132,11 +132,10 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 		send(it->fd, "HTTP/1.1 405 Method Not Allowed\r\n\r\n", 36, 0);
 		return;
 	}
-
 	//std::cout << "Answer size = " << answer.size() << std::endl;
 	send(it->fd, answer.c_str(), answer.size(), 0);
-	//std::cout << "Response:" << std::endl;
-	//std::cout << answer << std::endl;
+	std::cout << "Response:" << std::endl;
+	std::cout << answer << std::endl;
 	answer.clear();
 }
 

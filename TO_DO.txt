@@ -13,4 +13,4 @@ assegnare id per ogni client (debug)
 quando sto in form.html e richiedo lo script per upload del form, è come se mi trovassi nella location / invece che in /form.html
 è giusto?
 
-
+content type e CONTENT_LENGTH

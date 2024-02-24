@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:26:45 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/23 14:20:51 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/24 11:25:19 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,14 @@ std::string CGI::CGI_Executer()
 		std::cerr << "Error in pipe" << std::endl;
 		exit(1);
 	}
+    // int saveStdin = dup(STDIN_FILENO);
+    // int saveStdout = dup(STDOUT_FILENO);
+    // FILE* fileIn = tmpfile();
+    // FILE* fileOut = tmpfile();
+    // int fdIn = fileno(fileIn);
+    // int fdOut = fileno(fileOut);
+	// write(fdIn, request_body.c_str(), request_body.size());
+    // lseek(fdIn, 0, SEEK_SET);
 	pid_t pid = fork();
 	if (pid == -1)
 	{
@@ -130,6 +138,7 @@ std::string CGI::CGI_Executer()
 		int status;
 		while(waitpid(pid, &status, 0) == 0)
 			sleep(1);
+
 		if (WIFEXITED(status))
 			std::cout << "Il processo figlio ha terminato con codice di uscita: " << WEXITSTATUS(status) << std::endl;
 		else

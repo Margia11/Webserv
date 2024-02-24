@@ -9,14 +9,13 @@
 
     <h1>Modulo di Esempio</h1>
     <p>Questo è un modulo di esempio per l'upload di testo.</p>
-    <form action="script.cgi" method="post">
+    <form action="post_form_text.py" method="post">
         <input type="text" name="name" id="name"/>
         <input type="text" name="email" id="email"/>
         <input type="submit" value="Invia">
     </form>
     <p>Questo è un modulo di esempio per l'upload di file.</p>
-    <form action="post_files.py" method="post" enctype="multipart/form-data">
-        <input type="text" name="name" id="name"/>
+    <form action="post_form_files.py" method="post" enctype="multipart/form-data">
         <!--<input type="text" name="name" id="name"/> -->
         <input type="file" name="file" id="file"/>
         <input type="submit" value="Invia">

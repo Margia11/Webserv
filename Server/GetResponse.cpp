@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:42:02 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/23 16:23:03 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/24 09:45:53 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 		//uploadPath = l->second.uploadPath;
 		allowedMethods = l->second.allow_methods;
 		autoindex = l->second.autoindex;
-		index = "";
+		index = (l->second.index).front();
 		//errorPages = l->second.errorPages;
 		//root = l->second.root;
 		//clientMaxBodySize = l->second.clientMaxBodySize;

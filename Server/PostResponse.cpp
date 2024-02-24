@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:42:50 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/23 14:30:11 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/24 11:08:09 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 		std::string buffer = cgi.CGI_Executer();
 		setHeaders_CGI(*parser, buffer);
 		response = toString_CGI();
-		std::cout << "response: " << response << std::endl;
+		//std::cout << "response: " << response << std::endl;
 		return response;
 	}
 	else
