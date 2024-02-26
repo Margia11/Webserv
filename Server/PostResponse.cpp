@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:42:50 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/24 11:08:09 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/26 15:58:19 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,18 @@ std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 		CGI cgi(parser, &(l->second), file_requested);
 		setStatusCode(200);
 		std::string buffer = cgi.CGI_Executer();
-		setHeaders_CGI(*parser, buffer);
-		response = toString_CGI();
+		if (cgi.getErr() == 1)
+		{
+			setStatusCode(500);
+			std::string err = vs->getErrorPages().find("500")->second;
+			setHeaders(*parser, vs->getMimeTypes(), err);
+			response = toString();
+		}
+		else
+		{
+			setHeaders_CGI(*parser, buffer);
+			response = toString_CGI();
+		}
 		//std::cout << "response: " << response << std::endl;
 		return response;
 	}

@@ -1,3 +1,4 @@
+Controllare le immagini più grandi
 GESTIRE IL CONTROLLO DEL client_max_body_size
 SITEMARE LE ERROR PAGES
 GESTIRE DATI IN LOCATION
@@ -11,4 +12,4 @@ quando sto in form.html e richiedo lo script per upload del form, è come se mi 
 è giusto?
 
 content type e CONTENT_LENGTH
-redirection
+se la chi fallisce deve ritornare error500

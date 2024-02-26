@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/26 10:19:34 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/26 15:54:42 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,11 @@ std::string MainServer::readFromFd(int fd)
 {
 	std::string ret("");
 	int byte_read = 0;
-	int total_byte_read = 0;
+	// int total_byte_read = 0;
 	char buffer[32000];
 	while (true)
 	{
-		bzero(buffer, 32000);
+		memset(buffer, 0, 32000);
 		byte_read = read(fd, buffer, 32000);
 		if (byte_read < 0)
 		{
@@ -106,13 +106,15 @@ std::string MainServer::readFromFd(int fd)
 		else if (byte_read > 0 && byte_read < 32000)
 		{
 			ret.append(buffer, byte_read);
-			//std::cout << "Read " << ret << std::endl;
-			total_byte_read += byte_read;
+			std::cout << "Read " << byte_read << std::endl;
+			// total_byte_read += byte_read;
 			break;
 		}
 		ret.append(buffer, byte_read);
+		std::cout << "Read " << byte_read << std::endl;
+		usleep(150);
 		//std::cout << "Read " << ret << std::endl;
-		total_byte_read += byte_read;
+		// total_byte_read += byte_read;
 	}
 	return (ret);
 }
@@ -152,10 +154,16 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 		send(it->fd, "HTTP/1.1 405 Method Not Allowed\r\n\r\n", 36, 0);
 		return;
 	}
-	//std::cout << "Answer size = " << answer.size() << std::endl;
-	send(it->fd, answer.c_str(), answer.size(), 0);
-	std::cout << "Response:" << std::endl;
-	std::cout << answer << std::endl;
+	std::cout << "Response: " << answer << std::endl;
+	long int dataSent;
+	while (answer.size() > 32000)
+	{
+		std::string temp = answer.substr(0, 32000);
+		dataSent = send(it->fd, temp.data(), temp.size(), 0);
+		temp.clear();
+		answer = answer.substr(dataSent);
+	}
+	send(it->fd, answer.data(), answer.size(), 0);
 	answer.clear();
 }
 

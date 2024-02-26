@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:26:45 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/24 11:25:19 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/26 16:26:41 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,28 @@ std::string CGI::getCmd()
 //     }
 // }
 
+int CGI::getErr()
+{
+	return (this->err);
+}
+
+// static bool checkContent(std::string content)
+// {
+// 	if (content.find("Content-Type") == std::string::npos)
+// 			return (false);
+// 		if (content.find("Content-Length") == std::string::npos)
+// 			return (false);
+// 		std::string body = content.substr(content.find("\r\n\r\n") + 4);
+// 		size_t cl_begin = content.find("Content-Length") + 16;
+// 		size_t cl_end = content.find("\r\n", cl_begin);
+// 		std::cout << "cl: " << content.substr(cl_begin, cl_end) << std::endl;
+// 		size_t cl = atoi((content.substr(cl_begin, cl_end)).c_str());
+// 		if (body.size() != cl)
+// 			return (false);
+// 		return (true);
+// }
+
+
 
 std::string CGI::CGI_Executer()
 {
@@ -106,14 +128,6 @@ std::string CGI::CGI_Executer()
 		std::cerr << "Error in pipe" << std::endl;
 		exit(1);
 	}
-    // int saveStdin = dup(STDIN_FILENO);
-    // int saveStdout = dup(STDOUT_FILENO);
-    // FILE* fileIn = tmpfile();
-    // FILE* fileOut = tmpfile();
-    // int fdIn = fileno(fileIn);
-    // int fdOut = fileno(fileOut);
-	// write(fdIn, request_body.c_str(), request_body.size());
-    // lseek(fdIn, 0, SEEK_SET);
 	pid_t pid = fork();
 	if (pid == -1)
 	{
@@ -138,11 +152,13 @@ std::string CGI::CGI_Executer()
 		int status;
 		while(waitpid(pid, &status, 0) == 0)
 			sleep(1);
-
-		if (WIFEXITED(status))
-			std::cout << "Il processo figlio ha terminato con codice di uscita: " << WEXITSTATUS(status) << std::endl;
+		if (WIFEXITED(status) && WIFEXITED(status) != 0)
+		{
+			this->err = 1;
+			return "";
+		}
 		else
-			std::cout << "Il processo figlio non ha terminato normalmente." << std::endl;
+			std::cout << "exit code1: " << WIFEXITED(status) << std::endl;
 		char buffer[1024];
 		bzero(buffer, 1024);
 		int n = read(fdResp[0], buffer, 1024);
@@ -153,6 +169,10 @@ std::string CGI::CGI_Executer()
 			n = read(fdResp[0], buffer, 1024);
 		}
 		close(fdResp[0]);
+		// if(!checkContent(response_body))
+		// 	this->err = 1;
 	}
 	return response_body;
 }
+
+

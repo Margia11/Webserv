@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:22:23 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/21 10:23:47 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/26 15:48:50 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ class CGI
 		std::map<std::string, std::string> CGI_env;
 		char **env_execve;
 		std::string request_body;
+		int err;
 		std::string response_body;
 		char **arg_execve;
 	public :
@@ -35,6 +36,7 @@ class CGI
 		~CGI();
 		std::string CGI_Executer();
 		std::string getCmd();
+		int getErr();
 };
 
 

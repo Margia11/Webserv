@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 14:06:34 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/23 16:14:20 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/26 15:53:42 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,7 @@ void Response::setHeaders_CGI(const ParserRequest &request, const string &body)
 	setServer("webserv 1.0");
 	setAcceptRanges("bytes");
 	setConnection("Keep-Alive");
+	std::cout << "Headers set" << std::endl;
 }
 
 void Response::setHost(std::string host)

@@ -10,7 +10,14 @@ if 'file' in form:
     # Extract the form field values
     fileitem = form['file']
 
-    # Rest of your script to process the file...
+    uploadPath = "./web/uploads/"
+    postDataPath = uploadPath + "post_data.txt"
+
+    with open(uploadPath + fileitem.filename, 'wb') as f:
+        f.write(fileitem.file.read())
+
+    with open (postDataPath, 'w') as f:
+        f.write(f"filename: {fileitem.filename}")
 
     # Prepare the HTML response
     success_body = """
@@ -18,11 +25,9 @@ if 'file' in form:
     <body>
     <h1>File Uploaded Successfully</h1>
     <p>Filename: %s</p>
-    <p>Content:</p>
-    <pre>%s</pre>
     </body>
     </html>
-    """ % (fileitem.filename, fileitem.file.read().decode('utf-8'))
+    """ % (fileitem.filename)
 
     # Calculate the content length
     content_length = len(success_body)
