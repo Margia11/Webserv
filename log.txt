@@ -1,214 +1,19 @@
 Server on port 8002 created
 Server on port 8003 created
 New connection issued from 5
-New request issued from 5
-GET / HTTP/1.1
-Host: localhost:8002
-Connection: keep-alive
-sec-ch-ua: "Chromium";v="122", "Not(A:Brand";v="24", "Google Chrome";v="122"
-sec-ch-ua-mobile: ?0
-sec-ch-ua-platform: "macOS"
-Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
-Sec-Purpose: prefetch;prerender
-Purpose: prefetch
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-Sec-Fetch-Site: none
-Sec-Fetch-Mode: navigate
-Sec-Fetch-User: ?1
-Sec-Fetch-Dest: document
-Accept-Encoding: gzip, deflate, br, zstd
-Accept-Language: it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7
-If-Modified-Since: Sat, 24 Feb 2024 08:52:18 GMT
-
-
-Answering request
-dir: ./web/; valid: 1
-autoindex: 0
-file: ./webindex.htmlnot valid: 1
-path: ./web/index.html
-Response:
-HTTP/1.1 200 OK
-Content-Length: 1985
-Content-Type: text/html
-Host: localhost:8002
-Last-Modified: Sat, 24 Feb 2024 08:52:18 GMT
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WebServer</title>
-  <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-      text-align: center;
-    }
-
-    h1 {
-      color: #333;
-      text-decoration: underline;
-      font-size: 48px;
-      line-height: 1.2;
-      margin-top: 0;
-      margin-bottom: 20px;
-    }
-
-    p {
-      color: #666;
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
-
-    ul {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    li {
-      background-color: #ddd;
-      margin: 0;
-      padding: 20px;
-      border-radius: 5px;
-    }
-
-    img {
-      max-width: 100%;
-      height: auto;
-      margin-top: 20px;
-    }
-
-    .rocket {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 200px;
-      height: 200px;
-      background-color: #666;
-      background-repeat: no-repeat;
-      background-size: cover;
-      animation: move 3s linear infinite;
-    }
-
-    @keyframes move {
-      from {
-        transform: translate(0, 0);
-      }
-      to {
-        transform: translate(100%, 100%);
-      }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-  </style>
-</head>
-<body>
-
-  <h1>Benvenuto nel nostro WebServer</h1>
-
-  <p>Si la pagina fa schifo.</p>
-  <ul>
-    <li>amargiac</li>
-    <li>gcucino</li>
-  </ul>
-
-  <a href="form.html">form carino</a>
-  <img src="https://robohash.org/rocket?size=400x400" alt="Rocket Image" class="rocket" style="border-radius: 50%;">
-  <!--<img src="./img/Gatto.jpeg"></img> -->
-  <ul>
-    <li>
-      <form action="get_files.py" method="GET">
-        <input type="submit" value="Get files">
-      </form>
-    </li>
-    <li>
-      <form action="get_images.py" method="GET">
-        <input type="submit" value="Get Cat">
-      </form>
-    </li>
-  </ul>
-</body>
-</html>
-
-New request issued from 5
-GET /form.html HTTP/1.1
-Host: localhost:8002
-Connection: keep-alive
-sec-ch-ua: "Chromium";v="122", "Not(A:Brand";v="24", "Google Chrome";v="122"
-sec-ch-ua-mobile: ?0
-sec-ch-ua-platform: "macOS"
-Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-Sec-Fetch-Site: same-origin
-Sec-Fetch-Mode: navigate
-Sec-Fetch-User: ?1
-Sec-Fetch-Dest: document
-Referer: http://localhost:8002/
-Accept-Encoding: gzip, deflate, br, zstd
-Accept-Language: it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7
-If-Modified-Since: Sat, 24 Feb 2024 08:48:45 GMT
-
-
-Answering request
-dir: ./web/form.html; valid: 0
-autoindex: 0
-file: ./webindex.htmlnot valid: 1
-path: ./web/form.html
-Response:
-HTTP/1.1 200 OK
-Content-Length: 833
-Content-Type: text/html
-Host: localhost:8002
-Last-Modified: Sat, 24 Feb 2024 10:24:57 GMT
-
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modulo di Esempio</title>
-</head>
-<body>
-
-    <h1>Modulo di Esempio</h1>
-    <p>Questo è un modulo di esempio per l'upload di testo.</p>
-    <form action="post_form_text.py" method="post">
-        <input type="text" name="name" id="name"/>
-        <input type="text" name="email" id="email"/>
-        <input type="submit" value="Invia">
-    </form>
-    <p>Questo è un modulo di esempio per l'upload di file.</p>
-    <form action="post_form_files.py" method="post" enctype="multipart/form-data">
-        <!--<input type="text" name="name" id="name"/> -->
-        <input type="file" name="file" id="file"/>
-        <input type="submit" value="Invia">
-    </form>
-
-</body>
-</html>
-
 New connection issued from 6
 New request issued from 5
 POST /post_form_files.py HTTP/1.1
 Host: localhost:8002
 Connection: keep-alive
-Content-Length: 610
+Content-Length: 632
 Cache-Control: max-age=0
 sec-ch-ua: "Chromium";v="122", "Not(A:Brand";v="24", "Google Chrome";v="122"
 sec-ch-ua-mobile: ?0
 sec-ch-ua-platform: "macOS"
 Upgrade-Insecure-Requests: 1
 Origin: http://localhost:8002
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryAYb2Q3NqVdvfPAuI
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryA65BfsjYKnv6Yfz5
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
 Sec-Fetch-Site: same-origin
@@ -227,26 +32,25 @@ Response:
 HTTP/1.1 200 OK
 Accept-Ranges: bytes
 Connection: Keep-Alive
-Date: Sat, 24 Feb 2024 10:28:26 GMT
+Date: Mon, 26 Feb 2024 10:08:26 GMT
 Server: webserv 1.0
 Content-type: text/html
-Content-Length: 92
+Content-Length: 120
 
 
-<html>
-<body>
-<h1>Form Data</h1>
-<p>Form: FieldStorage(None, None, [])</p>
-</body>
-</html>
-
+    <html>
+    <body>
+    <h1>Error</h1>
+    <p>File field not found in the form data.</p>
+    </body>
+    </html>
+    
 
 New request issued from 5
-------WebKitFormBoundaryAYb2Q3NqVdvfPAuI
+------WebKitFormBoundaryA65BfsjYKnv6Yfz5
 Content-Disposition: form-data; name="file"; filename="TO_DO.txt"
 Content-Type: text/plain
 
-get immagini con CGI
 post immagini con CGI
 Controllare le immagini più grandi
 GESTIRE IL CONTROLLO DEL client_max_body_size
@@ -262,80 +66,9 @@ quando sto in form.html e richiedo lo script per upload del form, è come se mi 
 è giusto?
 
 content type e CONTENT_LENGTH
+se la chi fallisce deve ritornare error500
 
-------WebKitFormBoundaryAYb2Q3NqVdvfPAuI--
-
-Answering request
-file_requested: post_form_files.py
-Il processo figlio ha terminato con codice di uscita: 0
-Response:
-HTTP/1.1 200 OK
-Accept-Ranges: bytes
-Connection: Keep-Alive
-Date: Sat, 24 Feb 2024 10:28:26 GMT
-Server: webserv 1.0
-Content-type: text/html
-Content-Length: 92
-
-
-<html>
-<body>
-<h1>Form Data</h1>
-<p>Form: FieldStorage(None, None, [])</p>
-</body>
-</html>
-
-
-New request issued from 5
-Client closed connection
-New request issued from 6
-Client closed connection
-New connection issued from 5
-New connection issued from 6
-New request issued from 5
-POST /post_form_files.py HTTP/1.1
-Host: localhost:8002
-Connection: keep-alive
-Content-Length: 610
-Cache-Control: max-age=0
-sec-ch-ua: "Chromium";v="122", "Not(A:Brand";v="24", "Google Chrome";v="122"
-sec-ch-ua-mobile: ?0
-sec-ch-ua-platform: "macOS"
-Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
-Origin: http://localhost:8002
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryAYb2Q3NqVdvfPAuI
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-Sec-Fetch-Site: same-origin
-Sec-Fetch-Mode: navigate
-Sec-Fetch-User: ?1
-Sec-Fetch-Dest: document
-Referer: http://localhost:8002/form.html
-Accept-Encoding: gzip, deflate, br, zstd
-Accept-Language: it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7
-
-------WebKitFormBoundaryAYb2Q3NqVdvfPAuI
-Content-Disposition: form-data; name="file"; filename="TO_DO.txt"
-Content-Type: text/plain
-
-get immagini con CGI
-post immagini con CGI
-Controllare le immagini più grandi
-GESTIRE IL CONTROLLO DEL client_max_body_size
-SITEMARE LE ERROR PAGES
-GESTIRE DATI IN LOCATION
-CHECK LEAKS
-
-Gestire doppi servername
-assegnare id per ogni client (debug)
-
-(?)
-quando sto in form.html e richiedo lo script per upload del form, è come se mi trovassi nella location / invece che in /form.html
-è giusto?
-
-content type e CONTENT_LENGTH
-
-------WebKitFormBoundaryAYb2Q3NqVdvfPAuI--
+------WebKitFormBoundaryA65BfsjYKnv6Yfz5--
 
 Answering request
 file_requested: post_form_files.py
@@ -344,19 +77,19 @@ Response:
 HTTP/1.1 200 OK
 Accept-Ranges: bytes
 Connection: Keep-Alive
-Date: Sat, 24 Feb 2024 10:30:58 GMT
+Date: Mon, 26 Feb 2024 10:08:26 GMT
 Server: webserv 1.0
 Content-type: text/html
-Content-Length: 591
+Content-Length: 120
 
 
-<html>
-<body>
-<h1>Form Data</h1>
-<p>Form: FieldStorage(None, None, [FieldStorage('file', 'TO_DO.txt', b'get immagini con CGI\npost immagini con CGI\nControllare le immagini pi\xc3\xb9 grandi\nGESTIRE IL CONTROLLO DEL client_max_body_size\nSITEMARE LE ERROR PAGES\nGESTIRE DATI IN LOCATION\nCHECK LEAKS\n\nGestire doppi servername\nassegnare id per ogni client (debug)\n\n(?)\nquando sto in form.html e richiedo lo script per upload del form, \xc3\xa8 come se mi trovassi nella location / invece che in /form.html\n\xc3\xa8 giusto?\n\ncontent type e CONTENT_LENGTH\n')])</p>
-</body>
-</html>
-
+    <html>
+    <body>
+    <h1>Error</h1>
+    <p>File field not found in the form data.</p>
+    </body>
+    </html>
+    
 
 New request issued from 5
 Client closed connection

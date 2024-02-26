@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/24 11:37:13 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/26 10:19:34 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void MainServer::launch()
 {
 	while (true)
 	{
-		int ready = poll(_fds.data(), _fds.size(), 10000); //50 millisecondi di timeout
+		int ready = poll(_fds.data(), _fds.size(), -1);
 		if (ready == -1)
 		{
 			std::cerr << "poll failed" << std::endl;
@@ -96,7 +96,7 @@ std::string MainServer::readFromFd(int fd)
 	else if (byte_read == 0)
 	{
 		std::cout << "Client closed connection" << std::endl;
-		// close(fd);
+			close(fd);
 		return "";
 	}
 	return std::string(buffer, byte_read);

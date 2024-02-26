@@ -1,4 +1,3 @@
-get immagini con CGI
 post immagini con CGI
 Controllare le immagini più grandi
 GESTIRE IL CONTROLLO DEL client_max_body_size
@@ -14,3 +13,4 @@ quando sto in form.html e richiedo lo script per upload del form, è come se mi 
 è giusto?
 
 content type e CONTENT_LENGTH
+se la chi fallisce deve ritornare error500
