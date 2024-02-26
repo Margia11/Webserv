@@ -1,11 +1,6 @@
 #!/usr/bin/env python3
 
 import cgi
-import os
-
-# Print the content type to HTML
-print("Content-type: text/html\r")
-print()
 
 # Get the form data from the request
 form = cgi.FieldStorage()
@@ -17,16 +12,46 @@ if 'file' in form:
 
     # Rest of your script to process the file...
 
-    # Print success message
-    print("<html><body>")
-    print("<h1>File Uploaded Successfully</h1>")
-    print("<p>Filename: %s</p>" % fileitem.filename)
-    print("<p>Content:</p>")
-    print("<pre>%s</pre>" % fileitem.file.read().decode('utf-8'))
-    print("</body></html>")
+    # Prepare the HTML response
+    success_body = """
+    <html>
+    <body>
+    <h1>File Uploaded Successfully</h1>
+    <p>Filename: %s</p>
+    <p>Content:</p>
+    <pre>%s</pre>
+    </body>
+    </html>
+    """ % (fileitem.filename, fileitem.file.read().decode('utf-8'))
+
+    # Calculate the content length
+    content_length = len(success_body)
+
+    # Print headers, including Content-Length
+    print("Content-type: text/html; charset=utf-8\r")
+    print("Content-Length: %d\r" % content_length)
+    print("\r")
+
+    # Print the HTML body
+    print(success_body)
 else:
     # Print error message if 'file' field is not present
-    print("<html><body>")
-    print("<h1>Error</h1>")
-    print("<p>File field not found in the form data.</p>")
-    print("</body></html>")
+    error_body = """
+    <html>
+    <body>
+    <h1>Error</h1>
+    <p>File field not found in the form data.</p>
+    </body>
+    </html>
+    """
+
+    # Calculate the content length
+    content_length = len(error_body)
+
+    # Print headers, including Content-Length
+    print("Content-type: text/html\r")
+    print("Content-Length: %d\r" % content_length)
+    print("\r")
+
+    # Print the HTML body
+    print(error_body)

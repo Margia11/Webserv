@@ -13,7 +13,7 @@ sec-ch-ua-mobile: ?0
 sec-ch-ua-platform: "macOS"
 Upgrade-Insecure-Requests: 1
 Origin: http://localhost:8002
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryA65BfsjYKnv6Yfz5
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryAmLzYxVZxI8pab7f
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
 Sec-Fetch-Site: same-origin
@@ -24,30 +24,7 @@ Referer: http://localhost:8002/form.html
 Accept-Encoding: gzip, deflate, br, zstd
 Accept-Language: it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7
 
-
-Answering request
-file_requested: post_form_files.py
-Il processo figlio ha terminato con codice di uscita: 0
-Response:
-HTTP/1.1 200 OK
-Accept-Ranges: bytes
-Connection: Keep-Alive
-Date: Mon, 26 Feb 2024 10:08:26 GMT
-Server: webserv 1.0
-Content-type: text/html
-Content-Length: 120
-
-
-    <html>
-    <body>
-    <h1>Error</h1>
-    <p>File field not found in the form data.</p>
-    </body>
-    </html>
-    
-
-New request issued from 5
-------WebKitFormBoundaryA65BfsjYKnv6Yfz5
+------WebKitFormBoundaryAmLzYxVZxI8pab7f
 Content-Disposition: form-data; name="file"; filename="TO_DO.txt"
 Content-Type: text/plain
 
@@ -68,7 +45,7 @@ quando sto in form.html e richiedo lo script per upload del form, è come se mi 
 content type e CONTENT_LENGTH
 se la chi fallisce deve ritornare error500
 
-------WebKitFormBoundaryA65BfsjYKnv6Yfz5--
+------WebKitFormBoundaryAmLzYxVZxI8pab7f--
 
 Answering request
 file_requested: post_form_files.py
@@ -77,16 +54,34 @@ Response:
 HTTP/1.1 200 OK
 Accept-Ranges: bytes
 Connection: Keep-Alive
-Date: Mon, 26 Feb 2024 10:08:26 GMT
+Date: Mon, 26 Feb 2024 10:30:27 GMT
 Server: webserv 1.0
-Content-type: text/html
-Content-Length: 120
+Content-type: text/html; charset=utf-8
+Content-Length: 604
 
 
     <html>
     <body>
-    <h1>Error</h1>
-    <p>File field not found in the form data.</p>
+    <h1>File Uploaded Successfully</h1>
+    <p>Filename: TO_DO.txt</p>
+    <p>Content:</p>
+    <pre>post immagini con CGI
+Controllare le immagini più grandi
+GESTIRE IL CONTROLLO DEL client_max_body_size
+SITEMARE LE ERROR PAGES
+GESTIRE DATI IN LOCATION
+CHECK LEAKS
+
+Gestire doppi servername
+assegnare id per ogni client (debug)
+
+(?)
+quando sto in form.html e richiedo lo script per upload del form, è come se mi trovassi nella location / invece che in /form.html
+è giusto?
+
+content type e CONTENT_LENGTH
+se la chi fallisce deve ritornare error500
+</pre>
     </body>
     </html>
     
