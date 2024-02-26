@@ -85,21 +85,36 @@ static void _error(const std::string &msg, int err)
 
 std::string MainServer::readFromFd(int fd)
 {
+	std::string ret("");
+	int byte_read = 0;
+	int total_byte_read = 0;
 	char buffer[32000];
-	bzero(buffer, 32000);
-	int byte_read = read(fd, buffer, 32000);
-	if (byte_read < 0)
+	while (true)
 	{
-		perror("read");
-		exit(1);
+		bzero(buffer, 32000);
+		byte_read = read(fd, buffer, 32000);
+		if (byte_read < 0)
+		{
+			perror("read");
+			exit(1);
+		}
+		else if (byte_read == 0)
+		{
+			std::cout << "Client closed connection" << std::endl;
+			return (ret);
+		}
+		else if (byte_read > 0 && byte_read < 32000)
+		{
+			ret.append(buffer, byte_read);
+			//std::cout << "Read " << ret << std::endl;
+			total_byte_read += byte_read;
+			break;
+		}
+		ret.append(buffer, byte_read);
+		//std::cout << "Read " << ret << std::endl;
+		total_byte_read += byte_read;
 	}
-	else if (byte_read == 0)
-	{
-		std::cout << "Client closed connection" << std::endl;
-			close(fd);
-		return "";
-	}
-	return std::string(buffer, byte_read);
+	return (ret);
 }
 
 void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
@@ -107,7 +122,12 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 	std::cout << "New request issued from " << it->fd << std::endl;
 	std::string buffer = readFromFd(it->fd);
 	if (buffer.empty())
+	{
+		std::cout << "Client closed connection" << std::endl;
+		close(it->fd);
+		it->fd = -1;
 		return;
+	}
 	//std::cout << "Received request:\n";
 	std::cout << buffer << std::endl;
 	_clientHttpParserMap[it->fd].readRequest(buffer);
