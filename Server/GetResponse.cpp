@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:42:02 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/24 09:45:53 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/28 16:47:00 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 	{
 		uri = uri.substr(0, uri.find_last_of("/") + 1);
 	}
+	std::cout << "uri: " << uri << "; file requested: " << file_requested << std::endl;
 	std::map<std::string, LocationInfo> locations = vs->getLocations();
 	std::map<std::string, LocationInfo>::iterator l = locations.find(uri);
 
@@ -94,7 +95,7 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 		autoindex = l->second.autoindex;
 		index = (l->second.index).front();
 		//errorPages = l->second.errorPages;
-		//root = l->second.root;
+		root = l->second.root;
 		//clientMaxBodySize = l->second.clientMaxBodySize;
 	}
 	int x = isValidFile((root + "/" + index).c_str());
@@ -116,10 +117,6 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 		response = toString_CGI();
 		return response;
 	}
-
-	std::cout << "dir: " << root + parser->path << "; valid: " << isValidDir((root + parser->path).c_str()) << std::endl;
-	std::cout << "autoindex: " << autoindex << std::endl;
-	std::cout << "file: " << root + index << "not valid: " << !isValidFile((root + index).c_str()) << std::endl;
 	if (parser->path == "/" && x)
 	{
 		setStatusCode(200);
@@ -143,6 +140,22 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 		resp += response_body;
 		setHeaders_CGI(*parser, resp);
 		response = toString_CGI();
+	}
+	else if (l != locations.end() && !l->second.try_files.empty() && (l->second.try_files.front()).compare(file_requested) == 0)
+	{
+		std::cout << "anche la più bella rosa" <<std::endl;
+		std::vector<std::string> try_files = l->second.try_files;
+		try_files.erase(try_files.begin());
+		std::cout << "front di try_files: " << try_files.front() <<std::endl;
+		while (try_files.size() != 1)
+		{
+			if (isValidFile((root + "/" + try_files.front()).c_str()))
+				break;
+			try_files.erase(try_files.begin());
+		}
+		setStatusCode(301);
+		setHeaders(*parser, vs->getMimeTypes(), try_files.front());
+		response = toString();
 	}
 	else
 	{

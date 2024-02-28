@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:38:47 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/22 11:20:59 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/27 11:01:59 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ class ParserRequest
 		~ParserRequest();
 		std::string getUri()const;
 		std::string getQuery()const;
+		std::string getRequestBody() const;
 };
 
 void stampaCaratteriNonStampabili(std::string str);

@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:32:59 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/23 15:45:48 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/28 15:54:49 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ VirtualServer::VirtualServer(const ServerConfig& config)
 		locationInfo.autoindex = it->second.autoindex;
 		locationInfo.allow_methods = it->second.allow_methods;
 		locationInfo.cgi_path = it->second.CGI_path;
+		locationInfo.try_files = it->second.try_files;
 		this->locations[it->first] = locationInfo;
 	}
 	_setMimeTypes();

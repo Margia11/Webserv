@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 14:06:34 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/26 15:53:42 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/28 16:41:50 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,10 +170,11 @@ void Response::setHost(std::string host)
 
 void Response::setHeaders(const ParserRequest &request, const std::map<string, string> &mimTypes, const string &path)
 {
-
+	std::cout << "path: " << path << std::endl;
 	if (statusCode == 200 || statusCode == 301)
 		setLastModified(path);
-	std::cout << "path: " << path << std::endl;
+	if (statusCode == 301)
+		setLocation(path);
 	setProtocol(request.getProtocol());
 	setContentType(path, mimTypes);
 	setBody(getWholeFile(path, getContentType()));
@@ -219,6 +220,11 @@ std::string Response::getExtension(const std::string &path)
 	if(path.find_last_of(".") != std::string::npos)
 		return path.substr(path.find_last_of("."));
 	return "";
+}
+
+void Response::setLocation(std::string path)
+{
+	headers["Location"] = path;
 }
 
 void Response::setStatusCode(const std::string& path, std::map<std::string, std::string> &mimTypes)

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import cgi
+import sys
 
 # Get the form data from the request
 form = cgi.FieldStorage()
@@ -20,20 +21,19 @@ if 'file' in form:
         f.write(f"filename: {fileitem.filename}")
 
     # Prepare the HTML response
-    success_body = """
+    success_body = """<!DOCTYPE html>
     <html>
     <body>
     <h1>File Uploaded Successfully</h1>
     <p>Filename: %s</p>
     </body>
-    </html>
-    """ % (fileitem.filename)
+    </html>""" % (fileitem.filename)
 
     # Calculate the content length
     content_length = len(success_body)
 
     # Print headers, including Content-Length
-    print("Content-type: text/html; charset=utf-8\r")
+    print("Content-Type: text/html; charset=utf-8\r")
     print("Content-Length: %d\r" % content_length)
     print("\r")
 
@@ -54,9 +54,11 @@ else:
     content_length = len(error_body)
 
     # Print headers, including Content-Length
-    print("Content-type: text/html\r")
+    print("Content-Type: text/html\r")
     print("Content-Length: %d\r" % content_length)
     print("\r")
 
     # Print the HTML body
     print(error_body)
+    sys.exit(1)
+sys.exit(0)

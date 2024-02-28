@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/26 15:54:42 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/28 16:15:32 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,12 @@ std::string MainServer::readFromFd(int fd)
 		else if (byte_read > 0 && byte_read < 32000)
 		{
 			ret.append(buffer, byte_read);
-			std::cout << "Read " << byte_read << std::endl;
+			//std::cout << "Read " << byte_read << std::endl;
 			// total_byte_read += byte_read;
 			break;
 		}
 		ret.append(buffer, byte_read);
-		std::cout << "Read " << byte_read << std::endl;
+		//std::cout << "Read " << byte_read << std::endl;
 		usleep(150);
 		//std::cout << "Read " << ret << std::endl;
 		// total_byte_read += byte_read;
@@ -130,7 +130,7 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 		it->fd = -1;
 		return;
 	}
-	//std::cout << "Received request:\n";
+	std::cout << "Received request:\n";
 	std::cout << buffer << std::endl;
 	_clientHttpParserMap[it->fd].readRequest(buffer);
 	std::string tmp = _clientHttpParserMap[it->fd].getHost();
@@ -142,11 +142,19 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 	PostResponse postResponse;
 	DeleteResponse deleteResponse;
 	std::string answer;
-	std::cout << "Answering request" << std::endl;
+	//std::cout << "Answering request" << std::endl;
 	if (_clientHttpParserMap[it->fd].method == "GET")
 		answer = getResponse.answer(&(_clientHttpParserMap[it->fd]), &vs);
 	else if (_clientHttpParserMap[it->fd].method == "POST")
 		answer = postResponse.answer(&(_clientHttpParserMap[it->fd]), &vs);
+		// std::string requestBody = _clientHttpParserMap[it->fd].getRequestBody();
+		// std::string clientMaxBodySize = vs.getClientMaxBodySize();
+		// int maxBodySize = std::stoi(clientMaxBodySize);
+		// if (requestBody.size() > static_cast<size_t>(maxBodySize))
+		// {
+		// 	send(it->fd, "HTTP/1.1 413 Payload Too Large\r\n\r\n", 38, 0);
+		// 	return;
+		// }
 	else if (_clientHttpParserMap[it->fd].method == "DELETE")
 		answer = deleteResponse.answer(&(_clientHttpParserMap[it->fd]), &vs);
 	else
@@ -154,7 +162,7 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 		send(it->fd, "HTTP/1.1 405 Method Not Allowed\r\n\r\n", 36, 0);
 		return;
 	}
-	std::cout << "Response: " << answer << std::endl;
+	//std::cout << "Response: " << answer << std::endl;
 	long int dataSent;
 	while (answer.size() > 32000)
 	{

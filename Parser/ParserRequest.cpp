@@ -140,3 +140,9 @@ std::string ParserRequest::getHost() const
 		return it->second;
 	return "";
 }
+
+std::string ParserRequest::getRequestBody() const
+{
+	return this->body;
+}
+

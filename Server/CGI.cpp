@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:26:45 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/26 16:26:41 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/28 15:21:48 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,21 +96,21 @@ int CGI::getErr()
 	return (this->err);
 }
 
-// static bool checkContent(std::string content)
-// {
-// 	if (content.find("Content-Type") == std::string::npos)
-// 			return (false);
-// 		if (content.find("Content-Length") == std::string::npos)
-// 			return (false);
-// 		std::string body = content.substr(content.find("\r\n\r\n") + 4);
-// 		size_t cl_begin = content.find("Content-Length") + 16;
-// 		size_t cl_end = content.find("\r\n", cl_begin);
-// 		std::cout << "cl: " << content.substr(cl_begin, cl_end) << std::endl;
-// 		size_t cl = atoi((content.substr(cl_begin, cl_end)).c_str());
-// 		if (body.size() != cl)
-// 			return (false);
-// 		return (true);
-// }
+static bool checkContent(std::string content)
+{
+	if (content.find("Content-Type") == std::string::npos)
+		return (false);
+	if (content.find("Content-Length") == std::string::npos)
+		return (false);
+	std::string body = content.substr(content.find("\r\n\r\n") + 4);
+	size_t cl_begin = content.find("Content-Length") + 16;
+	std::string cl_body = content.substr(cl_begin, content.size());
+	size_t cl_end = cl_body.find("\r\n");
+	size_t cl = atoi((cl_body.substr(0, cl_end)).c_str());
+	if (body.size() - 1 != cl)
+		return (false);
+	return (true);
+}
 
 
 
@@ -121,8 +121,6 @@ std::string CGI::CGI_Executer()
 	int fdReq[2];
 	int fdResp[2];
 
-	// stampaStringhe(arg_execve);
-	// stampaStringhe(env_execve);
 	if (pipe(fdReq) == -1 || pipe(fdResp) == -1)
 	{
 		std::cerr << "Error in pipe" << std::endl;
@@ -152,7 +150,7 @@ std::string CGI::CGI_Executer()
 		int status;
 		while(waitpid(pid, &status, 0) == 0)
 			sleep(1);
-		if (WIFEXITED(status) && WIFEXITED(status) != 0)
+		if (WIFEXITED(status) && WIFEXITED(status) != 1)
 		{
 			this->err = 1;
 			return "";
@@ -169,8 +167,8 @@ std::string CGI::CGI_Executer()
 			n = read(fdResp[0], buffer, 1024);
 		}
 		close(fdResp[0]);
-		// if(!checkContent(response_body))
-		// 	this->err = 1;
+		if(!checkContent(response_body))
+			this->err = 1;
 	}
 	return response_body;
 }

@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:52:21 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/22 11:19:16 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/28 16:36:45 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ class Response
 		std::string getFile(std::string uri);
 		std::string	getContentType();
 		void setHost(std::string host);
+		void setLocation(std::string path);
 };
 
 #endif

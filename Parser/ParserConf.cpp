@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:08:08 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/23 15:44:07 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/28 15:54:05 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static bool checkandcutsemicolon(std::string& line)
 
 bool isValidKey(const std::string& key)
 {
-	const char *validKeysArray[] = {"listen", "serverName", "error_page", "location", "allow_methods", "root", "index", "host" , "autoindex", "client_max_body_size", "client_body_temp_path", "CGI_path"};
+	const char *validKeysArray[] = {"listen", "serverName", "error_page", "location", "allow_methods", "root", "index", "host" , "autoindex", "client_max_body_size", "client_body_temp_path", "CGI_path", "try_files"};
 	const int numvalidKeys = sizeof(validKeysArray) / sizeof(validKeysArray[0]);
 	for(unsigned long i = 0; i < numvalidKeys; ++i)
 		if(key == validKeysArray[i])
@@ -212,6 +212,12 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 								issLocation >> locationConfig.root;
 							else if (locationKey == "CGI_path")
 								issLocation >> locationConfig.CGI_path;
+							else if (locationKey == "try_files")
+							{
+								std::string files;
+								while (issLocation >> files)
+									locationConfig.try_files.push_back(files);
+							}
 							else if (locationKey == "index")
 							{
 								std::string index;

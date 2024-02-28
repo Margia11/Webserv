@@ -20,15 +20,14 @@ with open(postDataPath, 'w') as f :
     f.write(email)
 
 # Print out the form data
-body = """
+body = """<!DOCTYPE html>
 <html>
 <body>
 <h1>Form Data</h1>
 <p>Name: %s</p>
 <p>Email: %s</p>
 </body>
-</html>
-""" % (name, email)
+</html>""" % (name, email)
 
 print("Content-type: text/html\r")
 print("Content-Length: %d\r" % len(body))

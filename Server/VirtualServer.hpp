@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:04:26 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/23 15:55:42 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/28 15:54:58 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ struct LocationInfo
 	bool autoindex;
 	std::string cgi_path;
 	std::vector<std::string> allow_methods;
+	std::vector<std::string> try_files;
 	std::string path;
 };
 
