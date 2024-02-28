@@ -1,15 +1,8 @@
-GESTIRE IL CONTROLLO DEL client_max_body_size
-GESTIRE DATI IN LOCATION
+controllare -1 e 0 sul write
+GESTIRE IL CONTROLLO DEL client_max_body_size -> byte bla bla bla
+GESTIRE DATI IN LOCATION -> aggiungere roba in config file e default location = ""
 CHECK LEAKS
 
-Gestire doppi servername
-assegnare id per ogni client (debug)
+Gestire doppi servername -> curl --resolve example.com:80:127.0.0.1
 
-(?)
-quando sto in form.html e richiedo lo script per upload del form, è come se mi trovassi nella location / invece che in /form.html
-è giusto?
-
-redirection
-controllare -1 e 0 sul write
 make relinka
-curl --resolve example.com:80:127.0.0.1

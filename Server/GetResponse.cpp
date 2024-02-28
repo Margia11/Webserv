@@ -98,7 +98,6 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 		root = l->second.root;
 		//clientMaxBodySize = l->second.clientMaxBodySize;
 	}
-	int x = isValidFile((root + "/" + index).c_str());
 	std::vector<std::string>::iterator it = allowedMethods.begin();
 	while (it != allowedMethods.end())
 	{
@@ -117,16 +116,16 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 		response = toString_CGI();
 		return response;
 	}
-	if (parser->path == "/" && x)
+	if (uri == "/" && isValidFile((root + "/" + index).c_str()))
 	{
 		setStatusCode(200);
 		setHeaders(*parser, vs->getMimeTypes(), root + "/" + index);
 		response = toString();
 	}
-	else if (isValidFile((root + parser->path).c_str()))
+	else if (isValidFile((root + uri + file_requested).c_str()))
 	{
 		setStatusCode(200);
-		setHeaders(*parser, vs->getMimeTypes(), root + parser->path);
+		setHeaders(*parser, vs->getMimeTypes(), root + uri + file_requested);
 		response = toString();
 	}
 	else if (isValidDir((root + parser->path).c_str()) && autoindex && !isValidFile((root + index).c_str()))
