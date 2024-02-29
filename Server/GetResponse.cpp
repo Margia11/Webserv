@@ -51,9 +51,8 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 	std::string root = vs->getRoot();
 	std::string index = vs->getIndex().front();
 	std::vector<std::string> allowedMethods = vs->getAllowMethods();
+	std::map<std::string, std::string> errorPages = vs->getErrorPages();
 	string uri = parser->getUri();
-	if (uri.empty())
-		uri = "/";
 	std::string file_requested = getFile(uri);
 	if (!file_requested.empty())
 	{
@@ -90,13 +89,11 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 				return response;
 			}
 		}
-		//uploadPath = l->second.uploadPath;
 		allowedMethods = l->second.allow_methods;
 		autoindex = l->second.autoindex;
 		index = (l->second.index).front();
-		//errorPages = l->second.errorPages;
+		errorPages = l->second.errorPages;
 		root = l->second.root;
-		//clientMaxBodySize = l->second.clientMaxBodySize;
 	}
 	std::vector<std::string>::iterator it = allowedMethods.begin();
 	while (it != allowedMethods.end())
@@ -107,13 +104,33 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 	}
 	if (!allowedMethods.empty() && it == allowedMethods.end())
 		setStatusCode(405);
-	else if (l != locations.end() && use_CGI)
+	else
+		setStatusCode(200);
+	if (l != locations.end() && use_CGI && getStatusCode() == 200)
 	{
 		CGI cgi(parser, &(l->second), file_requested);
 		setStatusCode(200);
 		std::string buffer = cgi.CGI_Executer();
-		setHeaders_CGI(*parser, buffer);
-		response = toString_CGI();
+		if (cgi.getErr() == 1)
+		{
+			setStatusCode(500);
+			std::string err = errorPages.find("500")->second;
+			setHeaders(*parser, vs->getMimeTypes(), err);
+			response = toString();
+		}
+		else
+		{
+			setHeaders_CGI(*parser, buffer);
+			response = toString_CGI();
+		}
+		//std::cout << "response: " << response << std::endl;
+		return response;
+	}
+	if (getStatusCode() != 200)
+	{
+		std::string err = errorPages.find(numberToString(getStatusCode()))->second;
+		setHeaders(*parser, vs->getMimeTypes(), err);
+		response = toString();
 		return response;
 	}
 	if (uri == "/" && isValidFile((root + "/" + index).c_str()))
@@ -142,10 +159,8 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 	}
 	else if (l != locations.end() && !l->second.try_files.empty() && (l->second.try_files.front()).compare(file_requested) == 0)
 	{
-		std::cout << "anche la più bella rosa" <<std::endl;
 		std::vector<std::string> try_files = l->second.try_files;
 		try_files.erase(try_files.begin());
-		std::cout << "front di try_files: " << try_files.front() <<std::endl;
 		while (try_files.size() != 1)
 		{
 			if (isValidFile((root + "/" + try_files.front()).c_str()))
@@ -158,8 +173,8 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 	}
 	else
 	{
-		std::string err = vs->getErrorPages().find("404")->second;
 		setStatusCode(404);
+		std::string err = errorPages.find("404")->second;
 		setHeaders(*parser, vs->getMimeTypes(), err);
 		response = toString();
 	}

@@ -32,11 +32,14 @@ struct LocationConfig
 	std::vector<std::string> index;
 	std::vector<std::string> try_files;
 	std::string CGI_path;
+	long unsigned int client_max_body_size;
+	std::map<std::string, std::string> errorPages;
+	std::string uploadPath;
 };
 
 struct ServerConfig
 {
-	std::string client_max_body_size;
+	long unsigned int client_max_body_size;
 	int port;
 	std::vector<std::string> index;
 	std::string uploadPath;

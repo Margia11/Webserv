@@ -40,13 +40,11 @@ std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 {
 	std::string response;
 	std::string uploadPath = vs->getUploadPath();
-	string clientMaxBodySize = vs->getClientMaxBodySize();
+	long unsigned int clientMaxBodySize = vs->getClientMaxBodySize();
 	std::vector<std::string> allowedMethods = vs->getAllowMethods();
 	std::map<std::string, std::string> errorPages = vs->getErrorPages();
 	string root = vs->getRoot();
 	string uri = parser->getUri();
-	if (uri.empty())
-		uri = "/";
 	std::vector<std::string> index = vs->getIndex();
 	std::string file_requested = getFile(uri);
 	std::cout << "file_requested: " << file_requested << std::endl;
@@ -83,11 +81,11 @@ std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 				return response;
 			}
 		}
-		//uploadPath = l->second.uploadPath;
+		uploadPath = l->second.uploadPath;
 		allowedMethods = l->second.allow_methods;
-		//errorPages = l->second.errorPages;
-		//root = l->second.root;
-		//clientMaxBodySize = l->second.clientMaxBodySize;
+		errorPages = l->second.errorPages;
+		root = l->second.root;
+		clientMaxBodySize = l->second.client_max_body_size;
 	}
 	std::vector<std::string>::iterator it = allowedMethods.begin();
 	while (it != allowedMethods.end())
@@ -96,24 +94,29 @@ std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 			break;
 		it++;
 	}
+	std::cout << "controllo: parser_body = " << parser->body.size() << "; clientMaxBodySize = " << clientMaxBodySize << std::endl;
 	if (!allowedMethods.empty() && it == allowedMethods.end())
-	setStatusCode(405);
-	// else if (request.getBody().size() > convertToBytes(clientMaxBodySize))
-	//	setStatusCode(413);
-	if (!isValidDir(uploadPath.c_str()))
+		setStatusCode(405);
+	else if (parser->body.size() > clientMaxBodySize)
+		setStatusCode(413);
+	else if (!isValidDir(uploadPath.c_str()))
 	{
 		if(!createDir(uploadPath.c_str()))
 			setStatusCode(500);
+		else
+			setStatusCode(200);
 	}
-	if (l != locations.end() && use_CGI)
+	else
+		setStatusCode(200);
+	std::cout << "status code: " << getStatusCode() << std::endl;
+	if (l != locations.end() && use_CGI && getStatusCode() == 200)
 	{
 		CGI cgi(parser, &(l->second), file_requested);
-		setStatusCode(200);
 		std::string buffer = cgi.CGI_Executer();
 		if (cgi.getErr() == 1)
 		{
 			setStatusCode(500);
-			std::string err = vs->getErrorPages().find("500")->second;
+			std::string err = errorPages.find("500")->second;
 			setHeaders(*parser, vs->getMimeTypes(), err);
 			response = toString();
 		}
@@ -125,11 +128,9 @@ std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 		//std::cout << "response: " << response << std::endl;
 		return response;
 	}
-	else
-		setStatusCode(200);
 	if (getStatusCode() != 200)
 	{
-		std::string err = vs->getErrorPages().find(numberToString(getStatusCode()))->second;
+		std::string err = errorPages.find(numberToString(getStatusCode()))->second;
 		setHeaders(*parser, vs->getMimeTypes(), err);
 		response = toString();
 	}

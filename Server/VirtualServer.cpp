@@ -40,6 +40,8 @@ VirtualServer::VirtualServer(const ServerConfig& config)
 		locationInfo.allow_methods = it->second.allow_methods;
 		locationInfo.cgi_path = it->second.CGI_path;
 		locationInfo.try_files = it->second.try_files;
+		locationInfo.client_max_body_size = it->second.client_max_body_size;
+		locationInfo.errorPages = it->second.errorPages;
 		this->locations[it->first] = locationInfo;
 	}
 	_setMimeTypes();
@@ -101,7 +103,7 @@ std::string const &VirtualServer::getUploadPath() const
 	return (this->uploadPath);
 }
 
-std::string const &VirtualServer::getClientMaxBodySize() const
+long unsigned int VirtualServer::getClientMaxBodySize() const
 {
 	return (this->client_max_body_size);
 }

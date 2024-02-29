@@ -24,6 +24,9 @@ struct LocationInfo
 {
 	std::string root;
 	std::vector<std::string> index;
+	std::string uploadPath;
+	std::map<std::string, std::string> errorPages;
+	long unsigned int client_max_body_size;
 	bool autoindex;
 	std::string cgi_path;
 	std::vector<std::string> allow_methods;
@@ -42,7 +45,7 @@ class VirtualServer
 		std::map<std::string, std::string> errorPages;
 		std::map<std::string, LocationInfo> locations;
 		std::map<std::string, std::string> _mimeTypes;
-		std::string client_max_body_size;
+		long unsigned int client_max_body_size;
 		std::vector<std::string> allow_methods;
 	public :
 		VirtualServer(const ServerConfig& config);
@@ -55,7 +58,7 @@ class VirtualServer
 		const std::vector<std::string>& getIndex() const;
 		const std::map<std::string, std::string>& getErrorPages() const;
 		const std::map<std::string, LocationInfo>& getLocations() const;
-		const std::string& getClientMaxBodySize() const;
+		long unsigned int getClientMaxBodySize() const;
 		const std::map<std::string, std::string>& getMimeTypes() const;
 		bool getAutoindex() const;
 		//LocationInfo *matchLocation(std::map<std::string, LocationInfo> locations, std::string uri);

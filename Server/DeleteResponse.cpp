@@ -25,7 +25,6 @@ std::string DeleteResponse::answer(ParserRequest *parser, VirtualServer *vs)
 {
 	std::string response;
 	std::string uploadPath = vs->getUploadPath();
-	string clientMaxBodySize = vs->getClientMaxBodySize();
 	std::vector<std::string> allowedMethods = vs->getAllowMethods();
 	std::map<std::string, std::string> errorPages = vs->getErrorPages();
 	string root = vs->getRoot();
@@ -57,7 +56,7 @@ std::string DeleteResponse::answer(ParserRequest *parser, VirtualServer *vs)
 	}
 	else
 	{
-		std::string err = vs->getErrorPages().find(numberToString(getStatusCode()))->second;
+		std::string err = errorPages.find(numberToString(getStatusCode()))->second;
 		setHeaders(*parser, vs->getMimeTypes(), err);
 		response = toString();
 	}

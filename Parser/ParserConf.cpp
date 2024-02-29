@@ -210,6 +210,20 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 							}
 							else if (locationKey == "root")
 								issLocation >> locationConfig.root;
+							else if (locationKey == "client_max_body_size")
+								issLocation >> locationConfig.client_max_body_size;
+							else if (locationKey == "client_body_temp_path")
+								issLocation >> locationConfig.uploadPath;
+							else if (locationKey == "error_page")
+							{
+								std::vector<std::string> errorCodes;
+								while (issLocation >> tmp)
+									errorCodes.push_back(tmp);
+								int errorCodesNum = errorCodes.size();
+								std::string errorPath = errorCodes[errorCodesNum - 1];
+								for (int i = 0; i < errorCodesNum - 1; i++)
+									locationConfig.errorPages.insert(std::make_pair(errorCodes[i], errorPath));
+							}
 							else if (locationKey == "CGI_path")
 								issLocation >> locationConfig.CGI_path;
 							else if (locationKey == "try_files")

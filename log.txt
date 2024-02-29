@@ -1,84 +1,20 @@
 Server on port 8002 created
 Server on port 8003 created
 New connection issued from 5
-New connection issued from 7
 New request issued from 5
 Received request:
-GET /img/Gatto.jpeg HTTP/1.1
+POST / HTTP/1.1
 Host: 127.0.0.1:8002
-Connection: keep-alive
-sec-ch-ua: "Chromium";v="122", "Not(A:Brand";v="24", "Google Chrome";v="122"
-sec-ch-ua-mobile: ?0
-sec-ch-ua-platform: "Windows"
-Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
-Sec-Purpose: prefetch;prerender
-Purpose: prefetch
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-Sec-Fetch-Site: none
-Sec-Fetch-Mode: navigate
-Sec-Fetch-User: ?1
-Sec-Fetch-Dest: document
-Accept-Encoding: gzip, deflate, br, zstd
-Accept-Language: it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7
+User-Agent: curl/7.68.0
+Accept: */*
+Content-Type: plain/text
+Content-Length: 62
 
-
-uri: /img/; file requested: Gatto.jpeg
-path: ./web/img/Gatto.jpeg
-open img
+BODY IS HERE write something shorter or longer than body limit
+file_requested: 
+controllo: parser_body = 62; clientMaxBodySize = 10
+status code: 413
+path: error_pages/413.html
 New request issued from 5
-Received request:
-GET /img/faldo.jpeg HTTP/1.1
-Host: 127.0.0.1:8002
-Connection: keep-alive
-sec-ch-ua: "Chromium";v="122", "Not(A:Brand";v="24", "Google Chrome";v="122"
-sec-ch-ua-mobile: ?0
-sec-ch-ua-platform: "Windows"
-Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-Sec-Fetch-Site: none
-Sec-Fetch-Mode: navigate
-Sec-Fetch-User: ?1
-Sec-Fetch-Dest: document
-Accept-Encoding: gzip, deflate, br, zstd
-Accept-Language: it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7
-
-
-uri: /img/; file requested: faldo.jpeg
-path: error_pages/404.html
-New request issued from 7
-Client closed connection
-Client closed connection
-New request issued from 5
-Received request:
-GET /img/faldo.jpg HTTP/1.1
-Host: 127.0.0.1:8002
-Connection: keep-alive
-sec-ch-ua: "Chromium";v="122", "Not(A:Brand";v="24", "Google Chrome";v="122"
-sec-ch-ua-mobile: ?0
-sec-ch-ua-platform: "Windows"
-Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-Sec-Fetch-Site: none
-Sec-Fetch-Mode: navigate
-Sec-Fetch-User: ?1
-Sec-Fetch-Dest: document
-Accept-Encoding: gzip, deflate, br, zstd
-Accept-Language: it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7
-
-
-uri: /img/; file requested: faldo.jpg
-anche la più bella rosa
-front di try_files: asd1.jpg
-path: Gatto.jpeg
-open img
-Unable to open file Gatto.jpeg
-New connection issued from 7
-New request issued from 5
-Client closed connection
-Client closed connection
-New request issued from 7
 Client closed connection
 Client closed connection

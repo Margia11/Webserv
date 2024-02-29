@@ -158,34 +158,43 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 	else if (_clientHttpParserMap[it->fd].method == "DELETE")
 		answer = deleteResponse.answer(&(_clientHttpParserMap[it->fd]), &vs);
 	else
-	{
-		send(it->fd, "HTTP/1.1 405 Method Not Allowed\r\n\r\n", 36, 0);
-		return;
-	}
+		answer = "HTTP/1.1 405 Method Not Allowed\r\n\r\n";
 	//std::cout << "Response: " << answer << std::endl;
 	long int dataSent;
 	while (answer.size() > 32000)
 	{
 		std::string temp = answer.substr(0, 32000);
 		dataSent = send(it->fd, temp.data(), temp.size(), 0);
+		if (dataSent < 0)
+		{
+			perror("send");
+			exit(1);
+		}
+		else if (dataSent == 0)
+		{
+			std::cout << "Client closed connection" << std::endl;
+			close(it->fd);
+			it->fd = -1;
+			return;
+		}
 		temp.clear();
 		answer = answer.substr(dataSent);
 	}
-	send(it->fd, answer.data(), answer.size(), 0);
+	dataSent = send(it->fd, answer.data(), answer.size(), 0);
+	if (dataSent < 0)
+	{
+		perror("send");
+		exit(1);
+	}
+	else if (dataSent == 0)
+	{
+		std::cout << "Client closed connection" << std::endl;
+		close(it->fd);
+		it->fd = -1;
+		return;
+	}
 	answer.clear();
 }
-
-/* long int dataSent;
-do
-{
-	temp = answer.substr(0, 32000);
-	dataSent = send(sd, temp.c_str(), temp.length(), 0);
-	if (dataSent < 0) {
-		break;
-	}
-	temp.clear();
-	answer = answer.substr(dataSent);
-} while (!answer.empty()); */
 
 void MainServer::_handleConnections(int fd)
 {

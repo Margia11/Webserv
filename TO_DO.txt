@@ -2,6 +2,7 @@ controllare -1 e 0 sul write
 GESTIRE IL CONTROLLO DEL client_max_body_size -> byte bla bla bla
 GESTIRE DATI IN LOCATION -> aggiungere roba in config file e default location = ""
 CHECK LEAKS
+se unknown key -> errore nella configurazione del file
 
 Gestire doppi servername -> curl --resolve example.com:80:127.0.0.1
 
