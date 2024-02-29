@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 14:30:16 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/23 15:17:53 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/29 12:35:16 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,22 @@ std::string DeleteResponse::answer(ParserRequest *parser, VirtualServer *vs)
 	string uri = parser->getUri();
 	if (uri.empty())
 		uri = "/";
-	std::map<std::string, LocationInfo> locations = vs->getLocations();
 	std::string file_requested = getFile(uri);
 	if (!file_requested.empty())
 		uri = uri.substr(0, uri.find_last_of("/") + 1);
+	std::map<std::string, LocationInfo> locations = vs->getLocations();
+	std::map<std::string, LocationInfo>::iterator l = locations.find(uri);
+	if (l != locations.end())
+	{
+		errorPages = l->second.errorPages;
+		allowedMethods = l->second.allow_methods;
+	}
 	std::vector<std::string>::iterator it = allowedMethods.begin();
 	while (it != allowedMethods.end())
 	{
 		if (*it == "DELETE")
 			break;
+		std::cout << "it: " << *it;
 		it++;
 	}
 	std::cout << "uri: " << root + uri + file_requested << std::endl;

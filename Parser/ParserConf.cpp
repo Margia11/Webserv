@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:08:08 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/28 15:54:05 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/29 12:21:27 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,35 @@ bool isValidKey(const std::string& key)
 	return (false);
 }
 
-
-int IsValidServer(const ServerConfig& serverConfig, const LocationConfig& LocationConfig)
+void	fillDefault(ServerConfig& serverConfig)
 {
+	std::map<std::string, LocationConfig>::iterator it;
+	for (it = serverConfig.locations.begin(); it != serverConfig.locations.end(); it++)
+	{
+		if (it->second.root.size() == 0)
+			it->second.root = serverConfig.root;
+		if (it->second.uploadPath.size() == 0)
+			it->second.uploadPath = serverConfig.uploadPath;
+		std::map<std::string, std::string>::iterator servError;
+		for (servError = serverConfig.errorPages.begin(); servError != serverConfig.errorPages.end(); servError++)
+		{
+			std::map<std::string, std::string>::iterator locationError = (it->second.errorPages).find(servError->first);
+			if (locationError == it->second.errorPages.end())
+				it->second.errorPages[servError->first] = servError->second;
+		}
+	}
+	std::cout << "root: " << (serverConfig.locations.begin())->second.root << std::endl;
+}
+
+int IsValidServer(const ServerConfig& serverConfig, bool invalidServer)
+{
+	if (invalidServer == true)
+		return (0);
 	if (serverConfig.port <= 0 || serverConfig.port >= 65536)
 		return (0);
 	if (serverConfig.host.empty())
 		return (0);
-	if (LocationConfig.locationPath.empty() || serverConfig.index.empty())
+	if (serverConfig.host.empty())
 		return (0);
 	// if(chdir(LocationConfig.root.c_str()) == -1)
 	// 	return (0);
@@ -110,6 +131,7 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 	iss >> key;
 	if (key == "server")
 	{
+		bool invalidServer = false;
 		ServerConfig serverConfig;
 		while (std::getline(file, line) && line != "}")
 		{
@@ -121,7 +143,10 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 			std::string blockkey;
 			issBlock >> blockkey;
 			if (!isValidKey(blockkey) && blockkey != "}")
+			{
 				std::cerr << "Unknown key: " << blockkey << std::endl;
+				invalidServer = true;
+			}
 			else
 			{
 				std::string tmp;
@@ -239,7 +264,10 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 									locationConfig.index.push_back(index);
 							}
 							else
+							{
 								std::cerr << "Unknown key: " << locationKey << std::endl;
+								invalidServer = true;
+							}
 							if (line == "}")
 								break;
 						}
@@ -248,12 +276,13 @@ void parseServerconf(const std::string& configfile, std::vector<ServerConfig>& s
 					}
 				}
 			}
-			if(IsValidServer(serverConfig, serverConfig.locations.begin()->second))
+			if(IsValidServer(serverConfig, invalidServer))
+			{
+				fillDefault(serverConfig);
 				serverConfigs.push_back(serverConfig);
-			else
+			}else
 			{
 				std::cerr << "Invalid server configuration" << std::endl;
-				exit(1);
 			}
 		}
 	}

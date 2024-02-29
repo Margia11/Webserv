@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 11:55:49 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/28 15:53:19 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/02/29 12:00:47 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,15 @@
 struct LocationConfig
 {
 	std::string locationPath;
-	std::vector<std::string> allow_methods;
 	std::string root;
-	bool autoindex;
+	std::string CGI_path;
+	std::string uploadPath;
+	std::vector<std::string> allow_methods;
 	std::vector<std::string> index;
 	std::vector<std::string> try_files;
-	std::string CGI_path;
-	long unsigned int client_max_body_size;
 	std::map<std::string, std::string> errorPages;
-	std::string uploadPath;
+	bool autoindex;
+	long unsigned int client_max_body_size;
 };
 
 struct ServerConfig
