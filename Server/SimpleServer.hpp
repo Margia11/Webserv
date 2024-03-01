@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:16:11 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/07 12:59:48 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/03/01 11:07:02 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ class Server
 		std::pair<std::string, int>getHostPort() const;
 		int	getPort() const;
 		void setSocket(ListeningSocket *socket);
-		VirtualServer	getFirstVS();
+		VirtualServer getVSfromName(const string& serverName);
 		std::vector<VirtualServer> getVirtualServers();
 		void printServer();
 };

@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/28 16:15:32 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/03/01 12:21:00 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ MainServer::MainServer(const std::string& config) : _parserRequest()
 		serverPollFd_.fd = tmpsocket->getSocket();
 		serverPollFd_.events = POLLIN;
 		_fds.push_back(serverPollFd_);
+		//it->second.printServer();
 	}
 }
 
@@ -121,7 +122,7 @@ std::string MainServer::readFromFd(int fd)
 
 void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 {
-	std::cout << "New request issued from " << it->fd << std::endl;
+	//std::cout << "New request issued from " << it->fd << std::endl;
 	std::string buffer = readFromFd(it->fd);
 	if (buffer.empty())
 	{
@@ -130,14 +131,14 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 		it->fd = -1;
 		return;
 	}
-	std::cout << "Received request:\n";
+	//std::cout << "Received request:\n";
 	std::cout << buffer << std::endl;
 	_clientHttpParserMap[it->fd].readRequest(buffer);
 	std::string tmp = _clientHttpParserMap[it->fd].getHost();
 	Server server = SimpleServers[toHostPort(tmp).second];
 	//std::cout << "simple servers: " << this->SimpleServers.size() << std::endl;
 	//std::cout << "virtual servers for this simple server: " << server.getVirtualServers().size() << std::endl;
-	VirtualServer vs = server.getFirstVS();
+	VirtualServer vs = server.getVSfromName(_clientHttpParserMap[it->fd].getHost());
 	GetResponse getResponse;
 	PostResponse postResponse;
 	DeleteResponse deleteResponse;
@@ -159,7 +160,7 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 		answer = deleteResponse.answer(&(_clientHttpParserMap[it->fd]), &vs);
 	else
 		answer = "HTTP/1.1 405 Method Not Allowed\r\n\r\n";
-	//std::cout << "Response: " << answer << std::endl;
+	std::cout << "Response: " << answer << std::endl;
 	long int dataSent;
 	while (answer.size() > 32000)
 	{

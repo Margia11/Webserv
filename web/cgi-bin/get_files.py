@@ -2,7 +2,7 @@
 import os
 
 # Set the path to the directory you want to list
-directory_path = 'Server/'
+directory_path = 'web/cgi-bin/'
 
 # Get the list of files in the directory
 files = os.listdir(directory_path)
@@ -10,8 +10,7 @@ files = os.listdir(directory_path)
 # Print the HTML header
 header = ("Content-Type: text/html\r\n")
 
-body = (("""\
-<!DOCTYPE html>
+body = (("""<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Directory Listing</title>

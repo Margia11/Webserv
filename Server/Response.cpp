@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 14:06:34 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/28 16:41:50 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/03/01 12:13:10 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,9 +196,10 @@ bool Response::isValidDir(const char* path)
 	return false;
 }
 
-bool Response::createDir(const char* path)
+bool Response::createDir(const std::string& path)
 {
-	int risultato = std::system(("mkdir " + std::string(path)).c_str());
+	std::cout << "tbcreated: " << path << std::endl;
+	int risultato = std::system(("mkdir " + path).c_str());
 	if (risultato == 0)
 		std::cout << "Dir created" << std::endl;
 	else

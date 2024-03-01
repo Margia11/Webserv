@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:42:50 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/26 15:58:19 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/03/01 12:11:16 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 		setStatusCode(413);
 	else if (!isValidDir(uploadPath.c_str()))
 	{
-		if(!createDir(uploadPath.c_str()))
+		if(!createDir(uploadPath))
 			setStatusCode(500);
 		else
 			setStatusCode(200);

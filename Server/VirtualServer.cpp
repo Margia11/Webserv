@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:32:59 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/28 15:54:49 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/03/01 12:18:51 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ VirtualServer::VirtualServer(const ServerConfig& config)
 		locationInfo.try_files = it->second.try_files;
 		locationInfo.client_max_body_size = it->second.client_max_body_size;
 		locationInfo.errorPages = it->second.errorPages;
+		locationInfo.uploadPath = it->second.uploadPath;
 		this->locations[it->first] = locationInfo;
 	}
 	_setMimeTypes();
@@ -145,7 +146,41 @@ std::vector <std::string> const &VirtualServer::getAllowMethods() const
 
 void VirtualServer::printVServer()
 {
-	std::cout << "Server ok" << std::endl;
+	std::cout << "server_name: ";
+	for (std::vector<std::string>::iterator it = this->server_name.begin(); it != this->server_name.end(); it++)
+		std::cout << *it << " ";
+	std::cout << std::endl;
+	std::cout << "root: " << this->root << std::endl;
+	std::cout << "index: ";
+	for (std::vector<std::string>::iterator it = this->index.begin(); it != this->index.end(); it++)
+		std::cout << *it << " ";
+	std::cout << std::endl;
+	std::cout << "autoindex: " << this->autoindex << std::endl;
+	std::cout << "uploadPath: " << this->uploadPath << std::endl;
+	std::cout << "client_max_body_size: " << this->client_max_body_size << std::endl;
+	std::cout << "errorPages: " << std::endl;
+	for (std::map<std::string, std::string>::iterator it = this->errorPages.begin(); it != this->errorPages.end(); it++)
+		std::cout << it->first << " " << it->second << std::endl;
+	std::cout << "locations: " << std::endl;
+	for (std::map<std::string, LocationInfo>::iterator it = this->locations.begin(); it != this->locations.end(); it++)
+	{
+		std::cout << "	location path: " << it->first << std::endl;
+		std::cout << "	location root: " << it->second.root << std::endl;
+		std::cout << "	location index: ";
+		for (std::vector<std::string>::iterator it2 = it->second.index.begin(); it2 != it->second.index.end(); it2++)
+			std::cout << *it2 << " ";
+		std::cout << std::endl;
+		std::cout << "	location autoindex: " << it->second.autoindex << std::endl;
+		std::cout << "	location uploadPath: " << it->second.uploadPath << std::endl;
+		std::cout << "	location client_max_body_size: " << it->second.client_max_body_size << std::endl;
+		std::cout << "	location errorPages: " << std::endl;
+		for (std::map<std::string, std::string>::iterator it3 = it->second.errorPages.begin(); it3 != it->second.errorPages.end(); it3++)
+			std::cout << it3->first << " " << it3->second << std::endl;
+		std::cout << "	location allow_methods: ";
+		for (std::vector<std::string>::iterator it4 = it->second.allow_methods.begin(); it4 != it->second.allow_methods.end(); it4++)
+			std::cout << *it4 << " ";
+		std::cout << std::endl;
+	}
 }
 
 void VirtualServer::printLocations(VirtualServer *vs)

@@ -1,4 +1,4 @@
-Gestire doppi servername -> curl --resolve example.com:80:127.0.0.1
 make relinka
 CHECK LEAKS
 
+post con body vuoto -> check prossima request

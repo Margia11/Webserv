@@ -12,21 +12,19 @@ def generate_html_body(image_path):
     base64_data = base64.b64encode(binary_data).decode('utf-8')
 
     # Genera il corpo HTML con l'immagine
-    html_body = f"""
+    html_body = """<!DOCTYPE html>
     <html>
     <body>
         <img src="./img/Gatto.jpeg"><img/>
     </body>
-    </html>
-    """
+    </html>"""
 
     return html_body
 
 file_path = './web/img/Gatto.jpeg'
 html_content = generate_html_body(file_path)
 
-header = "HTTP/1.1 200 OK\r\n"
-header += "Content-Type: text/html\r\n"
+header = "Content-Type: text/html\r\n"
 header += "Content-Length: " + str(len(html_content)) + "\r\n\r"
 
 print(header)

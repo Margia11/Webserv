@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:26:45 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/28 15:21:48 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/03/01 11:44:16 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,10 @@ static bool checkContent(std::string content)
 	std::string cl_body = content.substr(cl_begin, content.size());
 	size_t cl_end = cl_body.find("\r\n");
 	size_t cl = atoi((cl_body.substr(0, cl_end)).c_str());
+	std::cout << "body: " << body.size() - 1 << "; cl: " << cl << std::endl;
+	std::cout << "[STAMPA BODY]" << std::endl;
+	std::cout << body << std::endl;
+	std::cout << "[STAMPA BODY]" << std::endl;
 	if (body.size() - 1 != cl)
 		return (false);
 	return (true);

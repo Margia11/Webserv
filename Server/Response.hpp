@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:52:21 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/28 16:36:45 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/03/01 12:11:01 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ class Response
 		void setHeaders_CGI(const ParserRequest &request, const string &body);
 		void printHttpStatus();
 		bool isValidDir(const char* path);
-		bool createDir(const char* path);
+		bool createDir(const std::string& path);
 		std::string getExtension(const std::string &path);
 		virtual std::string answer(ParserRequest *parser, VirtualServer *vs) = 0;
 		std::string toString(void);

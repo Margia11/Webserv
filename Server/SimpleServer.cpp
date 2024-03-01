@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:16:02 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/07 13:00:57 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/03/01 11:07:53 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,21 @@ int Server::getPort() const
 	return HostPort.second;
 }
 
-VirtualServer Server::getFirstVS()
+VirtualServer Server::getVSfromName(const string& serverName)
 {
-	return this->servers[0];
+	std::vector<VirtualServer>::iterator it = servers.begin();
+	while (it != servers.end())
+	{
+		std::vector<std::string>::const_iterator it_sn = (*it).getServerName().begin();
+		while (it_sn != (*it).getServerName().end())
+		{
+			if ((*it_sn).compare(serverName) == 0)
+				return (*it);
+			it_sn++;
+		}
+		it++;
+	}
+	return (*(servers.begin()));
 }
 
 void Server::printServer()
@@ -82,5 +94,11 @@ void Server::printServer()
 	std::cout << "Host: " << HostPort.first << std::endl;
 	std::cout << "Port: " << HostPort.second << std::endl;
 	std::cout << "Virtual Servers: " << servers.size() << std::endl;
+	std::vector<VirtualServer>::iterator it = servers.begin();
+	while (it != servers.end())
+	{
+		it->printVServer();
+		it++;
+	}
 	std::cout << "======================" << std::endl;
 }

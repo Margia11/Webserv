@@ -41,14 +41,12 @@ if 'file' in form:
     print(success_body)
 else:
     # Print error message if 'file' field is not present
-    error_body = """
-    <html>
+    error_body = """<html>
     <body>
     <h1>Error</h1>
     <p>File field not found in the form data.</p>
     </body>
-    </html>
-    """
+    </html>"""
 
     # Calculate the content length
     content_length = len(error_body)

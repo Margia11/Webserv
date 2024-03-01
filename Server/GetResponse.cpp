@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:42:02 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/28 16:47:00 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/03/01 11:54:36 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 		response = toString();
 		return response;
 	}
-	if (uri == "/" && isValidFile((root + "/" + index).c_str()))
+	if (uri == "/" && file_requested.empty() && isValidFile((root + "/" + index).c_str()))
 	{
 		setStatusCode(200);
 		setHeaders(*parser, vs->getMimeTypes(), root + "/" + index);
