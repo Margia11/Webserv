@@ -29,7 +29,7 @@ body = """<!DOCTYPE html>
 </body>
 </html>""" % (name, email)
 
-print("Content-type: text/html\r")
+print("Content-Type: text/html\r")
 print("Content-Length: %d\r" % len(body))
 print("\r")
 print(body)
