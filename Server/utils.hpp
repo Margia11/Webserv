@@ -27,5 +27,6 @@ std::pair<std::string, int>	toHostPort(std::string raw);
 std::string getWholeFile(const std::string &path, std::string contentType);
 std::string numberToString(int n);
 bool isValidFile(const char* path);
+void stringToASCII(std::string str);
 
 #endif

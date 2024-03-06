@@ -38,19 +38,24 @@ bool ParserRequest::checkRequestLine(string line)
 	return true;
 }
 
-void	ParserRequest::getHeaders(string line)
+bool	ParserRequest::parseHeaders(string line)
 {
 	istringstream issHeader(line);
 	std::string headerName;
 	std::string headerValue;
 	issHeader >> headerName >> headerValue;
 	std::string buf;
+	if (headerName.empty() || headerValue.empty())
+		return false;
 	while (issHeader >> buf)
 	{
 		headerValue += " " + buf;
 	}
+	if (headerName[headerName.size() - 1] != ':')
+		return false;
 	headerName = headerName.substr(0, headerName.size() - 1);
 	this->headers.insert(std::make_pair(headerName, headerValue));
+	return true;
 }
 
 std::string ParserRequest::getProtocol() const
@@ -58,12 +63,29 @@ std::string ParserRequest::getProtocol() const
 	return this->protocol;
 }
 
-void ParserRequest::getRequestLine(string line)
+bool ParserRequest::parseRequestLine(string line)
 {
 	if (line.empty())
-		return ;
+		return false;
 	if (!checkRequestLine(line))
-		return ;
+	{
+		return false;
+	}
+	return true;
+}
+
+bool ParserRequest::checkBody()
+{
+	map<string, string>::iterator it = this->headers.find("Content-Length");
+	if (it != this->headers.end())
+	{
+		size_t contentLength = atoi(it->second.c_str());
+		std::cout << "Content-Length: " << contentLength << std::endl;
+		std::cout << "Body size: " << this->body.size() << std::endl;
+		if (contentLength != this->body.size())
+			return false;
+	}
+	return true;
 }
 
 void stampaCaratteriNonStampabili(std::string str)
@@ -84,27 +106,50 @@ void stampaCaratteriNonStampabili(std::string str)
 
 bool ParserRequest::readRequest(std::string input)
 {
+	bool validRequest = true;
 	size_t reqLinePos = input.find("\r\n");
 	if (reqLinePos == string::npos)
+	{
+		std::cerr << "requestLine begin" << std::endl;
 		return false;
+	}
 	std::string reqLine = input.substr(0, reqLinePos);
-	getRequestLine(reqLine);
+	validRequest = parseRequestLine(reqLine);
+	if (!validRequest)
+	{
+		std::cerr << "requestLine end" << std::endl;
+		return false;
+	}
 	size_t headerPos = input.find("\r\n", reqLinePos + 2);
 	if (headerPos == string::npos)
+	{
+		std::cerr << "headers begin" << std::endl;
 		return false;
+	}
 	std::string headers = input.substr(reqLinePos + 2, headerPos - reqLinePos - 2);
 	while(!headers.empty())
 	{
 		size_t oldHeaderPos = headerPos;
-		getHeaders(headers);
+		validRequest = parseHeaders(headers);
+		if (!validRequest)
+		{
+			std::cerr << "header inside" << std::endl;
+			return false;
+		}
 		headerPos = input.find("\r\n", oldHeaderPos + 2);
+		if (headerPos == string::npos)
+		{
+			std::cerr << "headers end" << std::endl;
+			return false;
+		}
 		headers = input.substr(oldHeaderPos + 2, headerPos - oldHeaderPos - 2);
 	}
-/* 	map<string, string>::iterator it = this->headers.find("Content-Length");
-	int len = 0;
-	if (it != this->headers.end())
-		len = atoi(it->second.c_str()); */
 	this->body = input.substr(headerPos + 2, input.size());
+ 	if (!checkBody())
+	{
+		std::cerr << "Body" << std::endl;
+		return false;
+	}
 	return true;
 }
 
@@ -120,6 +165,7 @@ void ParserRequest::printparse()
 	}
 	cout << "Body: " << this->body << endl;
 }
+
 ParserRequest::ParserRequest()
 {
 	this->method = "";

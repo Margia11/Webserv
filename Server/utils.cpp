@@ -12,6 +12,15 @@
 
 #include "utils.hpp"
 
+void stringToASCII(std::string str)
+{
+	for (size_t i = 0; i < str.size(); i++)
+	{
+		std::cout << (int)str[i] << " ";
+	}
+	std::cout << std::endl;
+}
+
 // funzione che converte l'ip da stringa a byte order
 u_int32_t string_to_byte_order(const char *ip_addr) {
 	int octets[4];

@@ -50,7 +50,7 @@ void MainServer::launch()
 {
 	while (true)
 	{
-		int ready = poll(_fds.data(), _fds.size(), -1);
+		int ready = poll(_fds.data(), _fds.size(), 0);
 		if (ready == -1)
 		{
 			std::cerr << "poll failed" << std::endl;
@@ -89,28 +89,22 @@ std::string MainServer::readFromFd(int fd)
 	std::string ret("");
 	int byte_read = 0;
 	// int total_byte_read = 0;
-	char buffer[32000];
+	char buffer[32001];
 	while (true)
 	{
 		memset(buffer, 0, 32000);
-		byte_read = read(fd, buffer, 32000);
+		byte_read = recv(fd, buffer, 32000, 0);
+		std::cout << "Read " << byte_read << std::endl;
 		if (byte_read < 0)
 		{
-			perror("read");
-			exit(1);
+			break;
 		}
 		else if (byte_read == 0)
 		{
 			std::cout << "Client closed connection" << std::endl;
 			return (ret);
 		}
-		else if (byte_read > 0 && byte_read < 32000)
-		{
-			ret.append(buffer, byte_read);
-			//std::cout << "Read " << byte_read << std::endl;
-			// total_byte_read += byte_read;
-			break;
-		}
+		buffer[byte_read] = '\0';
 		ret.append(buffer, byte_read);
 		//std::cout << "Read " << byte_read << std::endl;
 		usleep(150);
@@ -122,8 +116,10 @@ std::string MainServer::readFromFd(int fd)
 
 void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 {
-	//std::cout << "New request issued from " << it->fd << std::endl;
+	std::string answer;
+	std::cout << "New request issued from " << it->fd << std::endl;
 	std::string buffer = readFromFd(it->fd);
+	std::cout << "Buffer: " << buffer.size() << std::endl;
 	if (buffer.empty())
 	{
 		std::cout << "Client closed connection" << std::endl;
@@ -131,9 +127,31 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 		it->fd = -1;
 		return;
 	}
-	//std::cout << "Received request:\n";
+	std::cout << "Received request:\n";
 	std::cout << buffer << std::endl;
-	_clientHttpParserMap[it->fd].readRequest(buffer);
+	bool validRequest = _clientHttpParserMap[it->fd].readRequest(buffer);
+	if (!validRequest)
+	{
+		std::cerr << "Invalid request" << std::endl;
+		answer = "HTTP/1.1 400 Bad Request\r\n\r\n";
+		long int dataSent = send(it->fd, answer.data(), answer.size(), 0);
+		if (dataSent < 0)
+		{
+			perror("send");
+			exit(1);
+		}
+		else if (dataSent == 0)
+		{
+			std::cout << "Client closed connection" << std::endl;
+			close(it->fd);
+			it->fd = -1;
+			return;
+		}
+		answer.clear();
+		/* close(it->fd);
+		it->fd = -1; */
+		return;
+	}
 	std::string tmp = _clientHttpParserMap[it->fd].getHost();
 	Server server = SimpleServers[toHostPort(tmp).second];
 	//std::cout << "simple servers: " << this->SimpleServers.size() << std::endl;
@@ -142,25 +160,16 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 	GetResponse getResponse;
 	PostResponse postResponse;
 	DeleteResponse deleteResponse;
-	std::string answer;
 	//std::cout << "Answering request" << std::endl;
 	if (_clientHttpParserMap[it->fd].method == "GET")
 		answer = getResponse.answer(&(_clientHttpParserMap[it->fd]), &vs);
 	else if (_clientHttpParserMap[it->fd].method == "POST")
 		answer = postResponse.answer(&(_clientHttpParserMap[it->fd]), &vs);
-		// std::string requestBody = _clientHttpParserMap[it->fd].getRequestBody();
-		// std::string clientMaxBodySize = vs.getClientMaxBodySize();
-		// int maxBodySize = std::stoi(clientMaxBodySize);
-		// if (requestBody.size() > static_cast<size_t>(maxBodySize))
-		// {
-		// 	send(it->fd, "HTTP/1.1 413 Payload Too Large\r\n\r\n", 38, 0);
-		// 	return;
-		// }
 	else if (_clientHttpParserMap[it->fd].method == "DELETE")
 		answer = deleteResponse.answer(&(_clientHttpParserMap[it->fd]), &vs);
 	else
 		answer = "HTTP/1.1 405 Method Not Allowed\r\n\r\n";
-	std::cout << "Response: " << answer << std::endl;
+	//std::cout << "Response: " << answer << std::endl;
 	long int dataSent;
 	while (answer.size() > 32000)
 	{
@@ -216,14 +225,7 @@ void MainServer::_handleConnections(int fd)
 		else
 			_error("accept", 1);
 	}
-
 	if (setsockopt(clientFd_, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof(tv)) < 0)
-	{
-		std::cerr << "Error setting timeout\n";
-		exit(1);
-	}
-
-	if (setsockopt(clientFd_, SOL_SOCKET, SO_SNDTIMEO, (const char*)&tv, sizeof(tv)) < 0)
 	{
 		std::cerr << "Error setting timeout\n";
 		exit(1);
@@ -245,24 +247,3 @@ void MainServer::clearfds()
 	_fds.clear();
 }
 
-
-// void MainServer::printServer()
-// {
-// 	for (std::map<int, VirtualServer>::iterator it = virtualServers.begin(); it != virtualServers.end(); ++it)
-// 	{
-// 		std::cout << "Server name: " << it->second.getServerName() << std::endl;
-// 		std::cout << "Port: " << it->second.getPort() << std::endl;
-// 		std::cout << "Host: " << it->second.getHost() << std::endl;
-// 		std::cout << "Root: " << it->second.getRoot() << std::endl;
-// 		std::cout << "Index: " << it->second.getIndex() << std::endl;
-// 		std::cout << "Error pages: " << std::endl;
-// 		std::map<std::string, std::string> errorPages = it->second.getErrorPages();
-// 		for (std::map<std::string, std::string>::iterator it = errorPages.begin(); it != errorPages.end(); ++it)
-// 			std::cout << it->first << " " << it->second << std::endl;
-// 		std::cout << "Locations: " << std::endl;
-// 		std::map<std::string, LocationInfo> locations = it->second.getLocations();
-// 		for (std::map<std::string, LocationInfo>::iterator it = locations.begin(); it != locations.end(); ++it)
-// 			std::cout << it->first << " " << it->second.root << " " << it->second.index << " " << it->second.autoindex << std::endl;
-// 		std::cout << "Client max body size: " << it->second.getClientMaxBodySize() << std::endl;
-// 	}
-// }

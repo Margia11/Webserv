@@ -23,8 +23,8 @@ Socket::Socket(int domain, int service, int protocol, int port, u_long interface
 	int yes = 1;
 	if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1)
 	{
-    	perror("setsockopt");
-    	exit(1);
+		perror("setsockopt");
+		exit(1);
 	}
 	test_connection(sock);
 }

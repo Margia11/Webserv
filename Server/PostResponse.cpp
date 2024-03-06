@@ -155,7 +155,10 @@ std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 						filename = filename.substr(0, filename.find("\""));
 						std::string uploadedFileContent = parts[i].substr(parts[i].find("\r\n\r\n") + 4);
 						std::string filePath = uploadPath + "/" + filename;
-						std::ofstream uploadedFile(filePath.c_str(), std::ios::in | std::ios::binary);
+						std::ofstream uploadedFile;
+						uploadedFile.open(filePath.c_str());
+						std::cout << "filename: " << filePath << std::endl;
+						std::cout << "file content: " << uploadedFileContent << std::endl;
 						uploadedFile << uploadedFileContent;
 						uploadedFile.close();
 						fileContent += "file: " + filename;

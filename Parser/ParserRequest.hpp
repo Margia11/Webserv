@@ -37,9 +37,10 @@ class ParserRequest
 		void printparse();
 		bool readRequest(std::string input);
 		std::string getProtocol() const;
-		void getRequestLine(string line);
+		bool parseRequestLine(string line);
 		bool checkRequestLine(string line);
-		void getHeaders(string line);
+		bool parseHeaders(string line);
+		bool checkBody();
 		std::string getHost() const;
 		ParserRequest();
 		~ParserRequest();
@@ -49,5 +50,4 @@ class ParserRequest
 };
 
 void stampaCaratteriNonStampabili(std::string str);
-
 #endif
