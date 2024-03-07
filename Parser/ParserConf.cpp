@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:08:08 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/29 12:21:27 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/03/07 11:23:53 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	fillDefault(ServerConfig& serverConfig)
 				it->second.errorPages[servError->first] = servError->second;
 		}
 	}
-	std::cout << "root: " << (serverConfig.locations.begin())->second.root << std::endl;
+	//std::cout << "root: " << (serverConfig.locations.begin())->second.root << std::endl;
 }
 
 int IsValidServer(const ServerConfig& serverConfig, bool invalidServer)

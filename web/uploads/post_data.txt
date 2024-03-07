@@ -1,1 +1,1 @@
-file: noisy.png
+filename: faldo.jpg

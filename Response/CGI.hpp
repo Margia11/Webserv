@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:22:23 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/26 15:48:50 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/03/07 11:19:09 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include <map>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include "MainServer.hpp"
+#include "../Server/MainServer.hpp"
 
 class CGI
 {

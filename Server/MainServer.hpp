@@ -6,23 +6,22 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:33 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/23 14:50:05 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/03/07 11:21:02 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAINSERVER_HPP
 #define MAINSERVER_HPP
 
-#include "SimpleServer.hpp"
-// #include "VirtualServer.hpp"
-#include "GetResponse.hpp"
-#include "PostResponse.hpp"
-#include "DeleteResponse.hpp"
-#include "../Parser/ParserRequest.hpp"
 #include "utils.hpp"
 #include <stdio.h>
 #include <string.h>
 #include <poll.h>
+#include "SimpleServer.hpp"
+#include "../Parser/ParserRequest.hpp"
+#include "../Response/GetResponse.hpp"
+#include "../Response/PostResponse.hpp"
+#include "../Response/DeleteResponse.hpp"
 
 typedef std::map<int, ParserRequest>	clientHttpParserMap_t;
 

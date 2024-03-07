@@ -6,17 +6,17 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:16:11 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/03/01 11:07:02 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/03/07 11:21:21 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SIMPLESERVER_HPP
 #define SIMPLESERVER_HPP
 
-#include "../Networking/Networking.hpp"
-#include <unistd.h>
-#include "../Parser/ParserConf.hpp"
 #include <vector>
+#include <unistd.h>
+#include "../Networking/Networking.hpp"
+#include "../Parser/ParserConf.hpp"
 #include "VirtualServer.hpp"
 
 #define BUFFER_SIZE 30000

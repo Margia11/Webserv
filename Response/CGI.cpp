@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:26:45 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/03/01 14:13:08 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/03/07 11:25:19 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,8 +159,8 @@ std::string CGI::CGI_Executer()
 			this->err = 1;
 			return "";
 		}
-		else
-			std::cout << "exit code1: " << WIFEXITED(status) << std::endl;
+		// else
+		// 	std::cout << "exit code1: " << WIFEXITED(status) << std::endl;
 		char buffer[1025];
 		bzero(buffer, 1024);
 		int n = read(fdResp[0], buffer, 1024);

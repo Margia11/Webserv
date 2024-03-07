@@ -1,29 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   PostResponse.hpp                                   :+:      :+:    :+:   */
+/*   GetResponse.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/24 17:42:54 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/23 14:30:06 by andreamargi      ###   ########.fr       */
+/*   Created: 2024/01/24 17:41:59 by andreamargi       #+#    #+#             */
+/*   Updated: 2024/03/07 11:18:40 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef POSTRESPONSE_HPP
-#define POSTRESPONSE_HPP
+#ifndef GETRESPONSE_HPP
+#define GETRESPONSE_HPP
 
+#include <cstring>
+#include <cstdlib>
+#include <sstream>
 #include "Response.hpp"
-#include "VirtualServer.hpp"
 #include "CGI.hpp"
-#include <dirent.h>
+#include "../Server/VirtualServer.hpp"
 
-class PostResponse : public Response
+class GetResponse : public Response
 {
 	public:
-		PostResponse();
-		~PostResponse();
+		GetResponse();
+		~GetResponse();
 		std::string answer(ParserRequest *parser, VirtualServer *vs);
+	std::string generateAutoindex(std::string root, std::string uri);
 };
 
 

@@ -6,19 +6,21 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:04:26 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/28 15:54:58 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/03/07 11:21:54 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VIRTUALSERVER_HPP
 #define VIRTUALSERVER_HPP
 
-#include "../Parser/ParserConf.hpp"
-#include "../Parser/ParserRequest.hpp"
 #include <poll.h>
 #include <string>
 #include <string.h>
 #include <vector>
+#include "utils.hpp"
+#include "../Parser/ParserConf.hpp"
+#include "../Parser/ParserRequest.hpp"
+
 
 struct LocationInfo
 {

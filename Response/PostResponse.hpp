@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   DeleteResponse.hpp                                 :+:      :+:    :+:   */
+/*   PostResponse.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/23 14:28:37 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/23 14:51:11 by andreamargi      ###   ########.fr       */
+/*   Created: 2024/01/24 17:42:54 by andreamargi       #+#    #+#             */
+/*   Updated: 2024/03/07 11:17:59 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DELETERESPONSE_HPP
-#define DELETERESPONSE_HPP
+#ifndef POSTRESPONSE_HPP
+#define POSTRESPONSE_HPP
 
-#include "Response.hpp"
-#include "VirtualServer.hpp"
-#include "CGI.hpp"
 #include <dirent.h>
+#include "Response.hpp"
+#include "CGI.hpp"
+#include "../Server/VirtualServer.hpp"
 
-class DeleteResponse : public Response
+class PostResponse : public Response
 {
 	public:
-		DeleteResponse();
-		~DeleteResponse();
+		PostResponse();
+		~PostResponse();
 		std::string answer(ParserRequest *parser, VirtualServer *vs);
 };
 

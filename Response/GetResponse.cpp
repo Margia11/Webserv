@@ -6,14 +6,11 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:42:02 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/03/01 11:54:36 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/03/07 11:18:37 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "GetResponse.hpp"
-#include <cstring>
-#include <cstdlib>
-#include <sstream>
 
 GetResponse::GetResponse() : Response()
 {

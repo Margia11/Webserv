@@ -6,7 +6,7 @@
 #    By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/10 14:45:43 by andreamargi       #+#    #+#              #
-#    Updated: 2024/03/01 11:53:00 by andreamargi      ###   ########.fr        #
+#    Updated: 2024/03/07 11:22:59 by andreamargi      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,9 +22,9 @@ FILES = Socket/BaseSocket.cpp Socket/BindingSocket.cpp \
 		Socket/ListeningSocket.cpp Socket/ConnectingSocket.cpp \
 		Server/MainServer.cpp Server/SimpleServer.cpp \
 		main.cpp Parser/ParserConf.cpp Server/VirtualServer.cpp \
-		Parser/ParserRequest.cpp Server/GetResponse.cpp \
-		Server/Response.cpp Server/PostResponse.cpp Server/utils.cpp \
-		Server/CGI.cpp Server/DeleteResponse.cpp \
+		Parser/ParserRequest.cpp Response/GetResponse.cpp \
+		Response/Response.cpp Response/PostResponse.cpp Server/utils.cpp \
+		Response/CGI.cpp Response/DeleteResponse.cpp \
 
 OBJ=$(FILES:.cpp=.o)
 

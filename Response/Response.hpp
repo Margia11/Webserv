@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:52:21 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/03/01 12:11:01 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/03/07 11:17:17 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 #include <string>
 #include <iostream>
 #include <map>
-#include "../Parser/ParserRequest.hpp"
-#include "VirtualServer.hpp"
-#include "utils.hpp"
 #include <sstream>
 #include <fstream>
+#include "../Parser/ParserRequest.hpp"
+#include "../Server/VirtualServer.hpp"
+#include "../Server/utils.hpp"
 
 class Response
 {
