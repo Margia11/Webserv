@@ -49,7 +49,7 @@ std::string DeleteResponse::answer(ParserRequest *parser, VirtualServer *vs)
 		std::cout << "it: " << *it;
 		it++;
 	}
-	std::cout << "uri: " << root + uri + file_requested << std::endl;
+	// std::cout << "uri: " << root + uri + file_requested << std::endl;
 	if (!allowedMethods.empty() && it == allowedMethods.end())
 		setStatusCode(405);
 	else if(remove((root + uri + file_requested).c_str()) != 0)

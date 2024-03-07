@@ -86,7 +86,7 @@ std::string getWholeFile(const std::string &path, std::string contentType)
 	if (contentType.compare("img/jpeg") == 0)
 	{
 		file.open(path.c_str(), std::ios::binary);
-		std::cout << "open img" << std::endl;
+		// std::cout << "open img" << std::endl;
 	}
 	else
 		file.open(path.c_str());

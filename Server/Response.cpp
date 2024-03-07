@@ -160,7 +160,6 @@ void Response::setHeaders_CGI(const ParserRequest &request, const string &body)
 	setServer("webserv 1.0");
 	setAcceptRanges("bytes");
 	setConnection("Keep-Alive");
-	std::cout << "Headers set" << std::endl;
 }
 
 void Response::setHost(std::string host)
@@ -170,7 +169,7 @@ void Response::setHost(std::string host)
 
 void Response::setHeaders(const ParserRequest &request, const std::map<string, string> &mimTypes, const string &path)
 {
-	std::cout << "path: " << path << std::endl;
+	// std::cout << "path: " << path << std::endl;
 	if (statusCode == 200 || statusCode == 301)
 		setLastModified(path);
 	if (statusCode == 301)
@@ -198,10 +197,11 @@ bool Response::isValidDir(const char* path)
 
 bool Response::createDir(const std::string& path)
 {
-	std::cout << "tbcreated: " << path << std::endl;
+	//std::cout << "tbcreated: " << path << std::endl;
 	int risultato = std::system(("mkdir " + path).c_str());
 	if (risultato == 0)
-		std::cout << "Dir created" << std::endl;
+		return 0;
+		//std::cout << "Dir created" << std::endl;
 	else
 		return 1;
 	return 0;

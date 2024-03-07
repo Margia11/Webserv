@@ -58,7 +58,7 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 	{
 		uri = uri.substr(0, uri.find_last_of("/") + 1);
 	}
-	std::cout << "uri: " << uri << "; file requested: " << file_requested << std::endl;
+	//std::cout << "uri: " << uri << "; file requested: " << file_requested << std::endl;
 	std::map<std::string, LocationInfo> locations = vs->getLocations();
 	std::map<std::string, LocationInfo>::iterator l = locations.find(uri);
 
@@ -148,7 +148,7 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 	else if (isValidDir((root + parser->path).c_str()) && autoindex && !isValidFile((root + index).c_str()))
 	{
 		std::string response_body = generateAutoindex(root, parser->path);
-		std::cout << response_body << std::endl;
+		//std::cout << response_body << std::endl;
 		setStatusCode(200);
 		std::string len = numberToString(response_body.size());
 		std::string resp = "Content-Type: text/html\r\n";

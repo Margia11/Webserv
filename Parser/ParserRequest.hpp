@@ -47,6 +47,7 @@ class ParserRequest
 		std::string getUri()const;
 		std::string getQuery()const;
 		std::string getRequestBody() const;
+		void setRequestBody(std::string body);
 };
 
 void stampaCaratteriNonStampabili(std::string str);

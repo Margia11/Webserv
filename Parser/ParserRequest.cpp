@@ -80,8 +80,8 @@ bool ParserRequest::checkBody()
 	if (it != this->headers.end())
 	{
 		size_t contentLength = atoi(it->second.c_str());
-		std::cout << "Content-Length: " << contentLength << std::endl;
-		std::cout << "Body size: " << this->body.size() << std::endl;
+		// std::cout << "Content-Length: " << contentLength << std::endl;
+		// std::cout << "Body size: " << this->body.size() << std::endl;
 		if (contentLength != this->body.size())
 			return false;
 	}
@@ -145,11 +145,6 @@ bool ParserRequest::readRequest(std::string input)
 		headers = input.substr(oldHeaderPos + 2, headerPos - oldHeaderPos - 2);
 	}
 	this->body = input.substr(headerPos + 2, input.size());
- 	if (!checkBody())
-	{
-		std::cerr << "Body" << std::endl;
-		return false;
-	}
 	return true;
 }
 
@@ -192,3 +187,7 @@ std::string ParserRequest::getRequestBody() const
 	return this->body;
 }
 
+void ParserRequest::setRequestBody(std::string body)
+{
+	this->body = body;
+}

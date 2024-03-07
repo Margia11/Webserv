@@ -107,10 +107,10 @@ static bool checkContent(std::string content)
 	std::string cl_body = content.substr(cl_begin, content.size());
 	size_t cl_end = cl_body.find("\r\n");
 	size_t cl = atoi((cl_body.substr(0, cl_end)).c_str());
-	std::cout << "body: " << body.size() - 1 << "; cl: " << cl << std::endl;
-	std::cout << "[STAMPA BODY]" << std::endl;
-	std::cout << body << std::endl;
-	std::cout << "[STAMPA BODY]" << std::endl;
+	// std::cout << "body: " << body.size() - 1 << "; cl: " << cl << std::endl;
+	// std::cout << "[STAMPA BODY]" << std::endl;
+	// std::cout << body << std::endl;
+	// std::cout << "[STAMPA BODY]" << std::endl;
 	if (body.size() - 1 != cl)
 		return (false);
 	return (true);
@@ -161,11 +161,12 @@ std::string CGI::CGI_Executer()
 		}
 		else
 			std::cout << "exit code1: " << WIFEXITED(status) << std::endl;
-		char buffer[1024];
+		char buffer[1025];
 		bzero(buffer, 1024);
 		int n = read(fdResp[0], buffer, 1024);
 		while (n > 0)
 		{
+			buffer[n] = '\0';
 			response_body += buffer;
 			bzero(buffer, 1024);
 			n = read(fdResp[0], buffer, 1024);

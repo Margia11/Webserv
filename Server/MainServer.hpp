@@ -42,7 +42,7 @@ class MainServer
 		void printServer();
 		std::string readFromFd(int fd);
 		void clearfds();
-
+		void resetParserRequest(std::vector<pollfd>::iterator it);
 };
 
 #endif

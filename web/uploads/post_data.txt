@@ -1,1 +1,1 @@
-file: Gatto.jpeg
+file: noisy.png

@@ -45,7 +45,6 @@ static bool checkandcutsemicolon(std::string& line)
 		if (line[pos] == ';')
 		{
 			line = line.substr(0, pos);
-			//std::cout << "Info without semicolon: " << line << std::endl;
 			return true;
 		}
 	}

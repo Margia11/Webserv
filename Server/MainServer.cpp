@@ -29,7 +29,7 @@ MainServer::MainServer(const std::string& config) : _parserRequest()
 		u_long interface = string_to_byte_order(it->second.getHostPort().first.c_str());
 		ListeningSocket *tmpsocket = new ListeningSocket(AF_INET, SOCK_STREAM, 0, it->first, interface, 10);
 		it->second.setSocket(tmpsocket);
-		cout << "Server on port " << it->first << " created" << endl;
+		//cout << "Server on port " << it->first << " created" << endl;
 		struct pollfd serverPollFd_ = {};
 		serverPollFd_.fd = tmpsocket->getSocket();
 		serverPollFd_.events = POLLIN;
@@ -93,33 +93,48 @@ std::string MainServer::readFromFd(int fd)
 	while (true)
 	{
 		memset(buffer, 0, 32000);
-		byte_read = recv(fd, buffer, 32000, 0);
-		std::cout << "Read " << byte_read << std::endl;
+		byte_read = read(fd, buffer, 32000);
+		// std::cout << "Read " << byte_read << std::endl;
+		//if (byte_read < 0 && ret.empty()) -> perror
 		if (byte_read < 0)
 		{
-			break;
+			perror("read");
+			exit(1);
 		}
 		else if (byte_read == 0)
 		{
-			std::cout << "Client closed connection" << std::endl;
 			return (ret);
+		}
+		else if (byte_read < 32000)
+		{
+			buffer[byte_read] = '\0';
+			ret.append(buffer, byte_read);
+			break;
 		}
 		buffer[byte_read] = '\0';
 		ret.append(buffer, byte_read);
 		//std::cout << "Read " << byte_read << std::endl;
-		usleep(150);
+		//usleep(150);
 		//std::cout << "Read " << ret << std::endl;
 		// total_byte_read += byte_read;
 	}
 	return (ret);
 }
 
+void MainServer::resetParserRequest(std::vector<pollfd>::iterator it)
+{
+	std::map<int, ParserRequest>::iterator it_ = _clientHttpParserMap.find(it->fd);
+	if (it_ != _clientHttpParserMap.end())
+		_clientHttpParserMap.erase(it_);
+	_clientHttpParserMap[it->fd] = ParserRequest();
+}
+
 void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 {
 	std::string answer;
-	std::cout << "New request issued from " << it->fd << std::endl;
+	// std::cout << "New request issued from " << it->fd << std::endl;
 	std::string buffer = readFromFd(it->fd);
-	std::cout << "Buffer: " << buffer.size() << std::endl;
+	// std::cout << "Buffer: " << buffer.size() << std::endl;
 	if (buffer.empty())
 	{
 		std::cout << "Client closed connection" << std::endl;
@@ -127,8 +142,9 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 		it->fd = -1;
 		return;
 	}
-	std::cout << "Received request:\n";
-	std::cout << buffer << std::endl;
+	// std::cout << "Buffer read" << std::endl;
+/* 	std::cout << "Received request:\n";
+	std::cout << buffer << std::endl; */
 	bool validRequest = _clientHttpParserMap[it->fd].readRequest(buffer);
 	if (!validRequest)
 	{
@@ -152,6 +168,23 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 		it->fd = -1; */
 		return;
 	}
+	bool validBody = _clientHttpParserMap[it->fd].checkBody();
+	while (!validBody)
+	{
+		buffer.clear();
+		// std::cout << "Reading rest of the body" << std::endl;
+		buffer = readFromFd(it->fd);
+		if (buffer.empty())
+		{
+			std::cout << "Client closed connection" << std::endl;
+			close(it->fd);
+			it->fd = -1;
+			return;
+		}
+		_clientHttpParserMap[it->fd].setRequestBody(_clientHttpParserMap[it->fd].getRequestBody() + buffer);
+		// std::cout << "checking body" << std::endl;
+		validBody = _clientHttpParserMap[it->fd].checkBody();
+	}
 	std::string tmp = _clientHttpParserMap[it->fd].getHost();
 	Server server = SimpleServers[toHostPort(tmp).second];
 	//std::cout << "simple servers: " << this->SimpleServers.size() << std::endl;
@@ -160,7 +193,7 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 	GetResponse getResponse;
 	PostResponse postResponse;
 	DeleteResponse deleteResponse;
-	//std::cout << "Answering request" << std::endl;
+	// std::cout << "Answering request" << std::endl;
 	if (_clientHttpParserMap[it->fd].method == "GET")
 		answer = getResponse.answer(&(_clientHttpParserMap[it->fd]), &vs);
 	else if (_clientHttpParserMap[it->fd].method == "POST")
@@ -204,6 +237,8 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 		return;
 	}
 	answer.clear();
+	resetParserRequest(it);
+	//reset parser _clientHttpParserMap[it->fd]
 }
 
 void MainServer::_handleConnections(int fd)
@@ -234,7 +269,7 @@ void MainServer::_handleConnections(int fd)
 	clientPollFd_.fd = clientFd_;
 	clientPollFd_.events = POLLIN;
 	_fds.push_back(clientPollFd_);
-	std::cout << "New connection issued from " << clientFd_ << std::endl;
+	// std::cout << "New connection issued from " << clientFd_ << std::endl;
 	_clientHttpParserMap[clientFd_] = ParserRequest();
 }
 

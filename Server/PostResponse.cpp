@@ -47,7 +47,7 @@ std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 	string uri = parser->getUri();
 	std::vector<std::string> index = vs->getIndex();
 	std::string file_requested = getFile(uri);
-	std::cout << "file_requested: " << file_requested << std::endl;
+	// std::cout << "file_requested: " << file_requested << std::endl;
 	if (!file_requested.empty())
 	{
 		uri = uri.substr(0, uri.find_last_of("/") + 1);
@@ -94,7 +94,7 @@ std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 			break;
 		it++;
 	}
-	std::cout << "controllo: parser_body = " << parser->body.size() << "; clientMaxBodySize = " << clientMaxBodySize << std::endl;
+	// std::cout << "controllo: parser_body = " << parser->body.size() << "; clientMaxBodySize = " << clientMaxBodySize << std::endl;
 	if (!allowedMethods.empty() && it == allowedMethods.end())
 		setStatusCode(405);
 	else if (parser->body.size() > clientMaxBodySize)
@@ -108,7 +108,7 @@ std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 	}
 	else
 		setStatusCode(200);
-	std::cout << "status code: " << getStatusCode() << std::endl;
+	// std::cout << "status code: " << getStatusCode() << std::endl;
 	if (l != locations.end() && use_CGI && getStatusCode() == 200)
 	{
 		CGI cgi(parser, &(l->second), file_requested);
@@ -157,8 +157,8 @@ std::string PostResponse::answer(ParserRequest *parser, VirtualServer *vs)
 						std::string filePath = uploadPath + "/" + filename;
 						std::ofstream uploadedFile;
 						uploadedFile.open(filePath.c_str());
-						std::cout << "filename: " << filePath << std::endl;
-						std::cout << "file content: " << uploadedFileContent << std::endl;
+						// std::cout << "filename: " << filePath << std::endl;
+						// std::cout << "file content: " << uploadedFileContent << std::endl;
 						uploadedFile << uploadedFileContent;
 						uploadedFile.close();
 						fileContent += "file: " + filename;

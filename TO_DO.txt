@@ -1,4 +1,7 @@
-make relinka
-CHECK LEAKS
+make modulare
 
-post con body vuoto -> check prossima request
+ordine nelle cartelle
+-server
+-response (response + cgi)
+
+CHECK LEAKS
