@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   MainServer.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
+/*   By: amargiac <amargiac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/03/01 12:21:00 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/03/13 19:22:17 by amargiac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,12 @@ MainServer::MainServer(const std::string& config) : _parserRequest()
 		//it->second.printServer();
 	}
 }
+
+std::map<int, Server> MainServer::getServers(void)
+{
+	return this->SimpleServers;
+}
+
 
 MainServer::~MainServer()
 {

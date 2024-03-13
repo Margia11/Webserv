@@ -175,6 +175,7 @@ std::string CGI::CGI_Executer()
 		if(!checkContent(response_body))
 			this->err = 1;
 	}
+	delete arg_execve[0];
 	return response_body;
 }
 

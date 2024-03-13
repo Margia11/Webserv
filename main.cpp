@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
+/*   By: amargiac <amargiac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:41:40 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/02/07 10:50:15 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/03/13 19:34:48 by amargiac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,21 @@
 #include "Server/VirtualServer.hpp"
 #include <signal.h>
 
+MainServer *closingRef;
+
+static void closeServer(int sig)
+{
+	if(sig != SIGINT)
+		return;
+	std::cout << "Closing server" << std::endl;
+	printFds();
+	std::map<int, Server> servs = closingRef->getServers();
+	for (std::map<int, Server>::iterator it = servs.begin(); it != servs.end(); it++)
+		close(it->second.getSocket()->getSocket());
+	printFds();
+	closingRef->clearfds();
+	exit(0);
+}
 int main(int argc, char **argv)
 {
 	std::string configfile = "conf/configfile.conf";
@@ -27,6 +42,8 @@ int main(int argc, char **argv)
 		return 1;
 	}
 	MainServer server(configfile);
+	closingRef = &server;
+	signal(SIGINT, closeServer);
 	server.launch();
 	return (0);
 }
