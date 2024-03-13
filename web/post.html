@@ -70,12 +70,58 @@
             display: inline-block;
         }
 
-        nav a:hover {
-            background-color: var(--silver-lake-blue);
+        .grid-container {
+            display: grid;
+            grid-template-columns: auto auto;
+            padding: 20px;
         }
 
-        .content {
-            padding: 20px;
+        input[type=submit]{
+            margin-right: 20px;
+            border: none;
+            background: var(--lime);
+            color: var(--space-cadet);
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background .2s ease-in-out;
+        }
+
+        input[type=submit]:hover {
+            background: var(--mint-green);
+            color: var(--space-cadet);
+        }
+
+        input[type=file]::file-selector-button {
+            margin-right: 20px;
+            border: none;
+            background: var(--lime);
+            color: var(--space-cadet);
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background .2s ease-in-out;
+        }
+
+        input[type=file] {
+            width: max-content;
+        }
+
+        input[type=file]::file-selector-button:hover {
+            background: var(--mint-green);
+            color: var(--space-cadet);
+        }
+
+        input[type=text] {
+            margin-right: 20px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 1px solid var(--space-cadet);
+            color: var(--space-cadet);
+        }
+
+        nav a:hover {
+            background-color: var(--silver-lake-blue);
         }
     </style>
 </head>
@@ -87,9 +133,25 @@
         <a href="./post.html">Upload</a>
     </nav>
 
-    <div class="content">
-        <h1>Welcome our WebServer!</h1>
-        <p>Here you can upload your files and see the ones from our server</p>
+    <div class="grid-container">
+        <div class="grid-item">
+            <h1>Post information</h1>
+            <p>Insert some data on the server</p>
+            <form action="post_form_text.py" method="post">
+                <input type="text" name="name" placeholder="Name" id="name"/>
+                <input type="text" name="email" placeholder="E-mail" id="email"/>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+        <div class="grid-item">
+            <h1>Post files</h1>
+            <p>Upload a file in the server</p>
+            <form action="post_form_files.py" method="post" enctype="multipart/form-data">
+                <!--<input type="text" name="name" id="name"/> -->
+                <input type="file" name="file" id="file"/>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
     </div>
 
 </body>

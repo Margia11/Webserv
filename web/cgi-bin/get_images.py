@@ -1,23 +1,27 @@
 #!/usr/bin/env python3
 
 import base64
+import cgi
+
+form = cgi.FieldStorage()
+
+filename = form.getvalue('file')
+if not filename:
+    print("Content-Type: text/html\r\n")
+    cl = len("<html><body><h1>Error: no file matches</h1></body></html>")
+    print("Content-Length: " + str(cl) + "\r\n\r")
+    print("<html><body><h1>Error: no file matches</h1></body></html>")
+    exit(1)
 
 def generate_html_body(image_path):
-    # Apre il file in modalità binaria
-    with open(image_path, 'rb') as file:
-        # Legge i dati binari del file
-        binary_data = file.read()
-
-    # Converte i dati binari in una stringa base64
-    base64_data = base64.b64encode(binary_data).decode('utf-8')
 
     # Genera il corpo HTML con l'immagine
     html_body = """<!DOCTYPE html>
     <html>
     <body>
-        <img src="./img/Gatto.jpeg"><img/>
+        <img src="%s"><img/>
     </body>
-    </html>"""
+    </html>""" % image_path
 
     return html_body
 
@@ -29,4 +33,3 @@ header += "Content-Length: " + str(len(html_content)) + "\r\n\r"
 
 print(header)
 print(html_content)
-
