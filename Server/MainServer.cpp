@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   MainServer.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amargiac <amargiac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/03/13 19:22:17 by amargiac         ###   ########.fr       */
+/*   Updated: 2024/03/22 15:54:26 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,8 +149,8 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 		return;
 	}
 	// std::cout << "Buffer read" << std::endl;
-/* 	std::cout << "Received request:\n";
-	std::cout << buffer << std::endl; */
+	std::cout << "Received request:\n";
+	std::cout << buffer << std::endl; 
 	bool validRequest = _clientHttpParserMap[it->fd].readRequest(buffer);
 	if (!validRequest)
 	{

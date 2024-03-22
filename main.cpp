@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amargiac <amargiac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:41:40 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/03/13 19:34:48 by amargiac         ###   ########.fr       */
+/*   Updated: 2024/03/22 14:02:59 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,9 @@ static void closeServer(int sig)
 	if(sig != SIGINT)
 		return;
 	std::cout << "Closing server" << std::endl;
-	printFds();
 	std::map<int, Server> servs = closingRef->getServers();
 	for (std::map<int, Server>::iterator it = servs.begin(); it != servs.end(); it++)
 		close(it->second.getSocket()->getSocket());
-	printFds();
 	closingRef->clearfds();
 	exit(0);
 }

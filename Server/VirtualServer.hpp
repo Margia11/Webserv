@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:04:26 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/03/07 11:21:54 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/03/22 15:40:49 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ class VirtualServer
 		void _setMimeTypes();
 		void printVServer();
 		void printLocations(VirtualServer *vs);
+		std::string const &getValidIndex() const;
 };
 
 

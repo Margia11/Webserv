@@ -6,7 +6,7 @@
 /*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:42:02 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/03/07 11:18:37 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/03/22 15:49:05 by andreamargi      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,12 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 	std::string response;
 	bool autoindex = vs->getAutoindex();
 	std::string root = vs->getRoot();
-	std::string index = vs->getIndex().front();
+	std::vector<std::string> index_vec = vs->getIndex();
+	std::string index;
+	if (index_vec.size() != 0)
+		index = index_vec.front();
+	else
+		index = "";
 	std::vector<std::string> allowedMethods = vs->getAllowMethods();
 	std::map<std::string, std::string> errorPages = vs->getErrorPages();
 	string uri = parser->getUri();
@@ -88,7 +93,10 @@ std::string GetResponse::answer(ParserRequest *parser, VirtualServer *vs)
 		}
 		allowedMethods = l->second.allow_methods;
 		autoindex = l->second.autoindex;
-		index = (l->second.index).front();
+		if (l->second.index.size() == 0)
+			index = "";
+		else
+			index = (l->second.index).front();
 		errorPages = l->second.errorPages;
 		root = l->second.root;
 	}
