@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/03/27 14:26:30 by codespace        ###   ########.fr       */
+/*   Updated: 2024/03/27 15:51:48 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,8 +149,8 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 		return;
 	}
 	// std::cout << "Buffer read" << std::endl;
-	std::cout << "Received request:\n";
-	std::cout << buffer << std::endl; 
+	//std::cout << "Received request:\n";
+	//std::cout << buffer << std::endl; 
 	bool validRequest = _clientHttpParserMap[it->fd].readRequest(buffer);
 	if (!validRequest)
 	{
@@ -208,7 +208,7 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 		answer = deleteResponse.answer(&(_clientHttpParserMap[it->fd]), &vs);
 	else
 		answer = "HTTP/1.1 405 Method Not Allowed\r\n\r\n";
-	std::cout << "Response: " << answer << std::endl;
+	//std::cout << "Response: " << answer << std::endl;
 	long int dataSent;
 	while (answer.size() > 32000)
 	{
