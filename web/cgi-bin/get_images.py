@@ -25,7 +25,7 @@ def generate_html_body(image_path):
 
     return html_body
 
-file_path = './web/img/Gatto.jpeg'
+file_path = './img/' + filename + '.jpeg'
 html_content = generate_html_body(file_path)
 
 header = "Content-Type: text/html\r\n"

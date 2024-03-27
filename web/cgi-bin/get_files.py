@@ -2,7 +2,7 @@
 import os
 
 # Set the path to the directory you want to list
-directory_path = 'Server/'
+directory_path = './web/img/'
 
 # Get the list of files in the directory
 files = os.listdir(directory_path)
@@ -50,19 +50,18 @@ body = (("""<!DOCTYPE html>
             margin: 0;
             height: 100vh;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--gradient-radial);
+            flex-direction: column;
+            background: var(--honeydew);
         }
 
         h1 {
             color: var(--space-cadet);
         }
         h2 {
-            color: var(--lime);
+            color: var(--space-cadet);
         }
     </style>
-    <title>CSS Gradients Page</title>
+    <title>Images</title>
 </head>
 <body>
 """))

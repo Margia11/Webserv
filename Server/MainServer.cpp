@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   MainServer.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:41 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/03/22 15:54:26 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/03/27 14:26:30 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,7 @@ void MainServer::_handleRequest(std::vector<pollfd>::iterator it)
 		answer = deleteResponse.answer(&(_clientHttpParserMap[it->fd]), &vs);
 	else
 		answer = "HTTP/1.1 405 Method Not Allowed\r\n\r\n";
-	//std::cout << "Response: " << answer << std::endl;
+	std::cout << "Response: " << answer << std::endl;
 	long int dataSent;
 	while (answer.size() > 32000)
 	{

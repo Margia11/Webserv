@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andreamargiacchi <andreamargiacchi@stud    +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 14:06:34 by andreamargi       #+#    #+#             */
-/*   Updated: 2024/03/01 12:13:10 by andreamargi      ###   ########.fr       */
+/*   Updated: 2024/03/27 14:31:27 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,7 @@ void Response::setHeaders(const ParserRequest &request, const std::map<string, s
 	setProtocol(request.getProtocol());
 	setContentType(path, mimTypes);
 	setBody(getWholeFile(path, getContentType()));
+	std::cout << "body: " << body.size() << std::endl;
 	setContentLength(path);
 	setHost(request.getHost());
 	if (getContentType() == "img/jpeg")
